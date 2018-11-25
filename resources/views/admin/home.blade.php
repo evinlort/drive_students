@@ -1,7 +1,5 @@
 @extends('layouts.app')
-@section('css')
-<link rel="stylesheet" href="css/custom.css">
-@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -15,15 +13,8 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <div id="calendar">
-                        @for($x = 0; $x < 4; $x++)
-                            <div class="cal-row">
-                            @for ($i = 0; $i < 7; $i++)
-                                <div class="cal-box"></div>
-                            @endfor
-                            </div>
-                        @endfor
-                    </div>
+
+                    You are logged in as admin!
                 </div>
             </div>
         </div>

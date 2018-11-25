@@ -1,0 +1,21 @@
+.btn-custom-wide {
+    width: 100%;
+}
+
+#calendar {
+    display: block;
+    width: 100%;
+}
+
+.cal-box {
+    display: inline-block;
+    width: 13.18%;
+    padding-top: 6.59%;
+    border: solid black 1px;
+    box-shadow: 1px 2px;
+    border-radius: 5%;
+}
+
+.cal-row {
+    margin-bottom: 0.5%;
+}
