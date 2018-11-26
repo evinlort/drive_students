@@ -76,7 +76,17 @@ class HomeController extends Controller
                 return view('home', $data);
     }
 
-    public function test() {
-        return 'asdasasd';
+    public function getLessons(Request $request) {
+        $day = $request->day;
+        $date = date('Y-m-').$day;
+        $times = array();
+        $step_time = Carbon::createFromTime(7)->toTimeString();
+        $counter = 1;
+        while(Carbon::createFromTime(19)->toTimeString() >= $step_time) {
+            $times[] = [$counter++ => $step_time];
+            list($h,$m,$s) = explode(':',$step_time);
+            $step_time = Carbon::createFromTime($h,$m,$s)->addMinutes(40)->toTimeString();
+        }
+        return response()->json([ 'data' => $times ]);
     }
 }

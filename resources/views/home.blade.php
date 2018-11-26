@@ -27,6 +27,9 @@
             </div>
             <div class="modal-body">
                 {{ __('Choose lesson') }}
+                <div id="lessons">
+                    
+                </div>
 
             </div>
             <div class="modal-footer">

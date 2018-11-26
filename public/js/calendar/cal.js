@@ -12,18 +12,26 @@ $(document).ready(function(){
     );
 
     $(".cal-box").on("click", function() {
-        $.ajax({
-            url: window.Laravel.baseUrl + "asd",
-            type: "post",
-            headers: {
-                'X-CSRF-TOKEN': window.Laravel.csrfToken
-            },
-            success: function(data) {
-                console.log(data);
-            }
-        });
-        if(!$(this).attr("class").includes("cal-box-gray"))
+        if(!$(this).attr("class").includes("cal-box-gray")) {
+            var day_num = $(this).data("dayNo");
+            $.ajax({
+                url: window.Laravel.baseUrl + "get_lessons",
+                type: "post",
+                data: {
+                    day:$(this).data("dayNo")
+                },
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': window.Laravel.csrfToken
+                },
+                success: function(data) {
+                    $("#lessons").empty();
+                    console.log(data);
+                }
+            });
+            
             $('#favoritesModal').modal('toggle');
+        }
     });
 
 });

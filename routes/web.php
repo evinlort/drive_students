@@ -19,4 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/asd', 'HomeController@test');
+Route::post('/get_lessons', 'HomeController@getLessons');
