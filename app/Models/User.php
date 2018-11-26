@@ -29,6 +29,6 @@ class User extends Authenticatable
     ];
 
     public function getPermittedWeeks() {
-        return 1;
+        return 2;
     }
 }

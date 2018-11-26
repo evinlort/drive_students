@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -34,6 +35,34 @@ class HomeController extends Controller
         $data['days_in_month'] = Carbon::now()->daysInMonth;
 
         $data['diff_last_this_in_week'] = $data['last_month_last_day'] - $data['this_month_week_starts'] + 1;
+
+        $data['start'] = 1;
+        if($data['now'] > 15)
+            $data['start'] = 16;
+        
+        $data['end'] = 15;
+        if($data['start'] == 16)
+            $data['end'] = $data['month_last_day'];
+
+        $data['permitted_weeks'] = Auth::user()->getPermittedWeeks() + 1;
+        $displayed_rows = ceil($data['days_in_month']/7);
+
+        $days = array();
+        if($data['this_month_week_starts'] != 1) {
+            for($i = $data['this_month_week_starts'];$i <= $data['last_month_last_day']; $i++) {
+                $days[] = $i;
+            }
+        }
+        for($i = 1; $i <= $data['month_last_day']; $i++) {
+            $days[] = $i;
+        }
+        
+        if($filled_days = count($days) % 7) {
+            for($i = 1;$i <= (7 - $filled_days); $i++) {
+                $days[] = $i;
+            }
+        }
+        $data['days_a'] = $days;
 
         $data['days'] = ['su','mo','th','te','we','st','sb'];
         $user = auth()->user();
