@@ -50,21 +50,24 @@ class HomeController extends Controller
         $days = array();
         if($data['this_month_week_starts'] != 1) {
             for($i = $data['this_month_week_starts'];$i <= $data['last_month_last_day']; $i++) {
-                $days[] = $i;
+                $days[] = [$i,1];
             }
         }
         for($i = 1; $i <= $data['month_last_day']; $i++) {
-            $days[] = $i;
+            if($i < $data['now'])
+                $days[] = [$i,1];
+            else
+                $days[] = [$i,0];
         }
         
         if($filled_days = count($days) % 7) {
             for($i = 1;$i <= (7 - $filled_days); $i++) {
-                $days[] = $i;
+                $days[] = [$i,1];
             }
         }
         $data['days_a'] = $days;
 
-        $data['days'] = ['su','mo','th','te','we','st','sb'];
+        $data['days'] = ['su','mo','tu','we','th','fr','sa'];
         $user = auth()->user();
         if(isset($user))
             if($user->is_admin)

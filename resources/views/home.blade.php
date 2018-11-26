@@ -26,7 +26,7 @@
                         @for($x = 0; $x < ceil($days_in_month/7); $x++)
                             <div class="cal-row">
                             @for ($i = 0; $i < 7; $i++)
-                                <div class="cal-box">{{ $days_a[$counter++] }}</div>
+                                <div data-day-no="{{ $counter+1 }}" class="cal-box {{ $days_a[$counter][1]?'cal-box-gray':'' }}">{{ $days_a[$counter++][0] }}</div>
                             @endfor
                             
                             </div>
