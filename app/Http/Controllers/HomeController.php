@@ -67,7 +67,7 @@ class HomeController extends Controller
         }
         $data['days_a'] = $days;
 
-        $data['days'] = ['su','mo','tu','we','th','fr','sa'];
+        $data['days'] = [__('Su'),__('Mo'),__('Tu'),__('We'),__('Th'),__('Fr'),__('Sa')];
         $user = auth()->user();
         if(isset($user))
             if($user->is_admin)
