@@ -19,6 +19,18 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('css')
+    <script>
+        window.Laravel = {!! json_encode([
+        'csrfToken' => csrf_token(),
+        'baseUrl' => asset(''),
+        'hostName' => Request::server('HTTP_HOST'),
+        'user' => [
+            'name' => Auth::user()->name,
+            'id' => Auth::user()->id,
+        ],
+        'timezone' => config('app.timezone'),
+      ]) !!};
+    </script>
 </head>
 <body>
     <div id="app">
@@ -77,5 +89,6 @@
             @yield('content')
         </main>
     </div>
+    @yield('js')
 </body>
 </html>

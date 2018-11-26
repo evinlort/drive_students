@@ -75,4 +75,8 @@ class HomeController extends Controller
             else
                 return view('home', $data);
     }
+
+    public function test() {
+        return 'asdasasd';
+    }
 }
