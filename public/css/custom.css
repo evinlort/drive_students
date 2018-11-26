@@ -19,3 +19,9 @@
 .cal-row {
     margin-bottom: 0.5%;
 }
+
+.cal-day-name {
+    display: inline-block;
+    width: 13.18%;
+    text-align: center;
+}
