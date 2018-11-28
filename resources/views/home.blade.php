@@ -66,7 +66,7 @@
                         @endforeach
                         @php
                             $counter = 0;
-                            $add_days = $month_last_day;
+                            $add_days = $end_of_this_month;
                         @endphp
                         @for($x = 0; $x < ceil($days_in_month/7); $x++)
                             <div class="cal-row">

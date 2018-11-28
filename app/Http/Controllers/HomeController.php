@@ -27,15 +27,42 @@ class HomeController extends Controller
     {
         $settings = Auth::user()->settings;
         Carbon::setWeekStartsAt(0);
-        $data['now'] = (new Carbon('today'))->format('d');
-        $data['month_first_day'] = (new Carbon('first day of this month'))->format('d');
-        $data['this_month_week_starts'] = (new Carbon('first day of this month'))->startOfWeek()->format('d');
-        $data['month_last_day'] = (new Carbon('last day of this month'))->format('d');
-        $data['last_month_last_day'] = (new Carbon('last day of last month'))->format('d');
-        $data['first_day_of_week'] = Carbon::now()->startOfWeek()->format('d');
-        $data['days_in_month'] = Carbon::now()->daysInMonth;
+        Carbon::setWeekEndsAt(6);
 
-        $data['diff_last_this_in_week'] = $data['last_month_last_day'] - $data['this_month_week_starts'] + 1;
+        $today = new Carbon('2018-05-10');
+        $today2 = new Carbon('2018-05-10');
+
+/* 
+        // From today to plus settings weeks.
+        $data['now'] = $today->format('d');
+        $data['month_first_day'] = $today->format('d');
+        $data['this_month_week_starts'] = $today2->startOfWeek()->format('d');
+        $data['next_week_after_this'] = $today2->addDays(7)->format('d');
+        $data['date_after_add_weeks'] = $today2->addDays(7 * ($settings->weeks - 1))->format('d');
+        $data['end_of_week_with_add'] = $today2->endOfWeek()->format('d');
+        $data['end_of_this_month'] = $today->endOfMonth()->format('d');
+        $data['last_month_last_day'] = $today->subDay()->subMonth()->endOfMonth()->format('d');
+        $data['days_in_month'] = $today->daysInMonth;
+ */
+
+        // From 1 of 15 plus settings weeks - 2(weeks)
+        $data['now'] = $today->format('d');
+        $data['month_first_day'] = $today->format('d');
+        $data['this_month_weeks_starts'] = $data['now'] > 15?16:1;
+        $data['this_month_weeks_ends'] = $data['now'] > 15?$today->endOfMonth()->format('d'):15;
+        $data['this_month_week_starts'] = $today->startOfMonth()->startOfWeek()->format('d');
+        if($data['now'] <= 15) {
+            $today2->startOfMonth()->addDays(14)->format('d');
+        }
+        else {
+            $today2->endOfMonth()->format('d');
+        }
+        $data['date_after_add_weeks'] = $today2->addDays((7 * ($settings->weeks - 2)))->format('d');
+        $data['end_of_week_with_add'] = $today2->endOfWeek()->format('d');
+
+        $data['end_of_this_month'] = $today->endOfMonth()->format('d');
+        $data['last_month_last_day'] = $today->subDay()->subMonth()->endOfMonth()->format('d');
+        $data['days_in_month'] = $today->daysInMonth;
 
         $data['start'] = 1;
         if($data['now'] > 15)
@@ -43,18 +70,15 @@ class HomeController extends Controller
         
         $data['end'] = 15;
         if($data['start'] == 16)
-            $data['end'] = $data['month_last_day'];
-
-        $data['permitted_weeks'] = $settings->weeks + 1;
-        $displayed_rows = ceil($data['days_in_month']/7);
+            $data['end'] = $data['end_of_this_month'];
 
         $days = array();
         if($data['this_month_week_starts'] != 1) {
-            for($i = $data['this_month_week_starts'];$i <= $data['last_month_last_day']; $i++) {
+            for($i = $data['this_month_week_starts'];$i <= $data['end_of_this_month']; $i++) {
                 $days[] = [$i,1];
             }
         }
-        for($i = 1; $i <= $data['month_last_day']; $i++) {
+        for($i = 1; $i <= $data['end_of_this_month']; $i++) {
             if($i < $data['now'])
                 $days[] = [$i,1];
             else
@@ -69,6 +93,7 @@ class HomeController extends Controller
         $data['days_a'] = $days;
 
         $data['days'] = [__('Su'),__('Mo'),__('Tu'),__('We'),__('Th'),__('Fr'),__('Sa')];
+        // dd($data);
         $user = auth()->user();
         if(isset($user))
             if($user->is_admin)
