@@ -25,8 +25,8 @@
         'baseUrl' => asset(''),
         'hostName' => Request::server('HTTP_HOST'),
         'user' => [
-            'name' => Auth::user()->name,
-            'id' => Auth::user()->id,
+            'name' => Auth::check()?Auth::user()->name:'',
+            'id' => Auth::check()?Auth::user()->id:'',
         ],
         'timezone' => config('app.timezone'),
       ]) !!};
