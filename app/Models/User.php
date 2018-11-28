@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use UsersSettings;
+
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,6 +12,10 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public function settings()
+    {
+        return $this->hasOne('App\Models\UsersSettings');
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -25,7 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        /* 'password', */ 'remember_token', 'is_admin',
+        /* 'password', */ 'remember_token',
     ];
 
     public function getPermittedWeeks() {

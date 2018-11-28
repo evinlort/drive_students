@@ -17,6 +17,7 @@ class CreateUsersSettingsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->integer('weeks')->default(2);
             $table->integer('lessons')->default(6);
+            $table->boolean('is_admin')->default(0);
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')->on('users')

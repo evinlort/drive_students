@@ -25,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $settings = Auth::user()->settings;
         Carbon::setWeekStartsAt(0);
         $data['now'] = (new Carbon('today'))->format('d');
         $data['month_first_day'] = (new Carbon('first day of this month'))->format('d');
@@ -44,7 +45,7 @@ class HomeController extends Controller
         if($data['start'] == 16)
             $data['end'] = $data['month_last_day'];
 
-        $data['permitted_weeks'] = Auth::user()->getPermittedWeeks() + 1;
+        $data['permitted_weeks'] = $settings->weeks + 1;
         $displayed_rows = ceil($data['days_in_month']/7);
 
         $days = array();

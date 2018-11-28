@@ -18,6 +18,9 @@ class CreateLessonsTable extends Migration
             $table->date('date');
             $table->time('time');
             $table->timestamps();
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 
