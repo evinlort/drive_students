@@ -29,8 +29,11 @@ class HomeController extends Controller
         Carbon::setWeekStartsAt(0);
         Carbon::setWeekEndsAt(6);
 
-        $today = new Carbon('2018-05-10');
-        $today2 = new Carbon('2018-05-10');
+        $choose_start = '2018-11-16';
+        $today = new Carbon($choose_start);
+        $today2 = new Carbon($choose_start);
+
+        $holidays = [5,6];
 
 /* 
         // From today to plus settings weeks.
@@ -50,20 +53,24 @@ class HomeController extends Controller
         $data['month_first_day'] = $today->format('d');
         $data['this_month_weeks_starts'] = $data['now'] > 15?16:1;
         $data['this_month_weeks_ends'] = $data['now'] > 15?$today->endOfMonth()->format('d'):15;
-        $data['this_month_week_starts'] = $today->startOfMonth()->startOfWeek()->format('d');
+        $data['this_month_week_starts'] = (new Carbon($choose_start))->startOfWeek()->format('d');
+        $passed_days = $data['this_month_week_starts'] - $data['this_month_weeks_starts'];
         if($data['now'] <= 15) {
-            $today2->startOfMonth()->addDays(14)->format('d');
+            $end = $today2->startOfMonth()->addDays(14)->format('d');
         }
         else {
-            $today2->endOfMonth()->format('d');
+            $end = $today2->endOfMonth()->format('d');
         }
-        $data['date_after_add_weeks'] = $today2->addDays((7 * ($settings->weeks - 2)))->format('d');
+        $days_to_add = 7 * ($settings->weeks - 2);
+        $full_registration_time = $end + $days_to_add;
+        // dd($full_registration_time);
+        $data['date_after_add_weeks'] = $today2->addDays($days_to_add)->format('d');
         $data['end_of_week_with_add'] = $today2->endOfWeek()->format('d');
 
         $data['end_of_this_month'] = $today->endOfMonth()->format('d');
         $data['last_month_last_day'] = $today->subDay()->subMonth()->endOfMonth()->format('d');
         $data['days_in_month'] = $today->daysInMonth;
-
+        $data['end_of_week_with_add_numeric'] = $data['end_of_this_month'] + $data['end_of_week_with_add'];
         $data['start'] = 1;
         if($data['now'] > 15)
             $data['start'] = 16;
@@ -73,23 +80,34 @@ class HomeController extends Controller
             $data['end'] = $data['end_of_this_month'];
 
         $days = array();
-        if($data['this_month_week_starts'] != 1) {
-            for($i = $data['this_month_week_starts'];$i <= $data['end_of_this_month']; $i++) {
-                $days[] = [$i,1];
+        // if($data['this_month_week_starts'] != 1) {
+            $holiday_checker = (new Carbon($choose_start))->startOfWeek();
+            for($i = $t = $data['this_month_week_starts'];$i <= $data['end_of_week_with_add_numeric']; $i++) {
+                if($t > $data['end_of_this_month'])
+                    $t = 1;
+                if(in_array($holiday_checker->dayOfWeek, $holidays))
+                    $days[] = [$t++,2];
+                else if($i >= $data['now'] && $i <= $full_registration_time)
+                    $days[] = [$t++,0];
+                else
+                    $days[] = [$t++,1];
+                $holiday_checker->addDay();
             }
-        }
-        for($i = 1; $i <= $data['end_of_this_month']; $i++) {
-            if($i < $data['now'])
-                $days[] = [$i,1];
-            else
-                $days[] = [$i,0];
-        }
+        // }
+        // for($i = 1; $i <= $data['end_of_this_month']; $i++) {
+        //     if($i < $data['now'])
+        //         $days[] = [$i,1];
+        //     else
+        //         $days[] = [$i,0];
+        // }
         
-        if($filled_days = count($days) % 7) {
-            for($i = 1;$i <= (7 - $filled_days); $i++) {
-                $days[] = [$i,1];
-            }
-        }
+        // if($filled_days = count($days) % 7) {
+        //     for($i = 1;$i <= (7 - $filled_days); $i++) {
+        //         $days[] = [$i,1];
+        //     }
+        // }
+
+        // dd($days);
         $data['days_a'] = $days;
 
         $data['days'] = [__('Su'),__('Mo'),__('Tu'),__('We'),__('Th'),__('Fr'),__('Sa')];

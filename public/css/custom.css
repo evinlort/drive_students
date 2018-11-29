@@ -30,6 +30,10 @@
     background-color: #dcdcdc;
 }
 
+.cal-box-holiday {
+    background-color: red;
+}
+
 .cal-box-highlight {
     background-color: #7fffd4;
 }

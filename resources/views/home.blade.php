@@ -67,12 +67,13 @@
                         @php
                             $counter = 0;
                             $add_days = $end_of_this_month;
+                            //dd(count($days_a)/7);
                         @endphp
-                        @for($x = 0; $x < ceil($days_in_month/7); $x++)
+                        @for($x = 0; $x < count($days_a)/7; $x++)
                             <div class="cal-row">
                             @for ($i = 0; $i < 7; $i++)
                                 <div data-day-no="{{ $days_a[$counter][0] }}" 
-                                    class="cal-box {{ $days_a[$counter][1]?'cal-box-gray':'' }}"
+                                    class="cal-box {{ $days_a[$counter][1]==1?'cal-box-gray':($days_a[$counter][1]==2?'cal-box-holiday':'') }}"
                                     {{ !$days_a[$counter][1]?'data-toggle="modal" data-target="#favoritesModal">':'' }}
                                     >
                                     {{ $days_a[$counter++][0] }}

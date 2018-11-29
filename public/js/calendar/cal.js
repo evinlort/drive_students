@@ -2,17 +2,17 @@ $(document).ready(function(){
 
     $(".cal-box").hover(
         function() {
-            if(!$(this).attr("class").includes("cal-box-gray"))
+            if(!$(this).attr("class").includes("cal-box-gray") && !$(this).attr("class").includes("cal-box-holiday"))
                 $(this).addClass("cal-box-highlight");
         },
         function() {
-            if(!$(this).attr("class").includes("cal-box-gray"))
+            if(!$(this).attr("class").includes("cal-box-gray" && !$(this).attr("class").includes("cal-box-holiday")))
                 $(this).removeClass("cal-box-highlight");
         }
     );
 
     $(".cal-box").on("click", function() {
-        if(!$(this).attr("class").includes("cal-box-gray")) {
+        if(!$(this).attr("class").includes("cal-box-gray") && !$(this).attr("class").includes("cal-box-holiday")) {
             var day_num = $(this).data("dayNo");
             $.ajax({
                 url: window.Laravel.baseUrl + "get_lessons",
@@ -26,7 +26,7 @@ $(document).ready(function(){
                 },
                 success: function(data) {
                     $("#lessons").empty();
-                    console.log(data);
+                    // console.log(data);
                 }
             });
             
