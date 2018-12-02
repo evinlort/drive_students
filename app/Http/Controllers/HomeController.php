@@ -29,9 +29,11 @@ class HomeController extends Controller
         Carbon::setWeekStartsAt(0);
         Carbon::setWeekEndsAt(6);
 
-        $choose_start = '2018-11-16';
+        $choose_start = '2018-12-18';
         $today = new Carbon($choose_start);
         $today2 = new Carbon($choose_start);
+        $today3 = new Carbon($choose_start);
+        $today4 = new Carbon($choose_start);
 
         $holidays = [5,6];
 
@@ -48,9 +50,16 @@ class HomeController extends Controller
         $data['days_in_month'] = $today->daysInMonth;
  */
 
+        $qw['start'] = $today->startOfWeek();
+        
+        $days_to_add = 7 * ($settings->weeks - 2);
+        $qw['end'] = $today2->startOfWeek()->setDate($today->year,$today->month,$today->format('d')> 15?16:1)->addDays($days_to_add)->endOfWeek();
+        dd($qw);
+
         // From 1 of 15 plus settings weeks - 2(weeks)
         $data['now'] = $today->format('d');
         $data['month_first_day'] = $today->format('d');
+        $data['this_start_month_number'] = $today->format('m');
         $data['this_month_weeks_starts'] = $data['now'] > 15?16:1;
         $data['this_month_weeks_ends'] = $data['now'] > 15?$today->endOfMonth()->format('d'):15;
         $data['this_month_week_starts'] = (new Carbon($choose_start))->startOfWeek()->format('d');
@@ -61,12 +70,15 @@ class HomeController extends Controller
         else {
             $end = $today2->endOfMonth()->format('d');
         }
+
         $days_to_add = 7 * ($settings->weeks - 2);
         $full_registration_time = $end + $days_to_add;
-        // dd($full_registration_time);
+        
         $data['date_after_add_weeks'] = $today2->addDays($days_to_add)->format('d');
+        $data['end_month_number'] = $today2->format('m');
         $data['end_of_week_with_add'] = $today2->endOfWeek()->format('d');
-
+        $data['days_to_count'] = $today2->diffInDays((new Carbon($choose_start))->startOfWeek()) + 1;
+        // dd($data);
         $data['end_of_this_month'] = $today->endOfMonth()->format('d');
         $data['last_month_last_day'] = $today->subDay()->subMonth()->endOfMonth()->format('d');
         $data['days_in_month'] = $today->daysInMonth;
@@ -79,15 +91,16 @@ class HomeController extends Controller
         if($data['start'] == 16)
             $data['end'] = $data['end_of_this_month'];
 
+        $is_month_changed = $data['this_start_month_number']==$data['end_month_number']?false:true;
         $days = array();
         // if($data['this_month_week_starts'] != 1) {
             $holiday_checker = (new Carbon($choose_start))->startOfWeek();
-            for($i = $t = $data['this_month_week_starts'];$i <= $data['end_of_week_with_add_numeric']; $i++) {
+            for($i = 0,$t = $data['this_month_week_starts'];$i < $data['days_to_count']; $i++) {
                 if($t > $data['end_of_this_month'])
                     $t = 1;
                 if(in_array($holiday_checker->dayOfWeek, $holidays))
                     $days[] = [$t++,2];
-                else if($i >= $data['now'] && $i <= $full_registration_time)
+                else if($t >= $data['now'] && $t <= $is_month_changed?:$data['date_after_add_weeks'])
                     $days[] = [$t++,0];
                 else
                     $days[] = [$t++,1];
@@ -111,7 +124,7 @@ class HomeController extends Controller
         $data['days_a'] = $days;
 
         $data['days'] = [__('Su'),__('Mo'),__('Tu'),__('We'),__('Th'),__('Fr'),__('Sa')];
-        // dd($data);
+        dd($data);
         $user = auth()->user();
         if(isset($user))
             if($user->is_admin)
