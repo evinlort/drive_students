@@ -66,10 +66,10 @@
                         @endforeach
                         @php
                             $counter = 0;
-                            $add_days = $end_of_this_month;
-                            //dd(($full_registration_time/7));
+                            //$add_days = $end_of_this_month;
+                            //dd(count($days_a)/7);
                         @endphp
-                        @for($x = 0; $x < $total_runs; $x++)
+                        @for($x = 0; $x < count($days_a)/7; $x++)
                             <div class="cal-row">
                             @for ($i = 0; $i < 7; $i++)
                                 <div data-day-no="{{ $days_a[$counter][0] }}" 

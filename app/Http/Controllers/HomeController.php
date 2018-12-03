@@ -29,9 +29,12 @@ class HomeController extends Controller
         Carbon::setWeekStartsAt(0);
         Carbon::setWeekEndsAt(6);
 
-        $choose_start = '2018-11-02';
+        $choose_start = 'now';
         $today = new Carbon($choose_start);
         $today2 = new Carbon($choose_start);
+        $today3 = new Carbon($choose_start);
+        $today4 = new Carbon($choose_start);
+        $today5 = new Carbon($choose_start);
 
         $holidays = [5,6];
 
@@ -48,8 +51,34 @@ class HomeController extends Controller
         $data['days_in_month'] = $today->daysInMonth;
  */
 
+        $data['start'] = $today->startOfWeek();
+
+        $days = array();
+        $days_to_add = 7 * ($settings->weeks - 2);
+        $end = $today2->startOfWeek()->setDate($today->year,$today->month,$today->format('d') > 15?$today3->endOfMonth()->format('d'):15)->addDays($days_to_add);
+        
+        $end_of_period = $end->format('Y-m-d');
+        $data['end'] = $end->endOfWeek();
+        while($data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')) {
+            if(in_array($data['start']->dayOfWeek, $holidays)) {
+                $days[] = [$data['start']->format('d'),2];
+                $data['start']->addDay();
+                continue;
+            }
+            if($data['start']->format('Y-m-d') >= $today5->format('Y-m-d') && $data['start']->format('Y-m-d') <= $end_of_period) {
+                $days[] = [$data['start']->format('d'),0];
+            }
+            else {
+                $days[] = [$data['start']->format('d'),1];
+            }
+            
+            
+            $data['start']->addDay();
+        }
+        $data['days_a'] = $days;
+
         // From 1 of 15 plus settings weeks - 2(weeks)
-        $data['now'] = $today->format('d');
+        /* $data['now'] = $today->format('d');
         $data['month_first_day'] = $today->format('d');
         $data['this_month_weeks_starts'] = $data['now'] > 15?16:1;
         $data['this_month_weeks_ends'] = $data['now'] > 15?$today->endOfMonth()->format('d'):15;
@@ -118,11 +147,10 @@ class HomeController extends Controller
         //     }
         // }
 
-        // dd($days);
-        $data['days_a'] = $days;
+        $data['days_a'] = $days; */
 
         $data['days'] = [__('Su'),__('Mo'),__('Tu'),__('We'),__('Th'),__('Fr'),__('Sa')];
-        dd($data);
+        // dd($data);
         $user = auth()->user();
         if(isset($user))
             if($user->is_admin)
