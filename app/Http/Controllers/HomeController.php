@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Lesson;
 
 class HomeController extends Controller
 {
@@ -48,15 +49,15 @@ class HomeController extends Controller
         $data['end'] = $end->endOfWeek();
         while($data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')) {
             if(in_array($data['start']->dayOfWeek, $holidays)) {
-                $days[] = [$data['start']->format('d'),2];
+                $days[] = [$data['start']->format('d'),2, "full" => $data['start']->format('Y-m-d')];
                 $data['start']->addDay();
                 continue;
             }
             if($data['start']->format('Y-m-d') >= $today5->format('Y-m-d') && $data['start']->format('Y-m-d') <= $end_of_period) {
-                $days[] = [$data['start']->format('d'),0];
+                $days[] = [$data['start']->format('d'),0, "full" => $data['start']->format('Y-m-d')];
             }
             else {
-                $days[] = [$data['start']->format('d'),1];
+                $days[] = [$data['start']->format('d'),1, "full" => $data['start']->format('Y-m-d')];
             }
             
             
@@ -65,7 +66,7 @@ class HomeController extends Controller
         $data['days_a'] = $days;
 
         $data['days'] = [__('Su'),__('Mo'),__('Tu'),__('We'),__('Th'),__('Fr'),__('Sa')];
-
+// dd($data);
         $time_line = [];
         $time = new Carbon('07:00');
         while($time->format('H:i') <= '19:00') {
@@ -84,7 +85,22 @@ class HomeController extends Controller
     }
 
     public function getLessons(Request $request) {
-        $day = $request->day;
+        $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
+        // dd($lessons);
+        $time_line = [];
+        $time = new Carbon('07:00');
+        while($time->format('H:i') <= '19:00') {
+            if(in_array($time->format('H:i:s'), $lessons)) {
+                $time_line[] = [ $time->format('H:i'), 1 ];
+            }
+            else { 
+                $time_line[] = [ $time->format('H:i'), 0 ];
+            }
+            $time->addMinutes(40);
+        }
+        return response()->json([ 'data' => $time_line ]);
+
+        /* $day = $request->day;
         $date = date('Y-m-').$day;
         $times = array();
         $step_time = Carbon::createFromTime(7)->toTimeString();
@@ -94,6 +110,6 @@ class HomeController extends Controller
             list($h,$m,$s) = explode(':',$step_time);
             $step_time = Carbon::createFromTime($h,$m,$s)->addMinutes(40)->toTimeString();
         }
-        return response()->json([ 'data' => $times ]);
+        return response()->json([ 'data' => $times ]); */
     }
 }

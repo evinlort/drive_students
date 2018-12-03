@@ -25,11 +25,15 @@
                     The Sun Also Rises
                 </h4>
             </div>
+            <form method="post" action="{{ url('home') }}">
             <div class="modal-body">
                 {{ __('Choose lesson') }}
                 <div id="lessons">
                     @foreach ($time_line as $time)
-                        <div>{{ $time }}</div>
+                        <div data-time="{{ $time }}">
+                            <label>{{ $time }}</label>
+                            <input type="checkbox" name="time[{{ $time }}]" value="0" />
+                        </div>
                     @endforeach
                 </div>
 
@@ -41,11 +45,12 @@
                         Close
                 </button>
                 <span class="pull-right">
-                    <button type="button" class="btn btn-primary">
-                        Add to Favorites
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('Save') }}
                     </button>
                 </span>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -74,7 +79,7 @@
                         @for($x = 0; $x < count($days_a)/7; $x++)
                             <div class="cal-row">
                             @for ($i = 0; $i < 7; $i++)
-                                <div data-day-no="{{ $days_a[$counter][0] }}" 
+                                <div data-day-no="{{ $days_a[$counter]['full'] }}" 
                                     class="cal-box {{ $days_a[$counter][1]==1?'cal-box-gray':($days_a[$counter][1]==2?'cal-box-holiday':'') }}"
                                     {{ !$days_a[$counter][1]?'data-toggle="modal" data-target="#favoritesModal">':'' }}
                                     >
