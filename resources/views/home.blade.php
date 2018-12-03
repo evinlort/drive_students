@@ -66,7 +66,7 @@
                         @endforeach
                         @php
                             $counter = 0;
-                            $add_days = $end_of_this_month;
+                            //$add_days = $end_of_this_month;
                             //dd(count($days_a)/7);
                         @endphp
                         @for($x = 0; $x < count($days_a)/7; $x++)
