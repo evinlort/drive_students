@@ -25,7 +25,7 @@ $(document).ready(function(){
                     'X-CSRF-TOKEN': window.Laravel.csrfToken
                 },
                 success: function(data) {
-                    $("#lessons").empty();
+                    // $("#lessons").empty();
                     // console.log(data);
                 }
             });

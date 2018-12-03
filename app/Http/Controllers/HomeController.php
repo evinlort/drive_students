@@ -65,6 +65,16 @@ class HomeController extends Controller
         $data['days_a'] = $days;
 
         $data['days'] = [__('Su'),__('Mo'),__('Tu'),__('We'),__('Th'),__('Fr'),__('Sa')];
+
+        $time_line = [];
+        $time = new Carbon('07:00');
+        while($time->format('H:i') <= '19:00') {
+            $time_line[] = $time->format('H:i');
+            $time->addMinutes(40);
+        }
+        $data['time_line'] = $time_line;
+        // dd($data);
+
         $user = auth()->user();
         if(isset($user))
             if($user->is_admin)

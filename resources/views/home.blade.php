@@ -28,7 +28,9 @@
             <div class="modal-body">
                 {{ __('Choose lesson') }}
                 <div id="lessons">
-                    
+                    @foreach ($time_line as $time)
+                        <div>{{ $time }}</div>
+                    @endforeach
                 </div>
 
             </div>
