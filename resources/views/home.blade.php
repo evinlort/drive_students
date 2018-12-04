@@ -22,7 +22,7 @@
                 </button>
                 <h4 class="modal-title" 
                     id="favoritesModalLabel">
-                    The Sun Also Rises
+                    
                 </h4>
             </div>
             <div class="modal-body">

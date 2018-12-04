@@ -109,6 +109,7 @@ class HomeController extends Controller
                 'date' => $date,
                 'time' => $time
             ]);
+            
         }
         exit(1);
     }
