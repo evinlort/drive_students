@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lesson extends Model
 {
+    public $fillable = array('user_id','date','time');
     //
 }

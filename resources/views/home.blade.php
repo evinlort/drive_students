@@ -25,10 +25,10 @@
                     The Sun Also Rises
                 </h4>
             </div>
-            <form method="post" action="{{ url('home') }}">
             <div class="modal-body">
                 {{ __('Choose lesson') }}
                 <div id="lessons">
+                    <input type="hidden" name="this_date" value />
                     @foreach ($time_line as $time)
                         <div data-time="{{ $time }}">
                             <label>{{ $time }}</label>
@@ -45,12 +45,11 @@
                         Close
                 </button>
                 <span class="pull-right">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="send_time">
                         {{ __('Save') }}
                     </button>
                 </span>
             </div>
-            </form>
         </div>
     </div>
 </div>

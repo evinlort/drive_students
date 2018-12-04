@@ -112,4 +112,19 @@ class HomeController extends Controller
         }
         return response()->json([ 'data' => $times ]); */
     }
+
+    public function setLessons(Request $request) {
+        $date_n_times = $request->date_n_times;
+        $date = array_shift($date_n_times);
+        $times = $date_n_times;
+
+        foreach($times as $time) {
+            Lesson::create([
+                'user_id' => Auth::user()->id,
+                'date' => $date,
+                'time' => $time
+            ]);
+        }
+        exit(1);
+    }
 }
