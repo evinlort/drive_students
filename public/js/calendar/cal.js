@@ -26,6 +26,9 @@ $(document).ready(function(){
                 },
                 success: function(response) {
                     $("#lessons input[name=this_date]").val(day_num);
+                    $("#lessons div").each(function() {
+                        $(this).find("input[type=checkbox]").prop("checked","").prop("disabled","").val(0);
+                    });
                     data = response.data;
                     data.forEach(function(element, index){
                         if(element[1] == 1) {

@@ -66,7 +66,6 @@ class HomeController extends Controller
         $data['days_a'] = $days;
 
         $data['days'] = [__('Su'),__('Mo'),__('Tu'),__('We'),__('Th'),__('Fr'),__('Sa')];
-// dd($data);
         $time_line = [];
         $time = new Carbon('07:00');
         while($time->format('H:i') <= '19:00') {
@@ -74,7 +73,6 @@ class HomeController extends Controller
             $time->addMinutes(40);
         }
         $data['time_line'] = $time_line;
-        // dd($data);
 
         $user = auth()->user();
         if(isset($user))
@@ -86,7 +84,6 @@ class HomeController extends Controller
 
     public function getLessons(Request $request) {
         $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
-        // dd($lessons);
         $time_line = [];
         $time = new Carbon('07:00');
         while($time->format('H:i') <= '19:00') {
@@ -99,18 +96,6 @@ class HomeController extends Controller
             $time->addMinutes(40);
         }
         return response()->json([ 'data' => $time_line ]);
-
-        /* $day = $request->day;
-        $date = date('Y-m-').$day;
-        $times = array();
-        $step_time = Carbon::createFromTime(7)->toTimeString();
-        $counter = 1;
-        while(Carbon::createFromTime(19)->toTimeString() >= $step_time) {
-            $times[] = [$counter++ => $step_time];
-            list($h,$m,$s) = explode(':',$step_time);
-            $step_time = Carbon::createFromTime($h,$m,$s)->addMinutes(40)->toTimeString();
-        }
-        return response()->json([ 'data' => $times ]); */
     }
 
     public function setLessons(Request $request) {
