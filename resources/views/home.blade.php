@@ -27,7 +27,19 @@
             </div>
             <div class="modal-body">
                 {{ __('Choose lesson') }}
-                <div class="errors"></div>
+                <div class="error"></div>
+                @if ($errors->any())
+                <div class="col-xl-6">
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                        </button>
+                        <div class="icon-alert-holder" ><i class="fa fa-ban" aria-hidden="true"></i></div>
+                        <span class="errors"></span>
+                    </div>
+                </div>
+                @endif
+
                 <div id="lessons">
                     <input type="hidden" name="this_date" value />
                     @foreach ($time_line as $time)

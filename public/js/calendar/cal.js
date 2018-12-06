@@ -79,10 +79,13 @@ $(document).ready(function(){
         })
         .fail(function (res) {
             if (res.status == 422) {
-                // some other error. Just render a popup or something.
                 $(".errors").text(res.responseJSON.errors.date_n_times);
+                $('#favoritesModal').animate({ scrollTop: 0 }, 'slow');
+                // $(window).scrollTop(0);
                 return;
             }
+            else
+                return false;
         });
     });
 });

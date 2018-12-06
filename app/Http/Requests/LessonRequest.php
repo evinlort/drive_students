@@ -16,7 +16,7 @@ class LessonRequest extends FormRequest
                 // return false;
                 
             },
-            'Cannot perform transaction for this IBAN, country is blocked'
+            'Used too much lessons'
         );
     }
     /**
