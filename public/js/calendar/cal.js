@@ -58,7 +58,7 @@ $(document).ready(function(){
         var to_send = [];
         to_send.push($("#lessons input[name=this_date]").val());
         $("#lessons div input[type=checkbox][value=1]:checked").each(function() {
-            to_send.push($(this).parent().data("time"));
+            to_send.push($(this).parents(".time-string").data("time"));
         });
         
         $.ajax({
@@ -72,9 +72,17 @@ $(document).ready(function(){
                 'X-CSRF-TOKEN': window.Laravel.csrfToken
             },
             success: function(res) {
-                $('#favoritesModal').modal('toggle');
+                if(res.success)
+                    $('#favoritesModal').modal('toggle');
+                return false;
+            }
+        })
+        .fail(function (res) {
+            if (res.status == 422) {
+                // some other error. Just render a popup or something.
+                $(".errors").text(res.responseJSON.errors.date_n_times);
+                return;
             }
         });
     });
-
 });

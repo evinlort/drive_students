@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lesson;
+use Illuminate\Support\Facades\Response;
+use App\Http\Requests\LessonRequest;
 
 class HomeController extends Controller
 {
@@ -98,7 +100,7 @@ class HomeController extends Controller
         return response()->json([ 'data' => $time_line ]);
     }
 
-    public function setLessons(Request $request) {
+    public function setLessons(LessonRequest $request) {
         $date_n_times = $request->date_n_times;
         $date = array_shift($date_n_times);
         $times = $date_n_times;
@@ -111,6 +113,15 @@ class HomeController extends Controller
             ]);
             
         }
-        exit(1);
+        return Response::json(array('success'=>true));
+    }
+
+    public function changeStatus()
+    {
+        return 1;
+        $company->settings->use_global_fee == 1 ? $company->settings->use_global_fee = 0 : $company->settings->use_global_fee = 1;
+        $company->settings->save();
+
+        return $company->settings->use_global_fee;
     }
 }

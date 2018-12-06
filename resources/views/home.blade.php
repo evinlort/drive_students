@@ -27,12 +27,20 @@
             </div>
             <div class="modal-body">
                 {{ __('Choose lesson') }}
+                <div class="errors"></div>
                 <div id="lessons">
                     <input type="hidden" name="this_date" value />
                     @foreach ($time_line as $time)
-                        <div data-time="{{ $time }}">
-                            <label>{{ $time }}</label>
-                            <input type="checkbox" name="time[{{ $time }}]" value="0" />
+                        <div class="time-string" data-time="{{ $time }}">
+                            <!-- <label>{{ $time }}</label> -->
+                            <div class="btn-group pull-right" style="margin: 20px 25px 0 0;">
+                                <label class="top-right-button">{{ $time }} </label>
+                                <label class="switch">
+                                    <input type="checkbox" name="time[{{ $time }}]" value="0">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <!-- <input type="checkbox" name="time[{{ $time }}]" value="0" /> -->
                         </div>
                     @endforeach
                 </div>
