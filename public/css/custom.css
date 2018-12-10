@@ -103,6 +103,6 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-.error {
-    
+.modal_errors {
+    display: none;
 }

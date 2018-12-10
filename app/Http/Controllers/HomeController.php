@@ -86,9 +86,13 @@ class HomeController extends Controller
 
     public function getLessons(Request $request) {
         $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
+        $taken_lessons = Lesson::where("date", $request->day)->pluck('time')->toArray();
         $time_line = [];
         $time = new Carbon('07:00');
         while($time->format('H:i') <= '19:00') {
+            if(in_array($time->format('H:i:s'), $taken_lessons)) {
+                $time_line[] = [ $time->format('H:i'), 2 ];
+            }
             if(in_array($time->format('H:i:s'), $lessons)) {
                 $time_line[] = [ $time->format('H:i'), 1 ];
             }
@@ -123,5 +127,11 @@ class HomeController extends Controller
         $company->settings->save();
 
         return $company->settings->use_global_fee;
+    }
+
+    public function isLessonFree(Request $request) {
+        if(!Lesson::where('date', $request->lesson_date)->where('time', $request->lesson_time)->exists())
+            return ['status' => 'yes'];
+        return ['status' => 'no'];
     }
 }

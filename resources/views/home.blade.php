@@ -27,18 +27,17 @@
             </div>
             <div class="modal-body">
                 {{ __('Choose lesson') }}
-                <div class="error"></div>
-                @if ($errors->any())
+                <!-- <div class="error"></div> -->
+
                 <div class="col-xl-6">
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger modal_errors">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                         <div class="icon-alert-holder" ><i class="fa fa-ban" aria-hidden="true"></i></div>
                         <span class="errors"></span>
                     </div>
                 </div>
-                @endif
 
                 <div id="lessons">
                     <input type="hidden" name="this_date" value />
@@ -51,6 +50,7 @@
                                     <input type="checkbox" name="time[{{ $time }}]" value="0">
                                     <span class="slider round"></span>
                                 </label>
+                                <label class="time_info"></label>
                             </div>
                             <!-- <input type="checkbox" name="time[{{ $time }}]" value="0" /> -->
                         </div>

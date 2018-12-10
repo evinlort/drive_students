@@ -47,8 +47,23 @@ $(document).ready(function(){
     });
 
     $("#lessons input[type=checkbox]").on("click", function() {
-        if($(this).is(":checked"))
-            $(this).val(1);
+        if($(this).is(":checked")) {
+            var that = $(this);
+            var url = window.Laravel.baseUrl + "is_lesson_free";
+            var this_date = $("#lessons input[name='this_date']").val();
+            var time = $(this).parents(".time-string").data("time");
+            var data = { 'lesson_date': this_date, "lesson_time": time, '_token': window.Laravel.csrfToken };
+            $.post(url, data, function(res) {
+                if(res.status == 'yes')
+                    that.val(1);
+                else {
+                    that.val(0);
+                    that.click();
+                    that.parent(".switch").siblings(".time_info").text("Already taken");
+                }
+            });
+            
+        }
         else
             $(this).val(0);
     });
@@ -80,7 +95,9 @@ $(document).ready(function(){
         .fail(function (res) {
             if (res.status == 422) {
                 $(".errors").text(res.responseJSON.errors.date_n_times);
-                $('#favoritesModal').animate({ scrollTop: 0 }, 'slow');
+                $('#favoritesModal').animate({ scrollTop: 0 }, 'slow', function() {
+                    $(".modal_errors").show();
+                });
                 // $(window).scrollTop(0);
                 return;
             }

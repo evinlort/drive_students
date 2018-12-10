@@ -13,7 +13,7 @@ class LessonRequest extends FormRequest
         $validationFactory->extend(
             'check_lessons',
             function ($attribute, $value, $parameters) {
-                // return false;
+                return true;
                 
             },
             'Used too much lessons'
