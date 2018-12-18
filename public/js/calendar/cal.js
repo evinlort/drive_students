@@ -37,6 +37,17 @@ $(document).ready(function(){
                                     $(this).find("input[type=checkbox]").prop("checked","checked").prop("disabled","disabled").val(-1);
                             });
                         }
+                        else if(element[1] == 2) {
+                            $("#lessons div").each(function() {
+                                if($(this).data("time") == element[0]) {
+                                    $(this).find("input[type=checkbox]").prop("checked","checked").prop("disabled","disabled").val(-1);
+                                    let text = "Already taken";
+                                    if(element[2] != undefined && element[2] == 1)
+                                        text += " by you";
+                                    $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").text(text);
+                                }
+                            });
+                        }
                         // console.log(element[1]);
                     });
                 }

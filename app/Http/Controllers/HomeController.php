@@ -87,13 +87,21 @@ class HomeController extends Controller
     public function getLessons(Request $request) {
         $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
         $taken_lessons = Lesson::where("date", $request->day)->pluck('time')->toArray();
+        $taken_lessons_by_user = Lesson::where("date", $request->day)->get();
         $time_line = [];
         $time = new Carbon('07:00');
         while($time->format('H:i') <= '19:00') {
             if(in_array($time->format('H:i:s'), $taken_lessons)) {
-                $time_line[] = [ $time->format('H:i'), 2 ];
+                $by_user = false;
+                foreach ($taken_lessons_by_user as $lesson) {
+                    if($lesson->user_id == Auth::user()->id && $time->format('H:i:s') == $lesson->time) {
+                        $by_user = true;
+                        break;
+                    }
+                }
+                $time_line[] = [ $time->format('H:i'), 2, $by_user?1:0 ];
             }
-            if(in_array($time->format('H:i:s'), $lessons)) {
+            else if(in_array($time->format('H:i:s'), $lessons)) {
                 $time_line[] = [ $time->format('H:i'), 1 ];
             }
             else { 
