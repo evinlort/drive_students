@@ -14,7 +14,7 @@ class LessonRequest extends FormRequest
     public function __construct(ValidationFactory $validationFactory) {
     
         $validationFactory->extend(
-            'check_lessons',
+            'check_used_lessons',
             function ($attribute, $value, $parameters) {
                 // return true;
 
@@ -38,6 +38,16 @@ class LessonRequest extends FormRequest
             },
             'Used too much lessons'
         );
+
+        $validationFactory->extend(
+            'check_taken_lesson',
+            function ($attribute, $value, $parameters) {
+                // return true;
+                if(!Lesson::where('date',$value[0])->where('time',$value[1])->first())
+                    return true;
+            },
+            'Lesson already taken'
+        );
     }
     /**
      * Determine if the user is authorized to make this request.
@@ -57,7 +67,7 @@ class LessonRequest extends FormRequest
     public function rules()
     {
         return [
-            'date_n_times' => 'check_lessons',
+            'date_n_times' => 'check_used_lessons|check_taken_lesson',
         ];
     }
 }
