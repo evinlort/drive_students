@@ -4,6 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Factory as ValidationFactory;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Lesson;
 
 class LessonRequest extends FormRequest
 {
@@ -13,8 +16,25 @@ class LessonRequest extends FormRequest
         $validationFactory->extend(
             'check_lessons',
             function ($attribute, $value, $parameters) {
-                return true;
-                
+                // return true;
+
+                $settings = \Auth::user()->settings;
+                Carbon::setWeekStartsAt(0);
+                Carbon::setWeekEndsAt(6);
+
+                $choose_start = 'now';
+                $today = new Carbon($choose_start);
+                $today2 = new Carbon($choose_start);
+                $today3 = new Carbon($choose_start);
+                $start = $today->setDate($today->year,$today->month,$today->format('d') > 15?16:1)->startOfDay();
+                $days_to_add = 7 * ($settings->weeks - 2);
+                $end = $today2->startOfWeek()->setDate($today->year,$today->month,$today->format('d') > 15?$today3->endOfMonth()->format('d'):15)->addDays($days_to_add);
+                $date = Carbon::parse($value[0]);
+                if(Carbon::parse()->between($start, $end)) {
+                    $lessons = Lesson::where('user_id', Auth::user()->id)->whereBetween('date', array($start->format('Y-m-d'), $end->format('Y-m-d')))->count();
+                }
+                if($lessons <= $settings->lessons)
+                    return true;
             },
             'Used too much lessons'
         );
@@ -37,7 +57,7 @@ class LessonRequest extends FormRequest
     public function rules()
     {
         return [
-            'date_n_times'=> 'check_lessons',
+            'date_n_times' => 'check_lessons',
         ];
     }
 }

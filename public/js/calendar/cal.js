@@ -50,9 +50,12 @@ $(document).ready(function(){
         if($(this).is(":checked")) {
             var that = $(this);
             var url = window.Laravel.baseUrl + "is_lesson_free";
-            var this_date = $("#lessons input[name='this_date']").val();
-            var time = $(this).parents(".time-string").data("time");
-            var data = { 'lesson_date': this_date, "lesson_time": time, '_token': window.Laravel.csrfToken };
+            // var this_date = $("#lessons input[name='this_date']").val();
+            var to_send = [];
+            to_send.push($("#lessons input[name=this_date]").val());
+            // var time = $(this).parents(".time-string").data("time");
+            to_send.push($(this).parents(".time-string").data("time"));
+            var data = { /* 'lesson_date': this_date, "lesson_time": time, */date_n_times: to_send, '_token': window.Laravel.csrfToken };
             $.post(url, data, function(res) {
                 if(res.status == 'yes')
                     that.val(1);
@@ -61,6 +64,20 @@ $(document).ready(function(){
                     that.click();
                     that.parent(".switch").siblings(".time_info").text("Already taken");
                 }
+            })
+            .fail(function (res) {
+                if (res.status == 422) {
+                    that.val(0);
+                    that.click();
+                    $(".errors").text(res.responseJSON.errors.date_n_times);
+                    $('#favoritesModal').animate({ scrollTop: 0 }, 'slow', function() {
+                        $(".modal_errors").show();
+                    });
+                    // $(window).scrollTop(0);
+                    return;
+                }
+                else
+                    return false;
             });
             
         }

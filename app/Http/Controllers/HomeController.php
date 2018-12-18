@@ -129,8 +129,8 @@ class HomeController extends Controller
         return $company->settings->use_global_fee;
     }
 
-    public function isLessonFree(Request $request) {
-        if(!Lesson::where('date', $request->lesson_date)->where('time', $request->lesson_time)->exists())
+    public function isLessonFree(LessonRequest $request) {
+        if(!Lesson::where('date', $request->date_n_times[0])->where('time', $request->date_n_times[1])->exists())
             return ['status' => 'yes'];
         return ['status' => 'no'];
     }
