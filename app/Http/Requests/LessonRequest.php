@@ -33,7 +33,14 @@ class LessonRequest extends FormRequest
                 if(Carbon::parse()->between($start, $end)) {
                     $lessons = Lesson::where('user_id', Auth::user()->id)->whereBetween('date', array($start->format('Y-m-d'), $end->format('Y-m-d')))->count();
                 }
-                if($lessons <= $settings->lessons)
+                /* $taken_now_lessons = 1;
+                if(session()->exists('taken_now_lessons')) {
+                    $taken_now_lessons = session()->increment('taken_now_lessons');
+                }
+                else{
+                    session()->put('taken_now_lessons', 1);
+                } */
+                if($lessons/*  + $taken_now_lessons */ <= $settings->lessons)
                     return true;
             },
             'Used too much lessons'

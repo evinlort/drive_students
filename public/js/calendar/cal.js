@@ -1,5 +1,8 @@
 $(document).ready(function(){
-
+    $(".close").on("click", function(e) {
+        e.stopPropagation();
+        $(".modal_errors").hide();
+    });
     $(".cal-box").hover(
         function() {
             if(!$(this).attr("class").includes("cal-box-gray") && !$(this).attr("class").includes("cal-box-holiday"))
@@ -83,7 +86,7 @@ $(document).ready(function(){
                     $('#favoritesModal').animate({ scrollTop: 0 }, 'slow', function() {
                         $(".modal_errors").show();
                     });
-                    // $(window).scrollTop(0);
+                    $(window).scrollTop(0);
                     return;
                 }
                 else

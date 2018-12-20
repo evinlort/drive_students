@@ -125,6 +125,7 @@ class HomeController extends Controller
             ]);
             
         }
+        session()->forget('taken_now_lessons');
         return Response::json(array('success'=>true));
     }
 
