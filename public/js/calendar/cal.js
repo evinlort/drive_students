@@ -1,8 +1,9 @@
 $(document).ready(function(){
-    $(".close").on("click", function(e) {
+    $(".close-errors").on("click", function(e) {
         e.stopPropagation();
         $(".modal_errors").hide();
     });
+    
     $(".cal-box").hover(
         function() {
             if(!$(this).attr("class").includes("cal-box-gray") && !$(this).attr("class").includes("cal-box-holiday"))

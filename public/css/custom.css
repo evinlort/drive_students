@@ -106,3 +106,13 @@ input:checked + .slider:before {
 .modal_errors {
     display: none;
 }
+
+.close-errors {
+    float: right;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}

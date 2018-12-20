@@ -31,7 +31,7 @@
 
                 <div class="col-xl-6">
                     <div class="alert alert-danger modal_errors">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <button type="button" class="close-errors" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <div class="icon-alert-holder" ><i class="fa fa-ban" aria-hidden="true"></i></div>
