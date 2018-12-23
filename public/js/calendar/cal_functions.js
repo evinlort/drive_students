@@ -1,5 +1,6 @@
 var url = window.Laravel.baseUrl;
 var csrf = window.Laravel.csrfToken;
+
 function check_date_in_borders(date) {
     var return_value = false;
     $.ajax({
