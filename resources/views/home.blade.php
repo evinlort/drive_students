@@ -4,7 +4,7 @@
 @endsection
 
 @section('js')
-<script src="{{ asset('js/calendar/cal.js') }}" defer></script>
+<script src="{{ asset('js/calendar/cal2.js') }}" defer></script>
 @endsection
 
 @section('content')

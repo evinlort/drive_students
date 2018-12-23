@@ -15,7 +15,7 @@ $(document).ready(function(){
         }
     );
 
-    $(".cal-box").on("click", function() {
+    /* $(".cal-box").on("click", function() {
         if(!$(this).attr("class").includes("cal-box-gray") && !$(this).attr("class").includes("cal-box-holiday")) {
             var day_num = $(this).data("dayNo");
             $.ajax({
@@ -58,7 +58,7 @@ $(document).ready(function(){
             
             $('#favoritesModal').modal('toggle');
         }
-    });
+    }); */
 
     $("#lessons input[type=checkbox]").on("click", function() {
         if($(this).is(":checked")) {
