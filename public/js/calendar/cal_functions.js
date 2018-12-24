@@ -30,32 +30,25 @@ function get_lessons(date) {
             'X-CSRF-TOKEN': window.Laravel.csrfToken
         },
         success: function(response) {
-            console.log(response);
-            return false;
             $("#lessons input[name=this_date]").val(date);
-            $("#lessons div").each(function() {
-                $(this).find("input[type=checkbox]").prop("checked","").prop("disabled","").val(0);
-            });
-            data = response.data;
-            data.forEach(function(element, index){
-                if(element[1] == 1) {
-                    $("#lessons div").each(function() {
-                        if($(this).data("time") == element[0])
-                            $(this).find("input[type=checkbox]").prop("checked","checked").prop("disabled","disabled").val(-1);
-                    });
-                }
-                else if(element[1] == 2) {
+            clean_modal();
+            response.data.forEach(function(element, index){
+                if(element[1]) {
                     $("#lessons div").each(function() {
                         if($(this).data("time") == element[0]) {
                             $(this).find("input[type=checkbox]").prop("checked","checked").prop("disabled","disabled").val(-1);
-                            let text = "Already taken";
-                            if(element[2] != undefined && element[2] == 1)
-                                text += " by you";
-                            $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").text(text);
+                            $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").text(element[2]);
                         }
                     });
                 }
             });
         }
+    });
+}
+
+function clean_modal() {
+    $("#lessons div").each(function() {
+        $(this).find("input[type=checkbox]").prop("checked","").prop("disabled","").val(0);
+        $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").text("");
     });
 }

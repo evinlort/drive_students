@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Lesson;
 
 class LessonsController extends Controller
 {
@@ -30,37 +31,23 @@ class LessonsController extends Controller
         $time_line = [];
         $time = new Carbon($start_time);
         while($time->format('H:i') <= '19:00') {
+            $free_lesson = true;
             foreach ($taken_lessons_by_users as $taken_lesson) {
                 // Lesson already taken
                 if($time->format('H:i:s') == $taken_lesson->time) {
                     // Check if by current student
                     if($taken_lesson->user_id == Auth::user()->id) {
-                        $time_line[] = [ $time->format('H:i'), 2, 1 ];
+                        $time_line[] = [ $time->format('H:i'), 1, __('Already taken by you') ];
                     }
                     else {
-                        $time_line[] = [ $time->format('H:i'), 2, 0 ];
+                        $time_line[] = [ $time->format('H:i'), 1, __('Already taken') ];
                     }
+                    $free_lesson = false;
                     break;
                 }
             }
-
-
-
-            if(in_array($time->format('H:i:s'), $taken_lessons)) {
-                $by_user = false;
-                foreach ($taken_lessons_by_user as $lesson) {
-                    if($lesson->user_id == Auth::user()->id && $time->format('H:i:s') == $lesson->time) {
-                        $by_user = true;
-                        break;
-                    }
-                }
-                $time_line[] = [ $time->format('H:i'), 2, $by_user?1:0 ];
-            }
-            else if(in_array($time->format('H:i:s'), $lessons)) {
-                $time_line[] = [ $time->format('H:i'), 1 ];
-            }
-            else { 
-                $time_line[] = [ $time->format('H:i'), 0 ];
+            if($free_lesson) {
+                $time_line[] = [ $time->format('H:i'), 0, ' ' ];
             }
             $time->addMinutes(40);
         }
