@@ -43,7 +43,6 @@
                     <input type="hidden" name="this_date" value />
                     @foreach ($time_line as $time)
                         <div class="time-string" data-time="{{ $time }}">
-                            <!-- <label>{{ $time }}</label> -->
                             <div class="btn-group pull-right" style="margin: 20px 25px 0 0;">
                                 <label class="top-right-button">{{ $time }} </label>
                                 <label class="switch">
@@ -52,7 +51,6 @@
                                 </label>
                                 <label class="time_info"></label>
                             </div>
-                            <!-- <input type="checkbox" name="time[{{ $time }}]" value="0" /> -->
                         </div>
                     @endforeach
                 </div>

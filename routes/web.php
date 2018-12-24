@@ -19,9 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/get_lessons', 'HomeController@getLessons');
+// Route::post('/get_lessons', 'HomeController@getLessons');
 Route::post('/set_lessons', 'HomeController@setLessons');
 Route::post('/is_lesson_free', 'HomeController@isLessonFree');
 
 
 Route::post('/check_date_is_in_borders', 'LessonsController@checkDateInBorders');
+Route::post('/get_lessons', 'LessonsController@getLessons');

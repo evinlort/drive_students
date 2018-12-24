@@ -20,6 +20,53 @@ class LessonsController extends Controller
         $this->holidays = array(5,6);
     }
 
+    public function getLessons(Request $request) {
+        // TODO: get from config, also check if admin
+        $start_time = '07:00';
+
+        $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
+        $taken_lessons = Lesson::where("date", $request->day)->pluck('time')->toArray();
+        $taken_lessons_by_users = Lesson::where("date", $request->day)->get();
+        $time_line = [];
+        $time = new Carbon($start_time);
+        while($time->format('H:i') <= '19:00') {
+            foreach ($taken_lessons_by_users as $taken_lesson) {
+                // Lesson already taken
+                if($time->format('H:i:s') == $taken_lesson->time) {
+                    // Check if by current student
+                    if($taken_lesson->user_id == Auth::user()->id) {
+                        $time_line[] = [ $time->format('H:i'), 2, 1 ];
+                    }
+                    else {
+                        $time_line[] = [ $time->format('H:i'), 2, 0 ];
+                    }
+                    break;
+                }
+            }
+
+
+
+            if(in_array($time->format('H:i:s'), $taken_lessons)) {
+                $by_user = false;
+                foreach ($taken_lessons_by_user as $lesson) {
+                    if($lesson->user_id == Auth::user()->id && $time->format('H:i:s') == $lesson->time) {
+                        $by_user = true;
+                        break;
+                    }
+                }
+                $time_line[] = [ $time->format('H:i'), 2, $by_user?1:0 ];
+            }
+            else if(in_array($time->format('H:i:s'), $lessons)) {
+                $time_line[] = [ $time->format('H:i'), 1 ];
+            }
+            else { 
+                $time_line[] = [ $time->format('H:i'), 0 ];
+            }
+            $time->addMinutes(40);
+        }
+        return response()->json([ 'data' => $time_line ]);
+    }
+
     public function get_dates_range() {
         $settings = app('auth')->user()->settings;
         Carbon::setWeekStartsAt(0);
