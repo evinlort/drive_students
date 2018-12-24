@@ -7,13 +7,14 @@ use Illuminate\Validation\Factory as ValidationFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lesson;
+use Illuminate\Support\Facades\Log;
 
 class LessonRequest extends FormRequest
 {
 
     public function __construct(ValidationFactory $validationFactory) {
     
-        $validationFactory->extend(
+            /* $validationFactory->extend(
             'check_used_lessons',
             function ($attribute, $value, $parameters) {
                 // return true;
@@ -33,27 +34,25 @@ class LessonRequest extends FormRequest
                 if(Carbon::parse()->between($start, $end)) {
                     $lessons = Lesson::where('user_id', Auth::user()->id)->whereBetween('date', array($start->format('Y-m-d'), $end->format('Y-m-d')))->count();
                 }
-                /* $taken_now_lessons = 1;
-                if(session()->exists('taken_now_lessons')) {
-                    $taken_now_lessons = session()->increment('taken_now_lessons');
-                }
-                else{
-                    session()->put('taken_now_lessons', 1);
-                } */
-                if($lessons/*  + $taken_now_lessons */ <= $settings->lessons)
+                if($lessons <= $settings->lessons)
                     return true;
             },
             'Used too much lessons'
-        );
+        ); */
 
         $validationFactory->extend(
             'check_taken_lesson',
             function ($attribute, $value, $parameters) {
-                // return true;
-                if(!Lesson::where('date',$value[0])->where('time',$value[1])->first())
+                if(!Lesson::where('date',$value[0])->where('time',$value[1])->first()) {
                     return true;
+                }
+                else {
+                    Log::channel('single')->warning(
+                        'User with ID:'.Auth::user()->id.' (name: '.Auth::user()->name.') with IP: '.request()->ip().', tried to set already taken lesson ('.implode(' ', $value).')'
+                    );
+               }
             },
-            'Lesson already taken'
+            __('Lesson already taken')
         );
     }
     /**
@@ -74,7 +73,7 @@ class LessonRequest extends FormRequest
     public function rules()
     {
         return [
-            'date_n_times' => 'check_used_lessons|check_taken_lesson',
+            'date_n_times' => 'check_taken_lesson',
         ];
     }
 }

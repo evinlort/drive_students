@@ -29,7 +29,7 @@
                 {{ __('Choose lesson') }}
                 <!-- <div class="error"></div> -->
 
-                <div class="col-xl-6">
+                <div class="col-xl-12">
                     <div class="alert alert-danger modal_errors">
                         <button type="button" class="close-errors" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -42,8 +42,8 @@
                 <div id="lessons">
                     <input type="hidden" name="this_date" value />
                     @foreach ($time_line as $time)
-                        <div class="time-string" data-time="{{ $time }}">
-                            <div class="btn-group pull-right" style="margin: 20px 25px 0 0;">
+                        <div class="time-string row" data-time="{{ $time }}">
+                            <div class="btn-group pull-right col-12" style="margin: 20px 25px 0 0;">
                                 <label class="top-right-button">{{ $time }} </label>
                                 <label class="switch">
                                     <input type="checkbox" name="time[{{ $time }}]" value="0">

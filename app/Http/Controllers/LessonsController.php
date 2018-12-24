@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lesson;
+use App\Http\Requests\LessonRequest;
 
 class LessonsController extends Controller
 {
@@ -19,6 +20,12 @@ class LessonsController extends Controller
         $this->middleware('auth');
         $this->choose_start = 'now';
         $this->holidays = array(5,6);
+    }
+
+    public function isLessonFree(LessonRequest $request) {
+        if(!Lesson::where('date', $request->date_n_times[0])->where('time', $request->date_n_times[1])->exists())
+            return ['status' => 'yes'];
+        return ['status' => 'no'];
     }
 
     public function getLessons(Request $request) {

@@ -26,3 +26,5 @@ Route::post('/is_lesson_free', 'HomeController@isLessonFree');
 
 Route::post('/check_date_is_in_borders', 'LessonsController@checkDateInBorders');
 Route::post('/get_lessons', 'LessonsController@getLessons');
+Route::post('/is_lesson_free', 'LessonsController@isLessonFree');
+

@@ -50,5 +50,7 @@ function clean_modal() {
     $("#lessons div").each(function() {
         $(this).find("input[type=checkbox]").prop("checked","").prop("disabled","").val(0);
         $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").text("");
+        $(".modal_errors").hide();
+        $("span.errors").text("");
     });
 }
