@@ -42,14 +42,24 @@ $(document).ready(function(){
                 if(res.status == 'yes') {
                     that.val(1);
                     let student_checked_unsaved_lessons_array = get_checked_lessons();
-                    $.post(url  + "is_has_free_lessons", { "checked_lessons": student_checked_unsaved_lessons_array, "_token": window.Laravel.csrfToken }, function(ret) {
-                        if(!ret.status) {
-                            alert('False!');
+                    $.post(
+                        url  + "is_has_free_lessons", 
+                        { "checked_lessons": student_checked_unsaved_lessons_array, "_token": window.Laravel.csrfToken }, 
+                        function(ret) {
+                            if(!ret.status) {
+                                that.val(0);
+                                that.prop("checked", false);
+                                $(".errors").text(ret.error);
+                                $('#favoritesModal').animate({ scrollTop: 0 }, 'slow', function() {
+                                    $(".modal_errors").show();
+                                });
+                                $(window).scrollTop(0);
+                            }
+                            else {
+                                // All fine
+                            }
                         }
-                        else {
-                            alert('True!');
-                        }
-                    });
+                    );
                 }
                 /* else {
                     that.val(0);
@@ -76,6 +86,43 @@ $(document).ready(function(){
         }
         else
             $(this).val(0);
+    });
+
+    $("#send_time").on("click", function() {
+        var to_send = [];
+        to_send.push($("#lessons input[name=this_date]").val());
+        $("#lessons div input[type=checkbox][value=1]:checked").each(function() {
+            to_send.push($(this).parents(".time-string").data("time"));
+        });
+        
+        $.ajax({
+            url: window.Laravel.baseUrl + "set_lessons",
+            type: "post",
+            data: {
+                date_n_times: to_send
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': window.Laravel.csrfToken
+            },
+            success: function(res) {
+                if(res.success)
+                    $('#favoritesModal').modal('toggle');
+                return false;
+            }
+        })
+        .fail(function (res) {
+            if (res.status == 422) {
+                $(".errors").text(res.responseJSON.errors.date_n_times);
+                $('#favoritesModal').animate({ scrollTop: 0 }, 'slow', function() {
+                    $(".modal_errors").show();
+                });
+                // $(window).scrollTop(0);
+                return;
+            }
+            else
+                return false;
+        });
     });
 
 });

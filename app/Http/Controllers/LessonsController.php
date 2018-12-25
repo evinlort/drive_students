@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lesson;
 use App\Http\Requests\LessonRequest;
+use Illuminate\Support\Facades\Log;
 
 class LessonsController extends Controller
 {
@@ -22,17 +23,43 @@ class LessonsController extends Controller
         $this->holidays = array(5,6);
     }
 
+    public function setLessons(Request $request) {
+        $date_n_times = $request->date_n_times;
+        $date = array_shift($date_n_times);
+        $times = $date_n_times;
+
+        foreach($times as $time) {
+            Lesson::create([
+                'user_id' => Auth::user()->id,
+                'date' => $date,
+                'time' => $time
+            ]);
+            
+        }
+        return ['success'=>true];
+    }
+
     public function isHasFreeLessons(Request $request) {
         $checked = $request->checked_lessons;
         $date = array_shift($checked);
+        $choosen_lessons = count($checked);
+
         foreach ($checked as $lesson_time) {
             if(Lesson::where('date', $date)->where('time', $lesson_time)->exists()) {
                 return ['status' => false, 'error' => __('One or more of choosen lessons are already taken')];
             }
         }
         $this->get_dates_range();
-        $taken_by_student_for_date_range = Lesson::where('user_id', Auth::user()->id)->whereBetween('date', array($this->date_range_start->format('Y-m-d'), $this->date_range_end->format('Y-m-d')))->count();
-        $settings = Auth::user()->settings;
+        $taken_by_student_for_date_range = Lesson::where('user_id', Auth::user()->id)
+            ->whereBetween('date', array($this->date_range_start->format('Y-m-d'), $this->date_range_end->format('Y-m-d')))
+            ->count();
+        $available_lessons = Auth::user()->settings->lessons - $taken_by_student_for_date_range;
+        if($available_lessons - $choosen_lessons < 0) {
+            Log::channel('single')->warning(
+                'User with ID:'.Auth::user()->id.' (name: '.Auth::user()->name.') with IP: '.request()->ip().', tried to order too much lessons (max is '.Auth::user()->settings->lessons.', free lessons left: '.$available_lessons.')'
+            );
+            return ['status' => false, 'error' => __('You are already used too much lessons, available lessons: ',['lessons' =>$available_lessons])];
+        }
 
         return ['status' => true];
     }

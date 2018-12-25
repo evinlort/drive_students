@@ -47,7 +47,7 @@ class LessonRequest extends FormRequest
                     return true;
                 }
                 else {
-                    Log::channel('single')->warning(
+                    Log::channel('single')->alert(
                         'User with ID:'.Auth::user()->id.' (name: '.Auth::user()->name.') with IP: '.request()->ip().', tried to set already taken lesson ('.implode(' ', $value).')'
                     );
                }
