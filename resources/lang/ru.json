@@ -21,5 +21,6 @@
     "Save":"Сохранить",
     "Close":"Закрыть",
     "Dashboard":"Выбор уроков",
-    "Lesson already taken":"Этот урок уже занят, выбор невозможен"
+    "Lesson already taken":"Этот урок уже занят, выбор невозможен",
+    "One or more of choosen lessons are already taken":""
 }

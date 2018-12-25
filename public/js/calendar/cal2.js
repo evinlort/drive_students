@@ -26,34 +26,42 @@ $(document).ready(function(){
             !$(this).attr("class").includes("cal-box-gray") && 
             !$(this).attr("class").includes("cal-box-holiday")
         ) {
-            get_lessons(date);
-            
+            get_lessons(date);           
             $('#favoritesModal').modal('toggle');
         }
     });
     $("#lessons input[type=checkbox]").on("click", function() {
         if($(this).is(":checked")) {
             var that = $(this);
-            var url = window.Laravel.baseUrl + "is_lesson_free";
-            // var this_date = $("#lessons input[name='this_date']").val();
+            var url = window.Laravel.baseUrl;
             var to_send = [];
             to_send.push($("#lessons input[name=this_date]").val());
-            // var time = $(this).parents(".time-string").data("time");
             to_send.push($(this).parents(".time-string").data("time"));
-            var data = { /* 'lesson_date': this_date, "lesson_time": time, */date_n_times: to_send, '_token': window.Laravel.csrfToken };
-            $.post(url, data, function(res) {
-                if(res.status == 'yes')
+            var data = { date_n_times: to_send, '_token': window.Laravel.csrfToken };
+            $.post(url  + "is_lesson_free", data, function(res) {
+                if(res.status == 'yes') {
                     that.val(1);
-                else {
+                    let student_checked_unsaved_lessons_array = get_checked_lessons();
+                    $.post(url  + "is_has_free_lessons", { "checked_lessons": student_checked_unsaved_lessons_array, "_token": window.Laravel.csrfToken }, function(ret) {
+                        if(!ret.status) {
+                            alert('False!');
+                        }
+                        else {
+                            alert('True!');
+                        }
+                    });
+                }
+                /* else {
                     that.val(0);
                     that.click();
                     that.parent(".switch").siblings(".time_info").text("Already taken");
-                }
+                } */
             })
             .fail(function (res) {
                 if (res.status == 422) {
-                    that.val(0);
-                    that.click();
+                    that.val(-1);
+                    that.prop("checked", true);
+                    that.prop("disabled", "disabled");
                     $(".errors").text(res.responseJSON.errors.date_n_times);
                     $('#favoritesModal').animate({ scrollTop: 0 }, 'slow', function() {
                         $(".modal_errors").show();
@@ -69,4 +77,5 @@ $(document).ready(function(){
         else
             $(this).val(0);
     });
+
 });

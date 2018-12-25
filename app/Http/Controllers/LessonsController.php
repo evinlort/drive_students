@@ -22,9 +22,26 @@ class LessonsController extends Controller
         $this->holidays = array(5,6);
     }
 
+    public function isHasFreeLessons(Request $request) {
+        $checked = $request->checked_lessons;
+        $date = array_shift($checked);
+        foreach ($checked as $lesson_time) {
+            if(Lesson::where('date', $date)->where('time', $lesson_time)->exists()) {
+                return ['status' => false, 'error' => __('One or more of choosen lessons are already taken')];
+            }
+        }
+        $this->get_dates_range();
+        $taken_by_student_for_date_range = Lesson::where('user_id', Auth::user()->id)->whereBetween('date', array($this->date_range_start->format('Y-m-d'), $this->date_range_end->format('Y-m-d')))->count();
+        $settings = Auth::user()->settings;
+
+        return ['status' => true];
+    }
+
     public function isLessonFree(LessonRequest $request) {
-        if(!Lesson::where('date', $request->date_n_times[0])->where('time', $request->date_n_times[1])->exists())
+        if(!Lesson::where('date', $request->date_n_times[0])->where('time', $request->date_n_times[1])->exists()) {
+
             return ['status' => 'yes'];
+        }
         return ['status' => 'no'];
     }
 

@@ -54,3 +54,16 @@ function clean_modal() {
         $("span.errors").text("");
     });
 }
+
+function get_checked_lessons() {
+    var choosen = [];
+    choosen.push($("#lessons input[name='this_date']").val());
+    $("#lessons div").each(function() {
+        if($(this).find("input[type=checkbox]").val() == "1") {
+            if($(this).data("time") !== undefined) {
+                choosen.push($(this).data("time"));
+            }
+        }
+    });
+    return choosen;
+}
