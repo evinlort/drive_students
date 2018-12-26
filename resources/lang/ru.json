@@ -23,5 +23,6 @@
     "Dashboard":"Выбор уроков",
     "Lesson already taken":"Этот урок уже занят, выбор невозможен",
     "One or more of choosen lessons are already taken":"",
-    "You are already used too much lessons, available lessons: ":"Вы заняли слишком много уроков, у Вас осталось :lessons свободных уроков."
+    "You are already used too much lessons, available lessons: ":"Вы заняли слишком много уроков, у Вас осталось :lessons свободных уроков.",
+    "Someone took lessons on just before you":"Кто-то занял урок :time до вас. "
 }

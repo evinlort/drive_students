@@ -27,16 +27,24 @@ class LessonsController extends Controller
         $date_n_times = $request->date_n_times;
         $date = array_shift($date_n_times);
         $times = $date_n_times;
+        $some_is_not_saved = '';
+        $busy_times = array();
 
         foreach($times as $time) {
-            Lesson::create([
-                'user_id' => Auth::user()->id,
-                'date' => $date,
-                'time' => $time
-            ]);
+            if(!Lesson::where('date',$date)->where('time', $time)->exists()) {
+                Lesson::create([
+                    'user_id' => Auth::user()->id,
+                    'date' => $date,
+                    'time' => $time
+                ]);
+            }
+            else {
+                $some_is_not_saved .= __('Someone took lessons on just before you', ['time' => $time]);
+                $busy_times[] = $time;
+            }
             
         }
-        return ['success'=>true];
+        return ['success'=>true, 'message' => $some_is_not_saved, 'busy' => $busy_times];
     }
 
     public function isHasFreeLessons(Request $request) {
