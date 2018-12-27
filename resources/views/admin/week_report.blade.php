@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
@@ -13,8 +13,15 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <a href="{{ route('week_report') }}">Show this week report</a>
+                    <div class="row">
+                    @foreach($dates as $date)
+                        <div class="col-12">
+                            <a href="{{ url('show_date').'/'.$date }}">
+                                {{ \Carbon\Carbon::parse($date)->format('d-m-Y') }}
+                            </a>
+                        </div>
+                    @endforeach
+                    </div>
                 </div>
             </div>
         </div>

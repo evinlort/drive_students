@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
@@ -13,8 +13,13 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <a href="{{ route('week_report') }}">Show this week report</a>
+                    <div class="row">
+                    @foreach($lessons as $lesson)
+                        <div class="col-12">
+                                {{ $lesson->time.' '.$lesson->user->name }}
+                        </div>
+                    @endforeach
+                    </div>
                 </div>
             </div>
         </div>

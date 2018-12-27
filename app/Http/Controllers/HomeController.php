@@ -32,14 +32,15 @@ class HomeController extends Controller
         Carbon::setWeekStartsAt(0);
         Carbon::setWeekEndsAt(6);
 
+        // TODO: get this from config
         $choose_start = 'now';
+        $holidays = [5,6];
+
         $today = new Carbon($choose_start);
         $today2 = new Carbon($choose_start);
         $today3 = new Carbon($choose_start);
         $today4 = new Carbon($choose_start);
         $today5 = new Carbon($choose_start);
-
-        $holidays = [5,6];
 
         $data['start'] = $today->startOfWeek();
 
@@ -77,70 +78,10 @@ class HomeController extends Controller
         $data['time_line'] = $time_line;
 
         $user = auth()->user();
-        if(isset($user))
-            if($user->is_admin)
+        if(isset($user) && isset($user->settings))
+            if($user->settings->is_admin)
                 return view('admin.home');
             else
                 return view('home', $data);
-    }
-
-    public function getLessons(Request $request) {
-        $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
-        $taken_lessons = Lesson::where("date", $request->day)->pluck('time')->toArray();
-        $taken_lessons_by_user = Lesson::where("date", $request->day)->get();
-        $time_line = [];
-        $time = new Carbon('07:00');
-        while($time->format('H:i') <= '19:00') {
-            if(in_array($time->format('H:i:s'), $taken_lessons)) {
-                $by_user = false;
-                foreach ($taken_lessons_by_user as $lesson) {
-                    if($lesson->user_id == Auth::user()->id && $time->format('H:i:s') == $lesson->time) {
-                        $by_user = true;
-                        break;
-                    }
-                }
-                $time_line[] = [ $time->format('H:i'), 2, $by_user?1:0 ];
-            }
-            else if(in_array($time->format('H:i:s'), $lessons)) {
-                $time_line[] = [ $time->format('H:i'), 1 ];
-            }
-            else { 
-                $time_line[] = [ $time->format('H:i'), 0 ];
-            }
-            $time->addMinutes(40);
-        }
-        return response()->json([ 'data' => $time_line ]);
-    }
-
-    public function setLessons(LessonRequest $request) {
-        $date_n_times = $request->date_n_times;
-        $date = array_shift($date_n_times);
-        $times = $date_n_times;
-
-        foreach($times as $time) {
-            Lesson::create([
-                'user_id' => Auth::user()->id,
-                'date' => $date,
-                'time' => $time
-            ]);
-            
-        }
-        session()->forget('taken_now_lessons');
-        return Response::json(array('success'=>true));
-    }
-
-    public function changeStatus()
-    {
-        return 1;
-        $company->settings->use_global_fee == 1 ? $company->settings->use_global_fee = 0 : $company->settings->use_global_fee = 1;
-        $company->settings->save();
-
-        return $company->settings->use_global_fee;
-    }
-
-    public function isLessonFree(LessonRequest $request) {
-        if(!Lesson::where('date', $request->date_n_times[0])->where('time', $request->date_n_times[1])->exists())
-            return ['status' => 'yes'];
-        return ['status' => 'no'];
     }
 }

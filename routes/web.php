@@ -30,3 +30,8 @@ Route::post('/is_lesson_free', 'LessonsController@isLessonFree');
 Route::post('/is_has_free_lessons', 'LessonsController@isHasFreeLessons');
 Route::post('/set_lessons', 'LessonsController@setLessons');
 
+// Admin
+
+Route::get('week_report', 'Admin\AdminController@weekReport')->name('week_report');
+Route::get('show_date/{date}', 'Admin\AdminController@showDate')->name('show_date');
+

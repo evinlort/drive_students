@@ -37,4 +37,9 @@ class User extends Authenticatable
     public function getPermittedWeeks() {
         return 2;
     }
+
+    public function lessons()
+    {
+        return $this->hasMany('App\Models]Lesson');
+    }
 }
