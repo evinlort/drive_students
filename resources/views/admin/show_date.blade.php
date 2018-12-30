@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/admin/custom.css') }}">
+@endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -13,13 +15,24 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <div class="row">
+                    
                     @foreach($lessons as $lesson)
-                        <div class="col-12">
-                                {{ $lesson->time.' '.$lesson->user->name }}
+                    <div class="row text-center border-bottom mb-2">
+                        <div class="col-3">
+                                {{ Carbon\Carbon::parse($lesson->time)->format('H:i') }}
                         </div>
-                    @endforeach
+                        <div class="col-4 text-center">
+                            {{ $lesson->user->name }} 
+                        </div>
+                        <div class="col-4 text-left">
+                            {{ $lesson->user->identity }} 
+                        </div>
+                        <div class="col-1 text-center">
+                            <a href="#"><span class="glyphicon glyphicon-wrench"></span></a>
+                        </div>
                     </div>
+                    @endforeach
+                    
                 </div>
             </div>
         </div>

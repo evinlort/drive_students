@@ -13,15 +13,25 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <div class="row">
-                    @foreach($dates as $date)
-                        <div class="col-12">
+                    
+                    @foreach($dates as $key => $date)
+                    <div class="row text-center border-bottom">
+                    
+                        <div class="col-6">
                             <a href="{{ url('show_date').'/'.$date }}">
                                 {{ \Carbon\Carbon::parse($date)->format('d-m-Y') }}
                             </a>
                         </div>
-                    @endforeach
+                        <div class="col-6 text-left">
+                            <a href="{{ url('show_date').'/'.$date }}">
+                                {{ $lessons_count[$key]['lessons'] }} {{ __('lessons registered')  }}
+                            </a>
+                        </div>
+
+                        </a>
                     </div>
+                    @endforeach
+                    
                 </div>
             </div>
         </div>

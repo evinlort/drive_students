@@ -10,7 +10,9 @@ use App\Models\Lesson;
 
 class AdminController extends Controller
 {
-
+    public function __construct() {
+        $this->middleware('admin');
+    }
     public function showDate($date){
         $this->get_dates_range();
         $lessons = Lesson::where('date', $date)->orderby('time')->get();
@@ -20,7 +22,9 @@ class AdminController extends Controller
     public function weekReport() {
         $this->get_dates_range();
         $lessons = Lesson::whereBetween('date', [$this->date_range_start->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])->orderby('date')->distinct()->pluck('date');
+        $lessons_count = Lesson::whereBetween('date', [$this->date_range_start->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])->groupBy('date')->selectRaw('count(`date`) as lessons')->get();
         $data['dates'] = $lessons;
+        $data['lessons_count'] = $lessons_count;
         return view('admin/week_report', $data);
     }
 
