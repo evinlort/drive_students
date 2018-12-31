@@ -13,6 +13,11 @@ class AdminController extends Controller
     public function __construct() {
         $this->middleware('admin');
     }
+
+    public function studentRegistration() {
+        return 'reg stud';
+    }
+
     public function showDate($date){
         $this->get_dates_range();
         $lessons = Lesson::where('date', $date)->orderby('time')->get();
