@@ -25,5 +25,6 @@
     "One or more of choosen lessons are already taken":"",
     "You are already used too much lessons, available lessons: ":"Вы заняли слишком много уроков, у Вас осталось :lessons свободных уроков.",
     "Someone took lessons on just before you":"Кто-то занял урок :time до вас. ",
-    "lessons registered": "записанных на уроки"
+    "lessons registered": "записанных на уроки",
+    "Admin panel":"Панель администратора"
 }

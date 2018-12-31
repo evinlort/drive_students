@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lesson;
+use App\Http\Requests\AdminStudentRequest;
+use App\Models\User;
+use App\Models\UsersSettings;
 
 class AdminController extends Controller
 {
@@ -14,8 +17,19 @@ class AdminController extends Controller
         $this->middleware('admin');
     }
 
+    public function registerStudent(AdminStudentRequest $request) {
+        $user = User::create( [ 'identity' => $request->identity, 'name' => $request->full_name ] );
+        $settings = UsersSettings::create( ['user_id' => $user->id] );
+        $settings->weeks = $request->weeks;
+        $settings->lessons = $request->lessons;
+        $settings->save();
+    }
+
     public function studentRegistration() {
-        return 'reg stud';
+        // TODO: get from config
+        $data['weeks'] = 2;
+        $data['lessons'] = 6;
+        return view('admin/register', $data);
     }
 
     public function showDate($date){

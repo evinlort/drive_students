@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header">{{ __('Admin panel') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -13,8 +13,16 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <a href="{{ route('week_report') }}">Show this week report</a>
+                    <div class="row border-bottom mb-2">
+                        <div class="col-12">
+                            <a href="{{ route('week_report') }}">{{ __('Show this week report') }}</a>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col-12">
+                            <a href="{{ route('studentRegistration') }}">{{ __('New student registration') }}</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
