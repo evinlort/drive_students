@@ -21,13 +21,13 @@
                         <div class="col-3">
                                 {{ Carbon\Carbon::parse($lesson->time)->format('H:i') }}
                         </div>
-                        <div class="col-4 text-center">
+                        <div class="col-4 text-center border-left">
                             {{ $lesson->user->name }} 
                         </div>
-                        <div class="col-4 text-left">
+                        <div class="col-4 text-center border-left">
                             {{ $lesson->user->identity }} 
                         </div>
-                        <div class="col-1 text-center">
+                        <div class="col-1 text-center border-left">
                             <a href="#"><span class="glyphicon glyphicon-wrench"></span></a>
                         </div>
                     </div>

@@ -42,8 +42,11 @@ class LoginController extends Controller
 
     public function login(Request $request) {
         $identity = $request->identity;
-        $user_id = User::where('identity', $identity)->firstOrFail()->id;
-        Auth::loginUsingId($user_id);
+        $user = User::where('identity', $identity)->first();
+        if(!isset($user)) {
+            return redirect()->intended($this->redirectPath());
+        }
+        Auth::loginUsingId($user->id);
         return $this->sendLoginResponse($request);
     }
 }

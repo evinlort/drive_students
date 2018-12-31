@@ -17,10 +17,12 @@ class AdminCheck
     public function handle($request, Closure $next)
     {
         if (Auth::check()) {
-            if(Auth::user()->settings->is_admin == 0)
+            if(Auth::user()->settings->is_admin == 1)
+                return $next($request);
+            else
                 return redirect('/home');
         }
+        return redirect('login');
         
-        return $next($request);
     }
 }

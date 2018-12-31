@@ -3,6 +3,13 @@
 <link rel="stylesheet" href="css/custom.css">
 @endsection
 
+@section('js')
+<script>
+    // $("#identity").focus();
+    document.getElementById("identity").focus();
+</script>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -18,7 +25,7 @@
                             <label for="identity" class="col-sm-4 col-form-label text-md-right">{{ __('Identity') }}</label>
 
                             <div class="col-md-6">
-                                <input id="identity" type="text" class="form-control{{ $errors->has('identity') ? ' is-invalid' : '' }}" name="identity" value="{{ old('identity') }}" required autofocus>
+                                <input id="identity" min="100000000" max="999999999" type="number" class="form-control{{ $errors->has('identity') ? ' is-invalid' : '' }}" name="identity" value="{{ old('identity') }}" required autofocus autocomplete="off">
 
                                 @if ($errors->has('identity'))
                                     <span class="invalid-feedback" role="alert">

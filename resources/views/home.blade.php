@@ -100,6 +100,13 @@
                                     class="cal-box {{ $days_a[$counter][1]==1?'cal-box-gray':($days_a[$counter][1]==2?'cal-box-holiday':'') }}"
                                     {{ !$days_a[$counter][1]?'data-toggle="modal" data-target="#favoritesModal">':'' }}
                                     >
+                                    {{--
+                                        Display one of those
+                                        Show in case student has 1 or more lessons on this day`
+                                    <div class="cal-box-point green-point"></div>
+                                        Show this in case no more free lessons on this day(or make it gray)
+                                    <div class="cal-box-point red-point"></div>
+                                    --}}
                                     {{ $days_a[$counter++][0] }}
                                 </div>
                             @endfor

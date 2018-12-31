@@ -8,6 +8,7 @@
 }
 
 .cal-box {
+    position: relative;
     display: inline-block;
     width: 13.18%;
     padding-top: 6.59%;
@@ -115,4 +116,22 @@ input:checked + .slider:before {
     color: #000;
     text-shadow: 0 1px 0 #fff;
     opacity: .5;
+}
+
+.cal-box-point {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border: 1px solid black;
+    border-radius: 50%;
+    top: 1%;
+    left: 1%;
+}
+
+.green-point {
+    background-color: lawngreen;
+}
+
+.red-point {
+    background-color: #fd5353;
 }
