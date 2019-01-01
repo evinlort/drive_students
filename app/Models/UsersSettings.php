@@ -6,11 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class UsersSettings extends Model
 {
-    protected $fillable = [
-        'user_id',
-    ];
 
-    protected $guarded = ['id'];
+    protected $primaryKey = 'user_id';
+    public $incrementing = false;
+    protected $fillable = ['user_id', 'weeks', 'lessons'];
 
     public function user()
     {
