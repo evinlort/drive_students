@@ -19,13 +19,19 @@
                     @foreach($lessons as $lesson)
                     <div class="row text-center border-bottom mb-2">
                         <div class="col-3">
+                            @if($lesson !== null)
                                 {{ Carbon\Carbon::parse($lesson->time)->format('H:i') }}
+                            @endif
                         </div>
                         <div class="col-4 text-center border-left">
-                            {{ $lesson->user->name }} 
+                            @if($lesson !== null)
+                                {{ $lesson->user->name }}
+                            @endif
                         </div>
                         <div class="col-4 text-center border-left">
-                            {{ $lesson->user->identity }} 
+                            @if($lesson !== null)
+                                {{ $lesson->user->identity }} 
+                            @endif
                         </div>
                         <div class="col-1 text-center border-left">
                             <a href="#"><span class="glyphicon glyphicon-wrench"></span></a>

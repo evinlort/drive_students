@@ -35,14 +35,34 @@ class AdminController extends Controller
 
     public function showDate($date){
         $this->get_dates_range();
-        $lessons = Lesson::where('date', $date)->orderby('time')->get();
+        $time_line = [];
+        // TODO: get times from config
+        // $admin_day_start = config('admin.lessons_starts_from');
+        // $admin_day_end = config('admin.lessons_ends_at');
+        $admin_day_start = '07:00';
+        $admin_day_end = '19:00';
+        $lessons = array();
+        $time = new Carbon($admin_day_start);
+        while($time->format('H:i') <= $admin_day_end) {
+            // $time_line[] = $time->format('H:i');
+            $lessons[] = Lesson::where('date', $date)->where('time', $time->format('H:i'))->first();
+            $time->addMinutes(40);
+        }
+        // $data['time_line'] = $time_line;
+        // $lessons = Lesson::where('date', $date)->orderby('time')->get();
         $data['lessons'] = $lessons;
         return view('admin/show_date', $data);
     }
     public function weekReport() {
         $this->get_dates_range();
-        $lessons = Lesson::whereBetween('date', [$this->date_range_start->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])->orderby('date')->distinct()->pluck('date');
-        $lessons_count = Lesson::whereBetween('date', [$this->date_range_start->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])->groupBy('date')->selectRaw('count(`date`) as lessons')->get();
+        $lessons = array();
+        $lessons_count = array();
+        $this->date_range_end->addDay();
+        while($this->date_range_start->format('Y-m-d') != $this->date_range_end->format('Y-m-d')) {
+            $lessons[] = $this->date_range_start->format('Y-m-d');
+            $lessons_count[] = Lesson::where('date', $this->date_range_start->format('Y-m-d'))->groupBy('date')->selectRaw('count(`date`) as lessons')->first();
+            $this->date_range_start->addDay();
+        }
         $data['dates'] = $lessons;
         $data['lessons_count'] = $lessons_count;
         return view('admin/week_report', $data);

@@ -24,7 +24,9 @@
                         </div>
                         <div class="col-6 text-left">
                             <a href="{{ url('show_date').'/'.$date }}">
+                            @if($lessons_count[$key]['lessons'] > 0)
                                 {{ $lessons_count[$key]['lessons'] }} {{ __('lessons registered')  }}
+                            @endif
                             </a>
                         </div>
 
