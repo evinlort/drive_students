@@ -1,5 +1,11 @@
 $(document).ready(function() {
 
+    $(".student_edit a").on("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        $("#favoritesModal").modal("show");
+    });
+
     $("#search").on("keyup", function() {
         var search = $(this).val();
         if(search == "") {
