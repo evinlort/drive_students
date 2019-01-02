@@ -51,6 +51,7 @@ class AdminController extends Controller
         $data['time_line'] = $time_line;
         // $lessons = Lesson::where('date', $date)->orderby('time')->get();
         $data['lessons'] = $lessons;
+        $data['users'] = User::all();
         return view('admin/show_date', $data);
     }
     public function weekReport() {

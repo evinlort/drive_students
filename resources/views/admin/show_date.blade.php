@@ -25,21 +25,27 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="row">
+                <div class="row student_remove">
                     <div class="col-12">
-                        Remove student from this time <button class="btn btn-danger">Remove</button>
+                        <label>Remove student from this time</label> <button class="btn btn-danger">{{ __('Remove') }}</button>
                     </div>
                 </div>
-               <!--  <div class="row">
+                <div class="row student_add">
                     <div class="col-12">
-                        b
+                        <label>Reserve for user (by identity or name)</label> 
+                        <input list="identities" name="student_identity" type="text" class="form-control" autocomplete="off" />
+                        <datalist id="identities">
+                            @foreach($users as $user)
+                                <option value="{{ $user->identity }}">
+                            @endforeach
+                        </datalist>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         c
                     </div>
-                </div> -->
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" 
