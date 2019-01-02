@@ -23,6 +23,7 @@ class AdminController extends Controller
         $settings->weeks = $request->weeks;
         $settings->lessons = $request->lessons;
         $settings->save();
+        return redirect()->back()->withErrors(['test' => __('All right!') ]);
     }
 
     public function studentRegistration() {

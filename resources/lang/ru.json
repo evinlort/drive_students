@@ -26,5 +26,14 @@
     "You are already used too much lessons, available lessons: ":"Вы заняли слишком много уроков, у Вас осталось :lessons свободных уроков.",
     "Someone took lessons on just before you":"Кто-то занял урок :time до вас. ",
     "lessons registered": "записанных на уроки",
-    "Admin panel":"Панель администратора"
+    "Admin panel":"Панель администратора",
+    "Student registration":"Запись учеников",
+    "Full Name":"Полное имя ученика",
+    "Weeks":"Недель",
+    "Lessons":"Уроков",
+    "The identity is not so unique!":"Номер удостоверения личности уже существует!",
+    "All right!":"Запись успешно сохранена!",
+    "Enter identity":"Введите номер удостоверения личности",
+    "Enter weeks":"Введите количество недель",
+    "Enter lessons":"Введите количество уроков"
 }

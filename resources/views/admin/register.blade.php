@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/admin/register_custom.css') }}">
+@endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -14,7 +16,11 @@
                         </div>
                     @endif
                     @foreach ($errors->all() as $message)
-                        <h3>{{ $message }}</h3>
+                    <h3>
+                        <div class="errors">
+                            {{ $message }}
+                        </div>
+                    </h3>
                     @endforeach
                     <form method="POST" action="{{ route('registerStudent') }}">
                         @csrf
@@ -23,8 +29,8 @@
                             <input required type="number" class="form-control" id="identity" name="identity" autocomplete="off" autofocus placeholder="{{ __('Enter identity') }}">
                         </div>
                         <div class="form-group">
-                            <label for="full_name">Full Name</label>
-                            <input required type="text" class="form-control" id="full_name" name="full_name" placeholder="{{ __('Full name') }}">
+                            <label for="full_name">{{ __('Full Name') }}</label>
+                            <input required type="text" class="form-control" id="full_name" name="full_name" placeholder="{{ __('Full Name') }}">
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -37,7 +43,7 @@
                             </div>
                         </div>
                         <div class="col-12 mt-3 text-center">
-                            <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
                         </div>
                     </form>
                 </div>
