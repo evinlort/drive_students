@@ -16,11 +16,13 @@
                         </div>
                     @endif
                     
-                    @foreach($lessons as $lesson)
+                    @foreach($lessons as $key => $lesson)
                     <div class="row text-center border-bottom mb-2">
                         <div class="col-3">
                             @if($lesson !== null)
                                 {{ Carbon\Carbon::parse($lesson->time)->format('H:i') }}
+                            @else
+                                {{ $time_line[$key] }}
                             @endif
                         </div>
                         <div class="col-4 text-center border-left">

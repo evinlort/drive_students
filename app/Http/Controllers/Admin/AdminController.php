@@ -44,11 +44,11 @@ class AdminController extends Controller
         $lessons = array();
         $time = new Carbon($admin_day_start);
         while($time->format('H:i') <= $admin_day_end) {
-            // $time_line[] = $time->format('H:i');
+            $time_line[] = $time->format('H:i');
             $lessons[] = Lesson::where('date', $date)->where('time', $time->format('H:i'))->first();
             $time->addMinutes(40);
         }
-        // $data['time_line'] = $time_line;
+        $data['time_line'] = $time_line;
         // $lessons = Lesson::where('date', $date)->orderby('time')->get();
         $data['lessons'] = $lessons;
         return view('admin/show_date', $data);
