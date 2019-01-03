@@ -34,4 +34,5 @@ Route::get('week_report', 'Admin\AdminController@weekReport')->name('week_report
 Route::get('show_date/{date}', 'Admin\AdminController@showDate')->name('show_date');
 Route::get('student_registration', 'Admin\AdminController@studentRegistration')->name('studentRegistration');
 Route::post('student_registration', 'Admin\AdminController@registerStudent')->name('registerStudent');
+Route::post('remove_student_from_lesson', 'Admin\AdminController@removeStudent');
 

@@ -1,13 +1,31 @@
 $(document).ready(function() {
 
+    $(".remove_student").on("click", function() {
+        if(!confirm($(this).text())) {
+            return false;
+        }
+        else {
+            var identity = $("input.hidden_input_identity").val();
+            var time = $("input.hidden_input_time").val();
+            var query = (window.location.href).split("/");
+            var date = query[query.length-1];
+            var url = window.Laravel.baseUrl + "remove_student_from_lesson";
+            $.post(url,{"identity":identity,"time":time,"date":date,"_token":window.Laravel.csrfToken},function(res) {
+                if(res.status == "success") {
+                    window.location.href = window.location.href;
+                }
+            });
+        }
+    });
+
     $(".student_edit a").on("click", function(e){
         e.preventDefault();
         e.stopPropagation();
         var identity = $(this).parents(".students_list_row").data("identity");
+        var time = $(this).parents(".students_list_row").data("time");
         $("#favoritesModal").modal("show");
-        console.log(identity);
-        $("#favoritesModal.remove_student label").text("Huekst");
-        $("#favoritesModal").data("sidentity",identity);
+        $("input.hidden_input_identity").val(identity);
+        $("input.hidden_input_time").val(time);
         
     });
 

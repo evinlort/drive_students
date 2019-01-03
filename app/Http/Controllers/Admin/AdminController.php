@@ -17,6 +17,18 @@ class AdminController extends Controller
         $this->middleware('admin');
     }
 
+    public function removeStudent(Request $request) {
+        $user = User::where('identity',$request->identity)->first();
+        $lesson = Lesson::where('user_id', $user->id)->where('time', $request->time)->where('date', $request->date)->first();
+        $query = 'delete from `lessons` where `date` = ? and `time` = ? and `user_id` = ?';
+        if(\DB::delete($query, [$lesson->date,$lesson->time,$lesson->user_id])) {
+            return ['status'=>'success'];
+        }
+        else {
+            return ['status'=>'fail'];
+        }
+    }
+
     public function registerStudent(AdminStudentRequest $request) {
         $user = User::create( [ 'identity' => $request->identity, 'name' => $request->full_name ] );
         $settings = UsersSettings::create( ['user_id' => $user->id] );
