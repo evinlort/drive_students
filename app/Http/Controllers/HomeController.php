@@ -41,12 +41,19 @@ class HomeController extends Controller
         $today3 = new Carbon($choose_start);
         $today4 = new Carbon($choose_start);
         $today5 = new Carbon($choose_start);
+        $today6 = new Carbon($choose_start);
 
-        $data['start'] = $today->startOfWeek();
+        $data['start'] = $today6->startOfWeek();
 
         $days = array();
         $days_to_add = 7 * ($settings->weeks - 2);
-        $end = $today2->startOfWeek()->setDate($today->year,$today->month,$today->format('d') > 15?$today3->endOfMonth()->format('d'):15)->addDays($days_to_add);
+        $end = $today2->
+            startOfWeek()->
+            setDate($today->year,$today->month,$today->format('d') > 15?
+                $today3->endOfMonth()->format('d'):
+                15
+            )->
+            addDays($days_to_add);
         
         $end_of_period = $end->format('Y-m-d');
         $data['end'] = $end->endOfWeek();
