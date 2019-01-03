@@ -8,7 +8,7 @@
 @endsection
 @section('content')
 
-<div class="modal fade" id="favoritesModal" 
+<div class="modal fade" id="favoritesModal"  data-sidentity="" 
     tabindex="-1" role="dialog" 
     aria-labelledby="favoritesModalLabel">
     <div class="modal-dialog" role="document">
@@ -27,7 +27,7 @@
             <div class="modal-body">
                 <div class="row student_remove">
                     <div class="col-12">
-                        <label>Remove student from this time</label> <button class="btn btn-danger">{{ __('Remove') }}</button>
+                        <label>Remove student from this time</label> <button class="remove_student btn btn-danger">{{ __('Remove') }}</button>
                     </div>
                 </div>
                 <div class="row student_add">

@@ -3,7 +3,12 @@ $(document).ready(function() {
     $(".student_edit a").on("click", function(e){
         e.preventDefault();
         e.stopPropagation();
+        var identity = $(this).parents(".students_list_row").data("identity");
         $("#favoritesModal").modal("show");
+        console.log(identity);
+        $("#favoritesModal.remove_student label").text("Huekst");
+        $("#favoritesModal").data("sidentity",identity);
+        
     });
 
     $("#search").on("keyup", function() {
