@@ -30,6 +30,7 @@ Route::post('/set_lessons', 'LessonsController@setLessons');
 
 // Admin
 
+Route::get('settings', 'Admin\AdminController@siteSettings')->name('siteSettings');
 Route::get('week_report', 'Admin\AdminController@weekReport')->name('week_report');
 Route::get('show_date/{date}', 'Admin\AdminController@showDate')->name('show_date');
 Route::get('student_registration', 'Admin\AdminController@studentRegistration')->name('studentRegistration');

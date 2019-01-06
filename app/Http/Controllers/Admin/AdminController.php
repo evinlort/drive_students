@@ -17,6 +17,10 @@ class AdminController extends Controller
         $this->middleware('admin');
     }
 
+    public function siteSettings() {
+        return 'Settings will be here!';
+    }
+
     public function addStudent(Request $request) {
         $user = User::where('identity',$request->identity)->first();
         // Get how much lessons left and show if 0 or less
