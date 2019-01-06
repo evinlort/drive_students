@@ -35,4 +35,5 @@ Route::get('show_date/{date}', 'Admin\AdminController@showDate')->name('show_dat
 Route::get('student_registration', 'Admin\AdminController@studentRegistration')->name('studentRegistration');
 Route::post('student_registration', 'Admin\AdminController@registerStudent')->name('registerStudent');
 Route::post('remove_student_from_lesson', 'Admin\AdminController@removeStudent');
+Route::post('add_student_to_lesson', 'Admin\AdminController@addStudent');
 

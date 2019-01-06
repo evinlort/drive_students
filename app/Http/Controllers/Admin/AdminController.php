@@ -17,6 +17,14 @@ class AdminController extends Controller
         $this->middleware('admin');
     }
 
+    public function addStudent(Request $request) {
+        $user = User::where('identity',$request->identity)->first();
+        // Get how much lessons left and show if 0 or less
+        // Check if lesson is not captured by somebody else - and send message
+        Lesson::create( [ 'user_id' => $user->id, 'date' => $request->date, 'time' => $request->time ] );
+        $a='';
+    }
+
     public function removeStudent(Request $request) {
         $user = User::where('identity',$request->identity)->first();
         $lesson = Lesson::where('user_id', $user->id)->where('time', $request->time)->where('date', $request->date)->first();
@@ -64,6 +72,7 @@ class AdminController extends Controller
         // $lessons = Lesson::where('date', $date)->orderby('time')->get();
         $data['lessons'] = $lessons;
         $data['users'] = User::all();
+        $data['date'] = $date;
         return view('admin/show_date', $data);
     }
     public function weekReport() {

@@ -14,38 +14,37 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+            <h4 class="modal-title text-left" 
+                    id="favoritesModalLabel">
+                    
+                </h4>
                 <button type="button" class="close" 
                     data-dismiss="modal" 
                     aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" 
-                    id="favoritesModalLabel">
-                    
-                </h4>
+                
             </div>
-            <div class="modal-body"  data-sidentity="">
+            <div class="modal-body">
+                <input type="hidden" class="hidden_input_time" />
+                <input type="hidden" class="hidden_input_date" value="{{ $date }}" />
                 <div class="row student_remove">
                     <div class="col-12">
                         <input type="hidden" class="hidden_input_identity" />
-                        <input type="hidden" class="hidden_input_time" />
+                        
                         <label>Remove student from this time</label> <button class="remove_student btn btn-danger">{{ __('Remove') }}</button>
                     </div>
                 </div>
                 <div class="row student_add">
                     <div class="col-12">
                         <label>Reserve for user (by identity or name)</label> 
-                        <input list="identities" name="student_identity" type="text" class="form-control" autocomplete="off" />
+                        <input list="identities" name="student_identity" type="text" class="form-control w-70 d-inline" autocomplete="off" />
                         <datalist id="identities">
                             @foreach($users as $user)
-                                <option value="{{ $user->identity }}">
+                                <option value="{{ $user->identity }}">{{ $user->name }}</option>
                             @endforeach
                         </datalist>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        c
+                        <button class="btn btn-primary w-25 add_student">{{  __('Save') }}</button>
                     </div>
                 </div>
             </div>
@@ -84,7 +83,7 @@
         </div>
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header">{{ __('Dashboard') }} - <strong>{{ date('d/m/Y', strtotime($date)) }}</strong></div>
 
                 <div id="students_list" class="card-body">
                     @if (session('status'))

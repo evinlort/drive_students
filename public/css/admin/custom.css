@@ -19,3 +19,7 @@
 .glyphicon-wrench:before {
     content: "\e136";
 }
+
+.w-70 {
+    width: 70% !important;
+}

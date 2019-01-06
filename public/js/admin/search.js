@@ -1,5 +1,17 @@
 $(document).ready(function() {
 
+    $(".add_student").on("click", function() {
+        var identity = $("input[name='student_identity']").val();
+        var time = $("input.hidden_input_time").val();
+        var date = $("input.hidden_input_date").val();
+        var url = window.Laravel.baseUrl + "add_student_to_lesson";
+        $.post(url,{"identity":identity,"time":time,"date":date,"_token":window.Laravel.csrfToken},function(res) {
+            if(res.status == "success") {
+                location.reload();
+            }
+        });
+    });
+
     $(".remove_student").on("click", function() {
         if(!confirm($(this).text())) {
             return false;
@@ -7,12 +19,11 @@ $(document).ready(function() {
         else {
             var identity = $("input.hidden_input_identity").val();
             var time = $("input.hidden_input_time").val();
-            var query = (window.location.href).split("/");
-            var date = query[query.length-1];
+            var date = $("input.hidden_input_date").val();
             var url = window.Laravel.baseUrl + "remove_student_from_lesson";
             $.post(url,{"identity":identity,"time":time,"date":date,"_token":window.Laravel.csrfToken},function(res) {
                 if(res.status == "success") {
-                    window.location.href = window.location.href;
+                    location.reload();
                 }
             });
         }
@@ -24,7 +35,16 @@ $(document).ready(function() {
         var identity = $(this).parents(".students_list_row").data("identity");
         var time = $(this).parents(".students_list_row").data("time");
         $("#favoritesModal").modal("show");
-        $("input.hidden_input_identity").val(identity);
+        if(!identity) {
+            $("div.student_remove").hide();
+            $("div.student_add").show();
+            $("#favoritesModalLabel").text("Text");
+        }
+        else {
+            $("input.hidden_input_identity").val(identity);
+            $("div.student_remove").show();
+            $("div.student_add").hide();
+        } 
         $("input.hidden_input_time").val(time);
         
     });
