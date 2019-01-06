@@ -87,6 +87,8 @@ class LessonsController extends Controller
         $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
         $taken_lessons = Lesson::where("date", $request->day)->pluck('time')->toArray();
         $taken_lessons_by_users = Lesson::where("date", $request->day)->get();
+        $has_lessons = false;
+        if(count($lessons)) $has_lessons = true;
         $time_line = [];
         $time = new Carbon($start_time);
         while($time->format('H:i') <= '19:00') {
@@ -110,7 +112,7 @@ class LessonsController extends Controller
             }
             $time->addMinutes(40);
         }
-        return response()->json([ 'data' => $time_line ]);
+        return response()->json([ 'data' => $time_line, 'has_user_lessons' => $has_lessons ]);
     }
 
     public function get_dates_range() {

@@ -103,7 +103,11 @@
                                     {{--
                                         Display one of those
                                         Show in case student has 1 or more lessons on this day`
-                                    <div class="cal-box-point green-point"></div>
+                                    --}}
+                                    @if($days_a[$counter][2])
+                                    <div class="cal-box-point green-point" title="{{ __('This day contains :lessons of your lessons', ['lessons' => $days_a[$counter][2]]) }}"></div>
+                                    @endif
+                                    {{--
                                         Show this in case no more free lessons on this day(or make it gray)
                                     <div class="cal-box-point red-point"></div>
                                     --}}

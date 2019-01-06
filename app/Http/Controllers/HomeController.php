@@ -28,7 +28,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $settings = Auth::user()->settings;
+        $user = Auth::user();
+        $settings = $user->settings;
         Carbon::setWeekStartsAt(0);
         Carbon::setWeekEndsAt(6);
 
@@ -57,19 +58,24 @@ class HomeController extends Controller
         
         $end_of_period = $end->format('Y-m-d');
         $data['end'] = $end->endOfWeek();
+        
         while($data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')) {
+            $has_user_lessons = Lesson::where('user_id', $user->id)->where('date', $data['start']->format('Y-m-d'))->count('user_id');//false;
+            // if(Lesson::where('user_id', $user->id)->where('date', $data['start']->format('Y-m-d'))->count('user_id')) {
+            //     $has_user_lessons = true;
+            // }
+
             if(in_array($data['start']->dayOfWeek, $holidays)) {
-                $days[] = [$data['start']->format('d'),2, "full" => $data['start']->format('Y-m-d')];
+                $days[] = [$data['start']->format('d'),2, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
                 $data['start']->addDay();
                 continue;
             }
             if($data['start']->format('Y-m-d') >= $today5->format('Y-m-d') && $data['start']->format('Y-m-d') <= $end_of_period) {
-                $days[] = [$data['start']->format('d'),0, "full" => $data['start']->format('Y-m-d')];
+                $days[] = [$data['start']->format('d'),0, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
             }
             else {
-                $days[] = [$data['start']->format('d'),1, "full" => $data['start']->format('Y-m-d')];
+                $days[] = [$data['start']->format('d'),1, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
             }
-            
             
             $data['start']->addDay();
         }

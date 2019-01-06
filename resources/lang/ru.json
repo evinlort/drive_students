@@ -35,5 +35,6 @@
     "All right!":"Запись успешно сохранена!",
     "Enter identity":"Введите номер удостоверения личности",
     "Enter weeks":"Введите количество недель",
-    "Enter lessons":"Введите количество уроков"
+    "Enter lessons":"Введите количество уроков",
+    "This day contains :lessons of your lessons":"На этот день записано :lessons Ваших уроков"
 }

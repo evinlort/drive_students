@@ -41,6 +41,8 @@ $(document).ready(function(){
 
     $("#send_time").on("click", function() {
         save_lessons($(this));
+        location.reload();
+        // $("#calendar").load(location.href + " #calendar");
     });
 
 });
