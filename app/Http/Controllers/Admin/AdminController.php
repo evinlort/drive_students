@@ -18,7 +18,7 @@ class AdminController extends Controller
     }
 
     public function siteSettings() {
-        return 'Settings will be here!';
+        return view('admin/settings');
     }
 
     public function addStudent(Request $request) {
@@ -63,8 +63,8 @@ class AdminController extends Controller
         // TODO: get times from config
         // $admin_day_start = config('admin.lessons_starts_from');
         // $admin_day_end = config('admin.lessons_ends_at');
-        $admin_day_start = '07:00';
-        $admin_day_end = '19:00';
+        $admin_day_start = '05:00';
+        $admin_day_end = '21:00';
         $lessons = array();
         $time = new Carbon($admin_day_start);
         while($time->format('H:i') <= $admin_day_end) {

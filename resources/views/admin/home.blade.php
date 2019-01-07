@@ -23,11 +23,13 @@
                             <a href="{{ route('studentRegistration') }}">{{ __('New student registration') }}</a>
                         </div>
                     </div>
+                    {{--
                     <div class="row border-bottom mb-2">
                         <div class="col-12">
                             <a href="{{ route('siteSettings') }}">{{ __('Site setting') }}</a>
                         </div>
                     </div>
+                    --}}
                 </div>
             </div>
         </div>
