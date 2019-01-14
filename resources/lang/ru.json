@@ -36,5 +36,8 @@
     "Enter identity":"Введите номер удостоверения личности",
     "Enter weeks":"Введите количество недель",
     "Enter lessons":"Введите количество уроков",
-    "This day contains :lessons of your lessons":"На этот день записано :lessons Ваших уроков"
+    "This day contains :lessons of your lessons":"На этот день записано :lessons Ваших уроков",
+    "Remove":"Удалить",
+    "Remove student from this time":"Удалить запись ученика на этот урок",
+    "Reserve for user (by identity or name) ":"Записать ученика на этот урок (поиск по ТЗ или по имени)"
 }

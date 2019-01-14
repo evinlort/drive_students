@@ -32,12 +32,12 @@
                     <div class="col-12">
                         <input type="hidden" class="hidden_input_identity" />
                         
-                        <label>Remove student from this time</label> <button class="remove_student btn btn-danger">{{ __('Remove') }}</button>
+                        <label>{{ __('Remove student from this time') }}</label> <button class="remove_student btn btn-danger">{{ __('Remove') }}</button>
                     </div>
                 </div>
                 <div class="row student_add">
                     <div class="col-12">
-                        <label>Reserve for user (by identity or name)</label> 
+                        <label>{{ __('Reserve for user (by identity or name) ') }}</label> 
                         <input list="identities" name="student_identity" type="text" class="form-control w-70 d-inline" autocomplete="off" />
                         <datalist id="identities">
                             @foreach($users as $user)

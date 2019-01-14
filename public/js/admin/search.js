@@ -9,6 +9,10 @@ $(document).ready(function() {
             if(res.status == "success") {
                 location.reload();
             }
+            else {
+                alert(res.message);
+                location.reload();
+            }
         });
     });
 
@@ -38,12 +42,13 @@ $(document).ready(function() {
         if(!identity) {
             $("div.student_remove").hide();
             $("div.student_add").show();
-            $("#favoritesModalLabel").text("Text");
+            $("#favoritesModalLabel").text($("div.card-header strong").text()+" "+time+" "+$("div.student_add div.col-12 button").text());
         }
         else {
             $("input.hidden_input_identity").val(identity);
             $("div.student_remove").show();
             $("div.student_add").hide();
+            $("#favoritesModalLabel").text($("div.card-header strong").text()+" "+time+" "+$("div.student_remove div.col-12 button").text());
         } 
         $("input.hidden_input_time").val(time);
         

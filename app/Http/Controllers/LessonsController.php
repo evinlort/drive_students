@@ -86,10 +86,10 @@ class LessonsController extends Controller
         $end_time = '19:00';
 
         $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
-        $admin_added_lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->where(function($q) {
+       /*  $admin_added_lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->where(function($q) {
             $q->where('time', '<', $start_time);
             $q->orWhere('time', '>', $end_time);
-        })->pluck('time')->toArray();
+        })->pluck('time')->toArray(); */
         // Get from array above min and max value to set as start and end time
         $taken_lessons = Lesson::where("date", $request->day)->pluck('time')->toArray();
         $taken_lessons_by_users = Lesson::where("date", $request->day)->get();

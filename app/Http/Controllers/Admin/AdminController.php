@@ -25,7 +25,14 @@ class AdminController extends Controller
         $user = User::where('identity',$request->identity)->first();
         // Get how much lessons left and show if 0 or less
         // Check if lesson is not captured by somebody else - and send message
-        Lesson::create( [ 'user_id' => $user->id, 'date' => $request->date, 'time' => $request->time ] );
+        if(!Lesson::where('date', $request->date)->where('time', $request->time)->exists()) {
+            Lesson::create( [ 'user_id' => $user->id, 'date' => $request->date, 'time' => $request->time ] );
+            return ['status' => 'success'];
+        }
+        else {
+            $student = Lesson::where('date', $request->date)->where('time', $request->time)->first()->user;
+            return ['status' => 'failed', 'message' => __('Already taken').' : '.__('Name').' '.$student->name.', '.__('Identity').' '.$student->identity];
+        }
         $a='';
     }
 
