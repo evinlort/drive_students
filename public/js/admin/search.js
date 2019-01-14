@@ -37,18 +37,27 @@ $(document).ready(function() {
         e.preventDefault();
         e.stopPropagation();
         var identity = $(this).parents(".students_list_row").data("identity");
+        var student_name = $(this).parents(".students_list_row").data("name");
+        console.log(student_name);
         var time = $(this).parents(".students_list_row").data("time");
         $("#favoritesModal").modal("show");
         if(!identity) {
             $("div.student_remove").hide();
             $("div.student_add").show();
             $("#favoritesModalLabel").text($("div.card-header strong").text()+" "+time+" "+$("div.student_add div.col-12 button").text());
+            $("#student_name").text("");
+            $("#student_identity").text("");
+            $("div.student_credentials").hide();
         }
         else {
             $("input.hidden_input_identity").val(identity);
+            // $("input.hidden_input_name").val(student_name);
             $("div.student_remove").show();
             $("div.student_add").hide();
             $("#favoritesModalLabel").text($("div.card-header strong").text()+" "+time+" "+$("div.student_remove div.col-12 button").text());
+            $("#student_name").text(student_name);
+            $("#student_identity").text(identity);
+            $("div.student_credentials").show();
         } 
         $("input.hidden_input_time").val(time);
         

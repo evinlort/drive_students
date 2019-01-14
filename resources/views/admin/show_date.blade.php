@@ -28,9 +28,22 @@
             <div class="modal-body">
                 <input type="hidden" class="hidden_input_time" />
                 <input type="hidden" class="hidden_input_date" value="{{ $date }}" />
+                <div class="row student_credentials">
+                    <div class="col-12">
+                        <label>{{ __('Student name') }} : </label>
+                        <label id="student_name" class="strong_name"></label>
+                    </div>
+                </div>
+                <div class="row student_credentials">
+                    <div class="col-12">
+                        <label>{{ __('Student identity') }} : </label>
+                        <label id="student_identity" class="strong_name"></label>
+                    </div>
+                </div>
                 <div class="row student_remove">
                     <div class="col-12">
                         <input type="hidden" class="hidden_input_identity" />
+                        
                         
                         <label>{{ __('Remove student from this time') }}</label> <button class="remove_student btn btn-danger">{{ __('Remove') }}</button>
                     </div>
