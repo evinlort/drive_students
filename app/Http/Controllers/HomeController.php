@@ -36,6 +36,8 @@ class HomeController extends Controller
         // TODO: get this from config
         $choose_start = 'now';
         $holidays = [5,6];
+        $start_time = '05:00';
+        $end_time = '21:00';
 
         $today = new Carbon($choose_start);
         $today2 = new Carbon($choose_start);
@@ -83,8 +85,8 @@ class HomeController extends Controller
 
         $data['days'] = [__('Su'),__('Mo'),__('Tu'),__('We'),__('Th'),__('Fr'),__('Sa')];
         $time_line = [];
-        $time = new Carbon('07:00');
-        while($time->format('H:i') <= '19:00') {
+        $time = new Carbon($start_time);
+        while($time->format('H:i') <= $end_time) {
             $time_line[] = $time->format('H:i');
             $time->addMinutes(40);
         }

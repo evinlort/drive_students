@@ -32,12 +32,31 @@ function get_lessons(date) {
         success: function(response) {
             $("#lessons input[name=this_date]").val(date);
             clean_modal();
+            $("#lessons div").show();
             response.data.forEach(function(element){
                 if(element[1]) {
-                    $("#lessons div").each(function() {
+                    $("#lessons div.time-string").each(function() {
                         if($(this).data("time") == element[0]) {
+                            if($(this).data("time") < "07:00" && element[1] == 2) {
+                                $(this).hide();
+                            }
+                            if($(this).data("time") > "19:00" && element[1] == 2) {
+                                $(this).hide();
+                            }
                             $(this).find("input[type=checkbox]").prop("checked","checked").prop("disabled","disabled").val(-1);
                             $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").text(element[2]);
+                        }
+                    });
+                }
+                else {
+                    $("#lessons div.time-string").each(function() {
+                        if($(this).data("time") == element[0]) {
+                            if($(this).data("time") < "07:00" && element[1] == 0) {
+                                $(this).hide();
+                            }
+                            if($(this).data("time") > "19:00" && element[1] == 0) {
+                                $(this).hide();
+                            }
                         }
                     });
                 }

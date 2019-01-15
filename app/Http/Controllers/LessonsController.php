@@ -82,14 +82,15 @@ class LessonsController extends Controller
 
     public function getLessons(Request $request) {
         // TODO: get from config, also check if admin
-        $start_time = '07:00';
-        $end_time = '19:00';
+        $start_time = '05:00';
+        $end_time = '21:00';
 
         $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
-       /*  $admin_added_lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->where(function($q) {
+        $admin_added_lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->where(function($q) use($start_time,$end_time) {
             $q->where('time', '<', $start_time);
             $q->orWhere('time', '>', $end_time);
-        })->pluck('time')->toArray(); */
+        })->pluck('time')->toArray();
+        // $start_time = $admin_added_lessons[0];
         // Get from array above min and max value to set as start and end time
         $taken_lessons = Lesson::where("date", $request->day)->pluck('time')->toArray();
         $taken_lessons_by_users = Lesson::where("date", $request->day)->get();
@@ -107,7 +108,7 @@ class LessonsController extends Controller
                         $time_line[] = [ $time->format('H:i'), 1, __('Already taken by you') ];
                     }
                     else {
-                        $time_line[] = [ $time->format('H:i'), 1, __('Already taken') ];
+                        $time_line[] = [ $time->format('H:i'), 2, __('Already taken') ];
                     }
                     $free_lesson = false;
                     break;
