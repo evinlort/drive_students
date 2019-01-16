@@ -54,11 +54,11 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('change_lang', ['he']) }}"
                                    onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
+                                                 document.getElementById('logout-form2').submit();">
                                     {{ session('my_locale')=='he'?__('Russian'):__('Hebrew') }}
                                 </a>
 
-                                <form id="logout-form" action="{{ route('change_lang', [session('my_locale')=='he'?'ru':'he']) }}" method="GET" style="display: none;">
+                                <form id="logout-form2" action="{{ route('change_lang', [session('my_locale')=='he'?'ru':'he']) }}" method="GET" style="display: none;">
                                     @csrf
                                 </form>
                             </div>
