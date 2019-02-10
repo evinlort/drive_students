@@ -2,6 +2,9 @@
 
 return [
 
+    'half_day_holiday' => env('HALF_DAY_HOLIDAY', 5),
+    'half_day_holiday' => env('HALF_DAY_HOLIDAY', 5),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

@@ -26,7 +26,7 @@ class LessonsController extends Controller
     public function setLessons(Request $request) {
         // TODO: get from config
         $half_day_end_time = '17:00';
-        $half_day_holidays = [5];
+        $half_day_holiday = 5;
 
         $date_n_times = $request->date_n_times;
         $date = array_shift($date_n_times);
@@ -35,7 +35,7 @@ class LessonsController extends Controller
         $busy_times = array();
 
         foreach($times as $time) {
-            if(in_array(((new Carbon($date))->dayOfWeek), $half_day_holidays)) {
+            if((new Carbon($date))->dayOfWeek == $half_day_holiday) {
                 if($time > $half_day_end_time) {
                     $some_is_not_saved .= __('Choosen time not in range', ['time' => $time]);
                     Log::channel('single')->warning(
@@ -98,10 +98,10 @@ class LessonsController extends Controller
         // TODO: get from config, also check if admin
         $start_time = '05:00';
         $end_time = '21:00';
-        $half_day_number = [5];
+        $half_day_number = 5;
         $half_day_end_time = '17:00';
 
-        $is_half_day = in_array(((new Carbon($request->day))->dayOfWeek), $half_day_number);
+        $is_half_day = (new Carbon($request->day))->dayOfWeek == $half_day_number;
         $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
         $admin_added_lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->where(function($q) use($start_time,$end_time) {
             $q->where('time', '<', $start_time);
