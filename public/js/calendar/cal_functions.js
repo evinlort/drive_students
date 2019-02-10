@@ -57,6 +57,10 @@ function get_lessons(date) {
                             if($(this).data("time") > "19:00" && element[1] == 0) {
                                 $(this).hide();
                             }
+
+                            if($(this).data("time") > response.half_day_end_time && element[3] == true) {
+                                $(this).hide();
+                            }
                         }
                     });
                 }

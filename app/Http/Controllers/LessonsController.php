@@ -24,6 +24,10 @@ class LessonsController extends Controller
     }
 
     public function setLessons(Request $request) {
+        // TODO: get from config
+        $half_day_end_time = '17:00';
+        $half_day_holidays = [5];
+
         $date_n_times = $request->date_n_times;
         $date = array_shift($date_n_times);
         $times = $date_n_times;
@@ -31,6 +35,17 @@ class LessonsController extends Controller
         $busy_times = array();
 
         foreach($times as $time) {
+            if(in_array(((new Carbon($date))->dayOfWeek), $half_day_holidays)) {
+                if($time > $half_day_end_time) {
+                    $some_is_not_saved .= __('Choosen time not in range', ['time' => $time]);
+                    Log::channel('single')->warning(
+                        'User with ID:'.Auth::user()->id.' (name: '.Auth::user()->name.') with IP: '.request()->ip().', tried to order lesson that not in range. Params - date: '.
+                        $date.' , time: '.$time
+                    );
+                    continue;
+                }
+            }
+
             if(!Lesson::where('date',$date)->where('time', $time)->exists()) {
                 Lesson::create([
                     'user_id' => Auth::user()->id,
@@ -42,7 +57,6 @@ class LessonsController extends Controller
                 $some_is_not_saved .= __('Someone took lessons on just before you', ['time' => $time]);
                 $busy_times[] = $time;
             }
-            
         }
         return ['success'=>true, 'message' => $some_is_not_saved, 'busy' => $busy_times];
     }
@@ -84,7 +98,10 @@ class LessonsController extends Controller
         // TODO: get from config, also check if admin
         $start_time = '05:00';
         $end_time = '21:00';
+        $half_day_number = [5];
+        $half_day_end_time = '17:00';
 
+        $is_half_day = in_array(((new Carbon($request->day))->dayOfWeek), $half_day_number);
         $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
         $admin_added_lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->where(function($q) use($start_time,$end_time) {
             $q->where('time', '<', $start_time);
@@ -98,6 +115,7 @@ class LessonsController extends Controller
         if(count($lessons)) $has_lessons = true;
         $time_line = [];
         $time = new Carbon($start_time);
+
         while($time->format('H:i') <= $end_time) {
             $free_lesson = true;
             foreach ($taken_lessons_by_users as $taken_lesson) {
@@ -105,21 +123,28 @@ class LessonsController extends Controller
                 if($time->format('H:i:s') == $taken_lesson->time) {
                     // Check if by current student
                     if($taken_lesson->user_id == Auth::user()->id) {
-                        $time_line[] = [ $time->format('H:i'), 1, __('Already taken by you') ];
+                        $time_line[] = [ $time->format('H:i'), 1, __('Already taken by you'), $is_half_day ];
                     }
                     else {
-                        $time_line[] = [ $time->format('H:i'), 2, __('Already taken') ];
+                        $time_line[] = [ $time->format('H:i'), 2, __('Already taken'), $is_half_day ];
                     }
                     $free_lesson = false;
                     break;
                 }
             }
             if($free_lesson) {
-                $time_line[] = [ $time->format('H:i'), 0, ' ' ];
+                $time_line[] = [ $time->format('H:i'), 0, ' ', $is_half_day ];
             }
             $time->addMinutes(40);
         }
-        return response()->json([ 'data' => $time_line, 'has_user_lessons' => $has_lessons ]);
+        return response()->json(
+            [ 
+                'data' => $time_line, 
+                'has_user_lessons' => $has_lessons, 
+                'is_half_day' => $is_half_day, 
+                'half_day_end_time' => $half_day_end_time
+            ]
+        );
     }
 
     public function get_dates_range() {
@@ -129,7 +154,7 @@ class LessonsController extends Controller
 
         //TODO get those from config
         $this->choose_start = 'now';
-        $this->holidays = [5,6];
+        $this->holidays = [6];
 
         $today = new Carbon($this->choose_start);
         $today2 = new Carbon($this->choose_start);

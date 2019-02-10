@@ -97,7 +97,15 @@
                             <div class="cal-row">
                             @for ($i = 0; $i < 7; $i++)
                                 <div data-day-no="{{ $days_a[$counter]['full'] }}" 
-                                    class="cal-box {{ $days_a[$counter][1]==1?'cal-box-gray':($days_a[$counter][1]==2?'cal-box-holiday':'') }}"
+                                    class="cal-box {{ 
+                                        $days_a[$counter][1]==1?
+                                            'cal-box-gray':
+                                            (
+                                                $days_a[$counter][1]==2?
+                                                    'cal-box-holiday':
+                                                    ''
+                                            ) 
+                                        }}"
                                     {{ !$days_a[$counter][1]?'data-toggle="modal" data-target="#favoritesModal">':'' }}
                                     >
                                     {{--

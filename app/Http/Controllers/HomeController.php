@@ -35,7 +35,8 @@ class HomeController extends Controller
 
         // TODO: get this from config
         $choose_start = 'now';
-        $holidays = [5,6];
+        $half_day_holidays = [5];
+        $holidays = [6];
         $start_time = '05:00';
         $end_time = '21:00';
 
@@ -69,6 +70,11 @@ class HomeController extends Controller
 
             if(in_array($data['start']->dayOfWeek, $holidays)) {
                 $days[] = [$data['start']->format('d'),2, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                $data['start']->addDay();
+                continue;
+            }
+            if(in_array($data['start']->dayOfWeek, $half_day_holidays)) {
+                $days[] = [$data['start']->format('d'),3, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
                 $data['start']->addDay();
                 continue;
             }

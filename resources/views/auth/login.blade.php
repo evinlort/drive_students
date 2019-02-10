@@ -5,7 +5,6 @@
 
 @section('js')
 <script>
-    // $("#identity").focus();
     document.getElementById("identity").focus();
 </script>
 @endsection
