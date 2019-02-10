@@ -105,7 +105,8 @@
                                                     'cal-box-holiday':
                                                     ''
                                             ) 
-                                        }}"
+                                        }} {{ $days_a[$counter][1]==3?
+                                            'cal-box-half_day':'' }}"
                                     {{ !$days_a[$counter][1]?'data-toggle="modal" data-target="#favoritesModal">':'' }}
                                     >
                                     {{--

@@ -128,6 +128,10 @@ input:checked + .slider:before {
     left: 1%;
 }
 
+.cal-box-half_day {
+    background: linear-gradient(180deg, #ffffff 50%, #ffc8c8 50%);
+}
+
 .green-point {
     background-color: lawngreen;
 }
