@@ -15,6 +15,11 @@
                     @endif
                     <div class="row border-bottom mb-2">
                         <div class="col-12">
+                            <a href="{{ route('choose_student') }}">{{ __('Add/Remove lessons for student') }}</a>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col-12">
                             <a href="{{ route('week_report') }}">{{ __('Show this week report') }}</a>
                         </div>
                     </div>

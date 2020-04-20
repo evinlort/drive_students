@@ -36,6 +36,8 @@ Route::post('/set_lessons', 'LessonsController@setLessons');
 
 Route::get('settings', 'Admin\AdminController@siteSettings')->name('siteSettings');
 Route::get('week_report', 'Admin\AdminController@weekReport')->name('week_report');
+Route::get('choose_student', 'Admin\AdminController@chooseStudent')->name('choose_student');
+Route::get('student_home', 'Admin\AdminController@studentHome')->name('student_home');
 Route::get('show_date/{date}', 'Admin\AdminController@showDate')->name('show_date');
 Route::get('student_registration', 'Admin\AdminController@studentRegistration')->name('studentRegistration');
 Route::post('student_registration', 'Admin\AdminController@registerStudent')->name('registerStudent');

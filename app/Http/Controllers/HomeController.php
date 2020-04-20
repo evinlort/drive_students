@@ -29,6 +29,7 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $data['user'] = $user;
         $settings = $user->settings;
         Carbon::setWeekStartsAt(0);
         Carbon::setWeekEndsAt(6);

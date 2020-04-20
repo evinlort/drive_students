@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Lesson;
-use App\Http\Requests\LessonRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\LessonRequest;
+use Illuminate\Support\Facades\Auth;
 
 class LessonsController extends Controller
 {
@@ -18,12 +19,13 @@ class LessonsController extends Controller
     private $user;
 
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'admin']);
         $this->choose_start = 'now';
         $this->holidays = array(5,6);
     }
 
     public function setLessons(Request $request) {
+        $user = User::where('id', $request->user_id)->first();
         // TODO: get from config
         $half_day_end_time = '17:00';
         $half_day_holiday = 5;
@@ -39,7 +41,7 @@ class LessonsController extends Controller
                 if($time > $half_day_end_time) {
                     $some_is_not_saved .= __('Choosen time not in range', ['time' => $time]);
                     Log::channel('single')->warning(
-                        'User with ID:'.Auth::user()->id.' (name: '.Auth::user()->name.') with IP: '.request()->ip().', tried to order lesson that not in range. Params - date: '.
+                        'User with ID:'.$user->id.' (name: '.$user->name.') with IP: '.request()->ip().', tried to order lesson that not in range. Params - date: '.
                         $date.' , time: '.$time
                     );
                     continue;
@@ -48,7 +50,7 @@ class LessonsController extends Controller
 
             if(!Lesson::where('date',$date)->where('time', $time)->exists()) {
                 Lesson::create([
-                    'user_id' => Auth::user()->id,
+                    'user_id' => $user->id,
                     'date' => $date,
                     'time' => $time
                 ]);
