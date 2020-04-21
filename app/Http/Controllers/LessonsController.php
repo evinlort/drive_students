@@ -19,7 +19,7 @@ class LessonsController extends Controller
     private $user;
 
     public function __construct() {
-        $this->middleware(['auth', 'admin']);
+        $this->middleware(['auth']);
         $this->choose_start = 'now';
         $this->holidays = array(5,6);
     }

@@ -41,6 +41,7 @@
 
                 <div id="lessons">
                     <input type="hidden" name="this_date" value />
+                    <input type="hidden" name="user_id" value="{{ $user->id }}" />
                     @foreach ($time_line as $time)
                         <div class="time-string row" data-time="{{ $time }}">
                             <div class="btn-group pull-right col-12" style="margin: 20px 25px 0 0;">
