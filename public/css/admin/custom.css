@@ -27,3 +27,12 @@
 label.strong_name {
     font-weight: bold;
 }
+
+.delete_lesson {
+    border-radius: 50%;
+    border-color: black;
+    border-width: 1px;
+    background-color: red;
+    font-weight: 900;
+    margin-left: auto;
+}

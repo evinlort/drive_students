@@ -31,6 +31,7 @@ Route::post('/get_lessons', 'LessonsController@getLessons');
 Route::post('/is_lesson_free', 'LessonsController@isLessonFree');
 Route::post('/is_has_free_lessons', 'LessonsController@isHasFreeLessons');
 Route::post('/set_lessons', 'LessonsController@setLessons');
+Route::post('delete_lesson', 'LessonsController@deleteLesson');
 
 // Admin
 
@@ -43,4 +44,3 @@ Route::get('student_registration', 'Admin\AdminController@studentRegistration')-
 Route::post('student_registration', 'Admin\AdminController@registerStudent')->name('registerStudent');
 Route::post('remove_student_from_lesson', 'Admin\AdminController@removeStudent');
 Route::post('add_student_to_lesson', 'Admin\AdminController@addStudent');
-

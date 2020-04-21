@@ -24,6 +24,13 @@ class LessonsController extends Controller
         $this->holidays = array(5,6);
     }
 
+
+    public function deleteLesson(Request $request) {
+        $lesson = Lesson::where('date', $request->date)->where('time', $request->time)->where('user_id', $request->user_id)->delete();
+        return ['success' => $lesson];
+    }
+
+
     public function setLessons(Request $request) {
         $user = User::where('id', $request->user_id)->first();
         // TODO: get from config
@@ -64,6 +71,7 @@ class LessonsController extends Controller
     }
 
     public function isHasFreeLessons(Request $request) {
+        $user = User::where('id', $request->user_id)->first();
         $checked = $request->checked_lessons;
         $date = array_shift($checked);
         $choosen_lessons = count($checked);
@@ -74,13 +82,13 @@ class LessonsController extends Controller
             }
         }
         $this->get_dates_range();
-        $taken_by_student_for_date_range = Lesson::where('user_id', Auth::user()->id)
+        $taken_by_student_for_date_range = Lesson::where('user_id', $user->id)
             ->whereBetween('date', array($this->date_range_start->format('Y-m-d'), $this->date_range_end->format('Y-m-d')))
             ->count();
-        $available_lessons = Auth::user()->settings->lessons - $taken_by_student_for_date_range;
+        $available_lessons = $user->settings->lessons - $taken_by_student_for_date_range;
         if($available_lessons - $choosen_lessons < 0) {
             Log::channel('single')->warning(
-                'User with ID:'.Auth::user()->id.' (name: '.Auth::user()->name.') with IP: '.request()->ip().', tried to order too much lessons (max is '.Auth::user()->settings->lessons.', free lessons left: '.$available_lessons.')'
+                'User with ID:'.$user->id.' (name: '.$user->name.') with IP: '.request()->ip().', tried to order too much lessons (max is '.$user->settings->lessons.', free lessons left: '.$available_lessons.')'
             );
             return ['status' => false, 'error' => __('You are already used too much lessons, available lessons: ',['lessons' =>$available_lessons])];
         }
@@ -97,6 +105,7 @@ class LessonsController extends Controller
     }
 
     public function getLessons(Request $request) {
+        $user = User::where('id', $request->user_id)->first();
         // TODO: get from config, also check if admin
         $start_time = '05:00';
         $end_time = '21:00';
@@ -104,8 +113,8 @@ class LessonsController extends Controller
         $half_day_end_time = '17:00';
 
         $is_half_day = (new Carbon($request->day))->dayOfWeek == $half_day_number;
-        $lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->pluck('time')->toArray();
-        $admin_added_lessons = Lesson::where("user_id",Auth::user()->id)->where("date", $request->day)->where(function($q) use($start_time,$end_time) {
+        $lessons = Lesson::where("user_id",$user->id)->where("date", $request->day)->pluck('time')->toArray();
+        $admin_added_lessons = Lesson::where("user_id",$user->id)->where("date", $request->day)->where(function($q) use($start_time,$end_time) {
             $q->where('time', '<', $start_time);
             $q->orWhere('time', '>', $end_time);
         })->pluck('time')->toArray();
@@ -124,7 +133,7 @@ class LessonsController extends Controller
                 // Lesson already taken
                 if($time->format('H:i:s') == $taken_lesson->time) {
                     // Check if by current student
-                    if($taken_lesson->user_id == Auth::user()->id) {
+                    if($taken_lesson->user_id == $user->id) {
                         $time_line[] = [ $time->format('H:i'), 1, __('Already taken by you'), $is_half_day ];
                     }
                     else {

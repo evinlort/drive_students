@@ -23,7 +23,8 @@ function get_lessons(date) {
         url: url + "get_lessons",
         type: "post",
         data: {
-            day: date
+            day: date,
+            user_id: $("#lessons input[name=user_id]").val()
         },
         dataType: 'json',
         headers: {
@@ -102,9 +103,10 @@ function check_lesson_and_free(that) {
         if (res.status == 'yes') {
             that.val(1);
             let student_checked_unsaved_lessons_array = get_checked_lessons();
+            let user_id = $("#lessons input[name=user_id]").val()
             $.post(
                 url + "is_has_free_lessons",
-                { "checked_lessons": student_checked_unsaved_lessons_array, "_token": window.Laravel.csrfToken },
+                { "checked_lessons": student_checked_unsaved_lessons_array, "user_id": user_id, "_token": window.Laravel.csrfToken },
                 function (ret) {
                     if (!ret.status) {
                         that.val(0);

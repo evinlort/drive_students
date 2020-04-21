@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('css')
+<link rel="stylesheet" href="{{ asset('css/admin/custom.css') }}">
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 @endsection
 
@@ -46,6 +47,7 @@
                                 <span class="slider round"></span>
                             </label>
                             <label class="time_info"></label>
+                            <div class="delete_lesson" title="Delete lesson">Delete</div>
                         </div>
                     </div>
                     @endforeach
