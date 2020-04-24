@@ -158,8 +158,8 @@ class LessonsController extends Controller
         );
     }
 
-    public function get_dates_range() {
-        $settings = app('auth')->user()->settings;
+    public function get_dates_range(Request $request) {
+        $settings = User::where('id', $request->user_id)->first()->settings;
         Carbon::setWeekStartsAt(0);
         Carbon::setWeekEndsAt(6);
 
@@ -176,7 +176,7 @@ class LessonsController extends Controller
     }
 
     public function checkDateInBorders(Request $request) {
-        $this->get_dates_range();
+        $this->get_dates_range($request);
         
         if(Carbon::parse($request->date)->between($this->date_range_start, $this->date_range_end) && !in_array(Carbon::parse($request->date)->dayOfWeek, $this->holidays)) {
             return ['status' => true];

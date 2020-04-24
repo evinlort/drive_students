@@ -3,12 +3,14 @@ var csrf = window.Laravel.csrfToken;
 
 function check_date_in_borders(date) {
     var return_value = false;
+    var user_id = $("#lessons input[name='user_id']").val();
     $.ajax({
         type: "post",
         url: url + "check_date_is_in_borders",
         async: false,
         data: {
             date: date,
+            user_id: user_id,
             _token: csrf
         },
         success: function (ret) {
