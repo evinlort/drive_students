@@ -46,6 +46,9 @@ function get_lessons(date) {
                             if ($(this).data("time") > "19:00" && element[1] == 2) {
                                 $(this).hide();
                             }
+                            if (element[1] == 2) {
+                                $(this).find(".delete_lesson").hide();
+                            }
                             $(this).find("input[type=checkbox]").prop("checked", "checked").prop("disabled", "disabled").val(-1);
                             $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").text(element[2]);
                         }
