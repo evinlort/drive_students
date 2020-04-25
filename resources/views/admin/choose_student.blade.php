@@ -26,6 +26,9 @@
                                         class="form-control w-70 d-inline" autocomplete="off" />
                                     <datalist id="identities">
                                         @foreach($users as $user)
+                                            @if($user->settings->is_admin)
+                                                @continue
+                                            @endif
                                         <option value="{{ $user->identity }}">{{ $user->name }}</option>
                                         @endforeach
                                     </datalist>
