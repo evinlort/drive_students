@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Lesson;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use App\Models\UsersSettings;
 use App\Http\Controllers\Controller;
@@ -232,5 +233,17 @@ class AdminController extends Controller
         $data['start'] = $this->date_range_start;
         $data['end'] = $this->date_range_end;
         return view('admin.student_report', $data);
+    }
+
+    public function downloadPDF(Request $request)
+    {
+        $this->get_dates_range();
+        $data = array();
+        $data['user'] = User::where('identity', $request->id)->first();
+        $data['lessons'] = Lesson::whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
+        $data['start'] = $this->date_range_start;
+        $data['end'] = $this->date_range_end;
+        $pdf = PDF::loadView('admin.student_report_tiny', $data);
+        return $pdf->download('report.pdf');
     }
 }

@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\Http\Controllers\Admin\AdminController;
+
 Route::get('/language/{locale}', function ($locale) {
     session(['my_locale' => $locale]);
     return redirect('/');
@@ -48,3 +51,4 @@ Route::get('delete_student', 'Admin\AdminController@deleteStudentView')->name('d
 Route::post('delete_student', 'Admin\AdminController@deleteStudent')->name('delete_student');
 Route::get('show_report', 'Admin\AdminController@showReportView')->name('show_report');
 Route::get('student_report', 'Admin\AdminController@studentReport')->name('student_report');
+Route::get('download_pdf', 'Admin\AdminController@downloadPDF')->name('download_pdf');

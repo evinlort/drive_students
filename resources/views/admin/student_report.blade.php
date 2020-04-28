@@ -7,6 +7,9 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Student report') }}</div>
+                <div>
+                <a href="{{ route('download_pdf').'?id='.$user->identity }}">Download PDF</a>
+                </div>
                 @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
