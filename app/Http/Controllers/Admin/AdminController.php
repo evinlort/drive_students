@@ -217,4 +217,20 @@ class AdminController extends Controller
         $this->date_range_start = $today->setDate($today->year, $today->month, $today->format('d') > 15 ? 16 : 1)->startOfDay();
         $this->date_range_end = $today2->startOfWeek()->setDate($today->year, $today->month, $today->format('d') > 15 ? $today3->endOfMonth()->format('d') : 15);
     }
+
+    public function showReportView()
+    {
+        return view('admin.report_choose_student', ['users' => User::all()]);
+    }
+
+    public function studentReport(Request $request)
+    {
+        $this->get_dates_range();
+        $data = array();
+        $data['user'] = User::where('identity', $request->choosen_student)->first();
+        $data['lessons'] = Lesson::whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
+        $data['start'] = $this->date_range_start;
+        $data['end'] = $this->date_range_end;
+        return view('admin.student_report', $data);
+    }
 }

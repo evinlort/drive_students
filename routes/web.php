@@ -46,3 +46,5 @@ Route::post('remove_student_from_lesson', 'Admin\AdminController@removeStudent')
 Route::post('add_student_to_lesson', 'Admin\AdminController@addStudent');
 Route::get('delete_student', 'Admin\AdminController@deleteStudentView')->name('deleteStudent');
 Route::post('delete_student', 'Admin\AdminController@deleteStudent')->name('delete_student');
+Route::get('show_report', 'Admin\AdminController@showReportView')->name('show_report');
+Route::get('student_report', 'Admin\AdminController@studentReport')->name('student_report');
