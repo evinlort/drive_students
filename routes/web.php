@@ -44,3 +44,5 @@ Route::get('student_registration', 'Admin\AdminController@studentRegistration')-
 Route::post('student_registration', 'Admin\AdminController@registerStudent')->name('registerStudent');
 Route::post('remove_student_from_lesson', 'Admin\AdminController@removeStudent');
 Route::post('add_student_to_lesson', 'Admin\AdminController@addStudent');
+Route::get('delete_student', 'Admin\AdminController@deleteStudentView')->name('deleteStudent');
+Route::post('delete_student', 'Admin\AdminController@deleteStudent')->name('delete_student');

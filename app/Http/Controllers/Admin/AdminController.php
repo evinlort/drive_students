@@ -144,6 +144,17 @@ class AdminController extends Controller
         return redirect()->back()->withErrors(['test' => __('All right!')]);
     }
 
+    public function deleteStudentView()
+    {
+        return view('admin/delete_student', ['users' => User::all()]);
+    }
+
+    public function deleteStudent(Request $request)
+    {
+        User::where('identity', $request->choosen_student)->delete();
+        return view('admin.home');
+    }
+
     public function studentRegistration()
     {
         // TODO: get from config
