@@ -41,7 +41,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button type="submit"
-                                        class="btn btn-primary w-25 delete_student">{{  __('Next') }}</button>
+                                        class="btn btn-primary w-25 delete_student" data-text="{{ __('Are you sure?') }}">{{  __('Next') }}</button>
                                 </div>
                             </div>
                         </div>

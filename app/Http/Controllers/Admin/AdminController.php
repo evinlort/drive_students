@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\UsersSettings;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AdminStudentRequest;
 
@@ -253,7 +254,7 @@ class AdminController extends Controller
         $this->get_dates_range();
         $lessons = Lesson::whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
 
-        $columns = array('Date', 'Time');
+        $columns = array(__('Date'), __('Time'));
         $fname = $request->id . '.csv';
         $file = fopen($fname, 'w');
         fputcsv($file, $columns);

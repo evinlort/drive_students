@@ -103,7 +103,7 @@ $(document).ready(function() {
 
     $(".delete_student").on("click", function(e) {
         e.stopPropagation();
-        if(confirm("Are you shure?")) {
+        if(confirm($(this).data("text"))) {
             console.log(e);
             $(e.target).submit();
             return true;

@@ -12,12 +12,10 @@
                 <div class="card-header">{{ __('Student report') }}</div>
                 <div class="row noprint">
                     <div class="col-4 text-center">
-                        <a class="btn btn-primary" href="{{ route('download_pdf').'?id='.$user->identity }}">{{ __('Download
-                        PDF') }}</a>
+                        <a class="btn btn-primary" href="{{ route('download_pdf').'?id='.$user->identity }}">{{ __('Download PDF') }}</a>
                     </div>
                     <div class="col-4 text-center">
-                        <a class="btn btn-primary" href="{{ route('download_csv').'?id='.$user->identity }}">{{ __('Download
-                        CSV') }}</a>
+                        <a class="btn btn-primary" href="{{ route('download_csv').'?id='.$user->identity }}">{{ __('Download CSV') }}</a>
                     </div>
                     <div class="col-4 text-center">
                         <a class="btn btn-primary" href="#" onClick="print();">{{ __('Print') }}</a>
@@ -28,7 +26,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 text-center">
-                                <label>{{ __('Student:') }}</label>
+                                <label>{{ __('Student name') }}:</label>
                                 <span>{{ $user->name }} {{ $user->identity }}</span>
                             </div>
                         </div>

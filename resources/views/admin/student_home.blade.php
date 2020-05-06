@@ -47,7 +47,7 @@
                                 <span class="slider round"></span>
                             </label>
                             <label class="time_info"></label>
-                            <div class="delete_lesson" title="Delete lesson">Delete</div>
+                            <div class="delete_lesson" title="Delete lesson">{{ __('Delete') }}</div>
                         </div>
                     </div>
                     @endforeach
@@ -125,7 +125,7 @@
     </div>
     <div class="row">
         <div class="col-12 text-center">
-            <a class="btn btn-primary" href="{{ route('student_report').'?choosen_student='.$user->identity }}">Report</a>
+            <a class="btn btn-primary" href="{{ route('student_report').'?choosen_student='.$user->identity }}">__('Report')</a>
         </div>
     </div>
 </div>
