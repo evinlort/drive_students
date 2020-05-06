@@ -7,18 +7,17 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Student report') }}</div>
-                <div>
-                <a href="{{ route('download_pdf').'?id='.$user->identity }}">Download PDF</a>
+                <div class="row">
+                    <div class="col-6 text-center">
+                        <a class="btn btn-primary" href="{{ route('download_pdf').'?id='.$user->identity }}">{{ __('Download
+                        PDF') }}</a>
+                    </div>
+                    <div class="col-6 text-center">
+                        <a class="btn btn-primary" href="{{ route('download_csv').'?id='.$user->identity }}">{{ __('Download
+                        CSV') }}</a>
+                    </div>
                 </div>
-                @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
+
                 <div class="card-body">
                     <div class="container">
                         <div class="row">

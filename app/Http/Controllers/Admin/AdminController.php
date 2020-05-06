@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Lesson;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use App\Models\UsersSettings;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AdminStudentRequest;
 
 class AdminController extends Controller
@@ -245,5 +245,23 @@ class AdminController extends Controller
         $data['end'] = $this->date_range_end;
         $pdf = PDF::loadView('admin.student_report_tiny', $data);
         return $pdf->download('report.pdf');
+    }
+
+    public function downloadCSV(Request $request)
+    {
+        $this->get_dates_range();
+        $lessons = Lesson::whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
+
+        $columns = array('Date', 'Time');
+        $fname = $request->id . '.csv';
+        $file = fopen($fname, 'w');
+        fputcsv($file, $columns);
+
+        foreach ($lessons as $lesson) {
+            fputcsv($file, array(Carbon::parse($lesson->date)->format('d-m-Y'), $lesson->time));
+        }
+        fclose($file);
+
+        return Response::download($fname);
     }
 }

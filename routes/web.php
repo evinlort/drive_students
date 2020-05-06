@@ -52,3 +52,4 @@ Route::post('delete_student', 'Admin\AdminController@deleteStudent')->name('dele
 Route::get('show_report', 'Admin\AdminController@showReportView')->name('show_report');
 Route::get('student_report', 'Admin\AdminController@studentReport')->name('student_report');
 Route::get('download_pdf', 'Admin\AdminController@downloadPDF')->name('download_pdf');
+Route::get('download_csv', 'Admin\AdminController@downloadCSV')->name('download_csv');
