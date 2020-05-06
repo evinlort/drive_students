@@ -1,31 +1,57 @@
-@extends('layouts.app')
+<head>
+    <style>
+        div {
+            text-align: center;
+        }
 
-@section('content')
+        .inline {
+            display: inline-block;
+            padding-right: 5px;
+        }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <label>{{ __('Student:') }}</label>
-            <span>{{ $user->name }} {{ $user->identity }}</span>
-        </div>
-    </div>
-    <hr>
-    @php
-    $counter = 1;
-    @endphp
-    @foreach($lessons as $lesson)
-    <div class="row">
-        <div class="col-md-2 col-2 text-right">
-            <span>{{ $counter++ }}</span>
-        </div>
-        <div class="col-md-5 col-5 text-center">
-            <span>{{ \Carbon\Carbon::parse($lesson->date)->format('d-m-Y') }}</span>
-        </div>
-        <div class="col-md-5 col-5 text-left">
-            <span>{{ $lesson->time }}</span>
-        </div>
-    </div>
-    @endforeach
+        .bordered {
+            border-right: 1px solid black;
+            border-left: 1px solid black;
+            padding-left: 5px;
+        }
+
+        table.center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<div>
+    <span>{{ __('Student:') }}</span> <span>{{ $user->name }} {{ $user->identity }}</span>
+</div>
+<br />
+<div>
+    <table class="center">
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Time</th>
+        </tr>
+        <tbody>
+            @php
+            $counter = 1;
+            @endphp
+            @foreach($lessons as $lesson)
+            <tr>
+                <td>
+                    {{ $counter++ }}
+                </td>
+                <td>
+                    {{ \Carbon\Carbon::parse($lesson->date)->format('d-m-Y') }}
+                </td>
+                <td>
+                    {{ $lesson->time }}
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 
-@endsection
+</div>

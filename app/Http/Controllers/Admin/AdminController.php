@@ -243,6 +243,7 @@ class AdminController extends Controller
         $data['lessons'] = Lesson::whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
         $data['start'] = $this->date_range_start;
         $data['end'] = $this->date_range_end;
+        // return view('admin.student_report_tiny', $data);
         $pdf = PDF::loadView('admin.student_report_tiny', $data);
         return $pdf->download('report.pdf');
     }
