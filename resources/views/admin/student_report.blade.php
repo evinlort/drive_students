@@ -1,20 +1,26 @@
 @extends('layouts.app')
 
-@section('content')
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/admin/report_print.css') }}">
+@endsection
 
+@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Student report') }}</div>
-                <div class="row">
-                    <div class="col-6 text-center">
+                <div class="row noprint">
+                    <div class="col-4 text-center">
                         <a class="btn btn-primary" href="{{ route('download_pdf').'?id='.$user->identity }}">{{ __('Download
                         PDF') }}</a>
                     </div>
-                    <div class="col-6 text-center">
+                    <div class="col-4 text-center">
                         <a class="btn btn-primary" href="{{ route('download_csv').'?id='.$user->identity }}">{{ __('Download
                         CSV') }}</a>
+                    </div>
+                    <div class="col-4 text-center">
+                        <a class="btn btn-primary" href="#" onClick="print();">{{ __('Print') }}</a>
                     </div>
                 </div>
 
@@ -26,7 +32,7 @@
                                 <span>{{ $user->name }} {{ $user->identity }}</span>
                             </div>
                         </div>
-                        <hr>
+                        <hr class="noprint">
                         @php
                         $counter = 1;
                         @endphp
