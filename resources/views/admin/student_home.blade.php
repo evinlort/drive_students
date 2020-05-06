@@ -125,7 +125,7 @@
     </div>
     <div class="row">
         <div class="col-12 text-center">
-            <a class="btn btn-primary" href="{{ route('student_report').'?choosen_student='.$user->identity }}">__('Report')</a>
+            <a class="btn btn-primary" href="{{ route('student_report').'?choosen_student='.$user->identity }}">{{ __('Report') }}</a>
         </div>
     </div>
 </div>
