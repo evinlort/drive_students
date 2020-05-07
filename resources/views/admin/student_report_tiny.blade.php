@@ -29,9 +29,9 @@
 <div>
     <table class="center">
         <tr>
-            <th>__('ID')</th>
-            <th>__('Date')</th>
-            <th>__('Time')</th>
+            <th>{{ __('ID') }}</th>
+            <th>{{ __('Date') }}</th>
+            <th>{{ __('Time') }}</th>
         </tr>
         <tbody>
             @php
