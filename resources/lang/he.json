@@ -63,5 +63,8 @@
     "Enter identity or time": "הכנס ת.ז. או זמן",
     "Search": "חפש",
     "Clear": "נקה",
-    "Report":"דוח"
+    "Report":"דוח",
+    "ID":"מספר",
+    "Date":"תאריך",
+    "Time":"זמן"
 }
