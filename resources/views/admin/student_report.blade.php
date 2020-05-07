@@ -9,7 +9,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Student report') }} - <strong>{{ $user->name }}</strong> <i>{{ $user->identity }}</i></div>
+                <div class="card-header">{{ __('Student report') }} - <strong>{{ $user->name }}</strong> <i>{{ $user->identity }}</i>e</div>
                 <div class="row noprint">
                     <div class="col-4 text-center">
                         <a class="btn btn-primary" href="{{ route('download_pdf').'?id='.$user->identity }}">{{ __('Download PDF') }}</a>
