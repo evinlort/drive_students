@@ -230,7 +230,7 @@ class AdminController extends Controller
         $this->get_dates_range();
         $data = array();
         $data['user'] = User::where('identity', $request->choosen_student)->first();
-        $data['lessons'] = Lesson::whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
+        $data['lessons'] = Lesson::where('user_id', $request->choosen_student)->whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
         $data['start'] = $this->date_range_start;
         $data['end'] = $this->date_range_end;
         return view('admin.student_report', $data);
@@ -241,7 +241,7 @@ class AdminController extends Controller
         $this->get_dates_range();
         $data = array();
         $data['user'] = User::where('identity', $request->id)->first();
-        $data['lessons'] = Lesson::whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
+        $data['lessons'] = Lesson::where('user_id', $request->choosen_student)->whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
         $data['start'] = $this->date_range_start;
         $data['end'] = $this->date_range_end;
         // return view('admin.student_report_tiny', $data);
@@ -252,7 +252,7 @@ class AdminController extends Controller
     public function downloadCSV(Request $request)
     {
         $this->get_dates_range();
-        $lessons = Lesson::whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
+        $lessons = Lesson::where('user_id', $request->choosen_student)->whereBetween('date', [$this->date_range_start, $this->date_range_end])->get();
 
         $columns = array(__('Date'), __('Time'));
         $fname = $request->id . '.csv';
