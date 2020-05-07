@@ -1,4 +1,5 @@
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
         div {
             text-align: center;
@@ -19,11 +20,15 @@
             margin-left: auto;
             margin-right: auto;
         }
+
+        body {
+            font-family: DejaVu Sans;
+        }
     </style>
 </head>
 
 <div>
-    <span>{{ __('Student:') }}</span> <span>{{ $user->name }} {{ $user->identity }}</span>
+    <span>{{ __('Student name') }}</span>: <span>{{ $user->name }} {{ $user->identity }}</span>
 </div>
 <br />
 <div>
