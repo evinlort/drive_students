@@ -14,3 +14,6 @@ yarn-error.log
 .env
 .phpunit.result.cache
 .history/
+
+*.csv
+*.ufm.php
