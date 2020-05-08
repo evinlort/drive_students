@@ -230,6 +230,9 @@ class AdminController extends Controller
         $this->get_dates_range();
         $data = array();
         $data['user'] = User::where('identity', $request->choosen_student)->first();
+        if(!$data['user']) {
+            return back()->withErrors(['error' => __('No identity given')]);
+        }
         $data['lessons'] = Lesson::where('user_id', $data['user']->id)
             ->whereBetween('date', [$this->date_range_start, $this->date_range_end])
             ->orderBy('date', 'ASC')
