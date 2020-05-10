@@ -35,7 +35,8 @@ class AdminController extends Controller
         if (empty($request->choosen_student)) {
             return Redirect::back()->withErrors(['status' => __('No identity')]);
         }
-        $user = User::where('identity', $request->choosen_student)->first();
+        $identity = explode(' ', $request->choosen_student)[0];
+        $user = User::where('identity', $identity)->first();
         $data['user'] = $user;
         $settings = $user->settings;
         Carbon::setWeekStartsAt(0);
@@ -153,7 +154,8 @@ class AdminController extends Controller
 
     public function deleteStudent(Request $request)
     {
-        User::where('identity', $request->choosen_student)->delete();
+        $identity = explode(' ', $request->choosen_student)[0];
+        User::where('identity', $identity)->delete();
         return view('admin.home');
     }
 
@@ -252,7 +254,8 @@ class AdminController extends Controller
     {
         $this->get_dates_range();
         $data = array();
-        $data['user'] = User::where('identity', $request->choosen_student)->first();
+        $identity = explode(' ', $request->choosen_student)[0];
+        $data['user'] = User::where('identity', $identity)->first();
         if(!$data['user']) {
             return back()->withErrors(['error' => __('No identity given')]);
         }
