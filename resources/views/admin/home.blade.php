@@ -35,6 +35,11 @@
                     </div>
                     <div class="row border-bottom mb-2">
                         <div class="col-12">
+                            <a href="{{ route('show_update') }}">{{ __('Update student') }}</a>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col-12">
                             <a href="{{ route('deleteStudent') }}">{{ __('Delete student') }}</a>
                         </div>
                     </div>

@@ -220,6 +220,29 @@ class AdminController extends Controller
         $this->date_range_end = $today2->startOfWeek()->setDate($today->year, $today->month, $today->format('d') > 15 ? $today3->endOfMonth()->format('d') : 15);
     }
 
+    public function showUpdateView()
+    {
+        return view('admin.update_choose_student', ['users' => User::all()]);
+    }
+
+    public function studentUpdate(Request $request)
+    {
+        $data = array();
+        $data['user'] = User::where('identity', $request->choosen_student)->first();
+        $data['settings'] = $data['user']->settings;
+        return view('admin.student_update', $data);
+    }
+
+    public function updateStudentSettings(Request $request)
+    {
+        $settings = UsersSettings::where('user_id', $request->id)->first();
+        $settings->weeks = $request->weeks;
+        $settings->lessons = $request->lessons;
+        $settings->save();
+        return redirect('show_update');
+
+    }
+
     public function showReportView()
     {
         return view('admin.report_choose_student', ['users' => User::all()]);

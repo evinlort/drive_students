@@ -49,7 +49,10 @@ Route::post('remove_student_from_lesson', 'Admin\AdminController@removeStudent')
 Route::post('add_student_to_lesson', 'Admin\AdminController@addStudent');
 Route::get('delete_student', 'Admin\AdminController@deleteStudentView')->name('deleteStudent');
 Route::post('delete_student', 'Admin\AdminController@deleteStudent')->name('delete_student');
+Route::post('updateStudentSettings', 'Admin\AdminController@updateStudentSettings')->name('updateStudentSettings');
 Route::get('show_report', 'Admin\AdminController@showReportView')->name('show_report');
 Route::get('student_report', 'Admin\AdminController@studentReport')->name('student_report');
 Route::get('download_pdf', 'Admin\AdminController@downloadPDF')->name('download_pdf');
 Route::get('download_csv', 'Admin\AdminController@downloadCSV')->name('download_csv');
+Route::get('show_update', 'Admin\AdminController@showUpdateView')->name('show_update');
+Route::get('student_update', 'Admin\AdminController@studentUpdate')->name('student_update');
