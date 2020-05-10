@@ -230,7 +230,8 @@ class AdminController extends Controller
     public function studentUpdate(Request $request)
     {
         $data = array();
-        $data['user'] = User::where('identity', $request->choosen_student)->first();
+        $identity = explode(' ', $request->choosen_student)[0];
+        $data['user'] = User::where('identity', $identity)->first();
         $data['settings'] = $data['user']->settings;
         return view('admin.student_update', $data);
     }

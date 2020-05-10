@@ -29,7 +29,7 @@
                                             @if($user->settings->is_admin)
                                                 @continue
                                             @endif
-                                        <option value="{{ $user->identity }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->identity }} - {{ $user->name }}">{{ $user->name }}</option>
                                         @endforeach
                                     </datalist>
                                 </div>
