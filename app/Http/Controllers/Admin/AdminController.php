@@ -260,8 +260,9 @@ class AdminController extends Controller
         if(!$data['user']) {
             return back()->withErrors(['error' => __('No identity given')]);
         }
+        $now = new Carbon();
         $data['lessons'] = Lesson::where('user_id', $data['user']->id)
-            ->whereBetween('date', [$this->date_range_start, $this->date_range_end])
+            ->whereBetween('date', [$now->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])
             ->orderBy('date', 'ASC')
             ->orderBy('time', 'ASC')
             ->get();
@@ -275,8 +276,9 @@ class AdminController extends Controller
         $this->get_dates_range();
         $data = array();
         $data['user'] = User::where('identity', $request->id)->first();
+        $now = new Carbon();
         $data['lessons'] = Lesson::where('user_id', $data['user']->id)
-            ->whereBetween('date', [$this->date_range_start, $this->date_range_end])
+            ->whereBetween('date', [$now->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])
             ->orderBy('date', 'ASC')
             ->orderBy('time', 'ASC')
             ->get();
@@ -291,8 +293,9 @@ class AdminController extends Controller
     {
         $this->get_dates_range();
         $data['user'] = User::where('identity', $request->id)->first();
+        $now = new Carbon();
         $lessons = Lesson::where('user_id', $data['user']->id)
-            ->whereBetween('date', [$this->date_range_start, $this->date_range_end])
+            ->whereBetween('date', [$now->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])
             ->orderBy('date', 'ASC')
             ->orderBy('time', 'ASC')
             ->get();
