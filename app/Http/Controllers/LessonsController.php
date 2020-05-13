@@ -20,7 +20,7 @@ class LessonsController extends Controller
 
     public function __construct() {
         $this->middleware(['auth']);
-        $this->choose_start = '2020-05-16';
+        $this->choose_start = 'now';
         $this->holidays = array(5,6);
     }
 
@@ -170,7 +170,7 @@ class LessonsController extends Controller
         Carbon::setWeekEndsAt(6);
 
         //TODO get those from config
-        $this->choose_start = '2020-05-16';
+        $this->choose_start = 'now';
         $this->holidays = [6];
 
         $today = new Carbon($this->choose_start);

@@ -35,7 +35,7 @@ class HomeController extends Controller
         Carbon::setWeekEndsAt(6);
 
         // TODO: get this from config
-        $choose_start = '2020-05-16';
+        $choose_start = 'now';
         $half_day_holidays = 5;
         $holidays = [6];
         $start_time = '05:00';
