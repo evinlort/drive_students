@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Lesson;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\UsersSettings;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AdminStudentRequest;
@@ -18,6 +20,9 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('admin');
+        $this->half_day_holidays = 5;
+        $this->holidays = [6];
+        $this->choose_start = 'now';
     }
 
     public function siteSettings()
@@ -43,18 +48,15 @@ class AdminController extends Controller
         Carbon::setWeekEndsAt(6);
 
         // TODO: get this from config
-        $choose_start = 'now';
-        $half_day_holidays = 5;
-        $holidays = [6];
         $start_time = '05:00';
         $end_time = '21:00';
 
-        $today = new Carbon($choose_start);
-        $today2 = new Carbon($choose_start);
-        $today3 = new Carbon($choose_start);
-        $today4 = new Carbon($choose_start);
-        $today5 = new Carbon($choose_start);
-        $today6 = new Carbon($choose_start);
+        $today = new Carbon($this->choose_start);
+        $today2 = new Carbon($this->choose_start);
+        $today3 = new Carbon($this->choose_start);
+        // $today4 = new Carbon($this->choose_start);
+        // $today5 = new Carbon($this->choose_start);
+        $today6 = new Carbon($this->choose_start);
 
         $data['start'] = $today6->startOfWeek();
 
@@ -68,34 +70,27 @@ class AdminController extends Controller
                 15
         )->addDays($days_to_add);
 
-        $end_of_period = $end->format('Y-m-d');
-        $data['end'] = $end->endOfWeek();
+        $data['end_of_period'] = $end->copy()->endOfWeek()->format('Y-m-d');
+        $data['end'] = $end;
 
-        while ($data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')) {
-            $has_user_lessons = Lesson::where('user_id', $user->id)->where('date', $data['start']->format('Y-m-d'))->count('user_id'); //false;
-            // if(Lesson::where('user_id', $user->id)->where('date', $data['start']->format('Y-m-d'))->count('user_id')) {
-            //     $has_user_lessons = true;
-            // }
-
-            if (in_array($data['start']->dayOfWeek, $holidays)) {
-                $days[] = [$data['start']->format('d'), 2, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
-                $data['start']->addDay();
-                continue;
-            }
-            if ($data['start']->dayOfWeek == $half_day_holidays) {
-                $days[] = [$data['start']->format('d'), 3, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
-                $data['start']->addDay();
-                continue;
-            }
-            if ($data['start']->format('Y-m-d') >= $today5->format('Y-m-d') && $data['start']->format('Y-m-d') <= $end_of_period) {
-                $days[] = [$data['start']->format('d'), 0, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
-            } else {
-                $days[] = [$data['start']->format('d'), 1, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
-            }
-
-            $data['start']->addDay();
+        $added_range = false;
+        $next_range['user'] = $data['user'];
+        if ((new Carbon)->day >= 13 && (new Carbon)->day <= 15) {
+            $added_range = true;
+            $next_range['start'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->month, 16)->startOfWeek();
+            $next_range['start_of_period'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->month, 16);
+            $next_range['end'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->month, $today3->endOfMonth()->format('d'));
+            $next_range['end_of_period'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->month, $today3->endOfMonth()->format('d'))->endOfWeek()->format('Y-m-d');
+        } elseif ((new Carbon)->day >= 28 && (new Carbon)->day <= 31) {
+            $added_range = true;
+            $next_range['start'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 1)->startOfWeek();
+            $next_range['start_of_period'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 1);
+            $next_range['end'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 15);
+            $next_range['end_of_period'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 15)->endOfWeek()->format('Y-m-d');
         }
-        $data['days_a'] = $days;
+
+        $data['days_a'] = $this->get_days($data);
+        $data['days_b'] = $this->get_days($next_range);
 
         $data['days'] = [__('Su'), __('Mo'), __('Tu'), __('We'), __('Th'), __('Fr'), __('Sa')];
         $time_line = [];
@@ -107,7 +102,63 @@ class AdminController extends Controller
         $data['time_line'] = $time_line;
 
         return view('admin/student_home', $data);
-        // return view('admin/student_home', ['users' => User::all()]);
+    }
+
+    public function get_days($data)
+    {
+        try {
+            if (isset($data['start_of_period'])) {
+                $start_of_period = $data['start_of_period'];
+            } else {
+                $start_of_period = new Carbon($this->choose_start);
+            }
+            while ($data['start']->format('Y-m-d') <= $data['end_of_period']) {
+                $has_user_lessons = Lesson::where('user_id', $data['user']->id)->where('date', $data['start']->format('Y-m-d'))->count('user_id');
+
+                if (in_array($data['start']->dayOfWeek, $this->holidays)) {
+                    $days[] = [$data['start']->format('d'), 2, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                    if ($data['start']->format('Y-m-d') == $start_of_period->format('Y-m-d')) {
+                        $start_of_period->addDay();
+                    }
+                    $data['start']->addDay();
+                    continue;
+                }
+                if ($data['start']->dayOfWeek == $this->half_day_holidays) {
+                    if (
+                        $data['start']->format('Y-m-d') >= (new Carbon($this->choose_start))->format('Y-m-d') &&
+                        $data['start']->format('Y-m-d') <= $data['end_of_period'] &&
+                        $data['start']->format('Y-m-d') == $start_of_period->format('Y-m-d') &&
+                        $data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')
+                    ) {
+                        $days[] = [$data['start']->format('d'), 3, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                        $start_of_period->addDay();
+                        $data['start']->addDay();
+                    } else {
+                        $days[] = [$data['start']->format('d'), 1, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                        if ($data['start']->format('Y-m-d') == $start_of_period->format('Y-m-d')) {
+                            $start_of_period->addDay();
+                        }
+                        $data['start']->addDay();
+                    }
+                    continue;
+                }
+                if (
+                    $data['start']->format('Y-m-d') >= (new Carbon($this->choose_start))->format('Y-m-d') &&
+                    $data['start']->format('Y-m-d') <= $data['end_of_period'] &&
+                    $data['start']->format('Y-m-d') == $start_of_period->format('Y-m-d') &&
+                    $data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')
+                ) {
+                    $days[] = [$data['start']->format('d'), 0, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                    $start_of_period->addDay();
+                } else {
+                    $days[] = [$data['start']->format('d'), 1, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                }
+                $data['start']->addDay();
+            }
+            return $days;
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     public function addStudent(Request $request)
@@ -201,6 +252,25 @@ class AdminController extends Controller
             $lessons_count[] = Lesson::where('date', $this->date_range_start->format('Y-m-d'))->groupBy('date')->selectRaw('count(`date`) as lessons')->first();
             $this->date_range_start->addDay();
         }
+        if ((new Carbon)->day >= 13 && (new Carbon)->day <= 15) {
+            $start = (new Carbon((new Carbon)->year.'-'.(new Carbon)->month.'-16'));
+            while ($start->format('Y-m-d') <= (new Carbon((new Carbon)->year.'-'.(new Carbon)->month.'-16'))->endOfMonth()->format('Y-m-d')) {
+                $next_lessons[] = $start->format('Y-m-d');
+                $next_lessons_count[] = Lesson::where('date', $start->format('Y-m-d'))->groupBy('date')->selectRaw('count(`date`) as lessons')->first();
+                $start->addDay();
+            }
+            $data['next_dates'] = $next_lessons;
+            $data['next_lessons_count'] = $next_lessons_count;
+        } elseif ((new Carbon)->day >= 28 && (new Carbon)->day <= 31) {
+            $start = (new Carbon((new Carbon)->year.'-'.(new Carbon)->addMonth()->month.'-1'));
+            while ($start->format('Y-m-d') <= (new Carbon((new Carbon)->year.'-'.(new Carbon)->addMonth()->month.'-1'))->addWeeks(2)->format('Y-m-d')) {
+                $next_lessons[] = $start->format('Y-m-d');
+                $next_lessons_count[] = Lesson::where('date', $start->format('Y-m-d'))->groupBy('date')->selectRaw('count(`date`) as lessons')->first();
+                $start->addDay();
+            }
+            $data['next_dates'] = $next_lessons;
+            $data['next_lessons_count'] = $next_lessons_count;
+        }
         $data['dates'] = $lessons;
         $data['lessons_count'] = $lessons_count;
         return view('admin/week_report', $data);
@@ -243,7 +313,6 @@ class AdminController extends Controller
         $settings->lessons = $request->lessons;
         $settings->save();
         return redirect('show_update');
-
     }
 
     public function showReportView()
@@ -257,12 +326,12 @@ class AdminController extends Controller
         $data = array();
         $identity = explode(' ', $request->choosen_student)[0];
         $data['user'] = User::where('identity', $identity)->first();
-        if(!$data['user']) {
+        if (!$data['user']) {
             return back()->withErrors(['error' => __('No identity given')]);
         }
         $now = new Carbon();
         $data['lessons'] = Lesson::where('user_id', $data['user']->id)
-            ->whereBetween('date', [$now->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])
+            ->where('date', '>=', $now->format('Y-m-d'))
             ->orderBy('date', 'ASC')
             ->orderBy('time', 'ASC')
             ->get();
@@ -278,7 +347,7 @@ class AdminController extends Controller
         $data['user'] = User::where('identity', $request->id)->first();
         $now = new Carbon();
         $data['lessons'] = Lesson::where('user_id', $data['user']->id)
-            ->whereBetween('date', [$now->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])
+            ->where('date', '>=', $now->format('Y-m-d'))
             ->orderBy('date', 'ASC')
             ->orderBy('time', 'ASC')
             ->get();
@@ -295,7 +364,7 @@ class AdminController extends Controller
         $data['user'] = User::where('identity', $request->id)->first();
         $now = new Carbon();
         $lessons = Lesson::where('user_id', $data['user']->id)
-            ->whereBetween('date', [$now->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])
+            ->where('date', '>=', $now->format('Y-m-d'))
             ->orderBy('date', 'ASC')
             ->orderBy('time', 'ASC')
             ->get();

@@ -46,6 +46,38 @@
                         </a>
                     </div>
                     @endforeach
+                    @if(isset($next_dates))
+                    <div>
+                        <hr />
+                        <div class="text-center">{{ __('Next range') }}</div>
+                        <hr />
+                    </div>
+                    @foreach($next_dates as $key => $date)
+                    <div class="row text-center border-bottom
+                        @if( \Carbon\Carbon::parse($date)->format('Y-m-d') == \Carbon\Carbon::parse('now')->format('Y-m-d') )
+                            row_in_present
+                        @elseif( \Carbon\Carbon::parse($date)->format('Y-m-d') < \Carbon\Carbon::parse('now')->format('Y-m-d') )
+                            row_in_past
+                        @endif
+                    ">
+                    
+                        <div class="col-6">
+                            <a href="{{ url('show_date').'/'.$date }}">
+                                {{ \Carbon\Carbon::parse($date)->format('d-m-Y') }}
+                            </a>
+                        </div>
+                        <div class="col-6 text-left">
+                            <a href="{{ url('show_date').'/'.$date }}">
+                            @if(isset($next_lessons_count[$key]) && $next_lessons_count[$key]['lessons'] > 0)
+                                {{ $next_lessons_count[$key]['lessons'] }} {{ __('lessons registered')  }}
+                            @endif
+                            </a>
+                        </div>
+
+                        </a>
+                    </div>
+                    @endforeach
+                    @endif
                     
                 </div>
             </div>
