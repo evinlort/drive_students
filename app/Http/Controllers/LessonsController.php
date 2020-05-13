@@ -20,7 +20,7 @@ class LessonsController extends Controller
 
     public function __construct() {
         $this->middleware(['auth']);
-        $this->choose_start = 'now';
+        $this->choose_start = '2020-05-16';
         $this->holidays = array(5,6);
     }
 
@@ -158,13 +158,19 @@ class LessonsController extends Controller
         );
     }
 
-    public function get_dates_range(Request $request) {
-        $settings = User::where('id', $request->user_id)->first()->settings;
+    public function get_dates_range(Request $request = NULL) {
+        if($request){
+            $user_id = $request->user_id;
+        }
+        else {
+            $user_id = Auth::user()->id;
+        }
+        $settings = User::where('id', $user_id)->first()->settings;
         Carbon::setWeekStartsAt(0);
         Carbon::setWeekEndsAt(6);
 
         //TODO get those from config
-        $this->choose_start = 'now';
+        $this->choose_start = '2020-05-16';
         $this->holidays = [6];
 
         $today = new Carbon($this->choose_start);
@@ -173,6 +179,7 @@ class LessonsController extends Controller
         $this->date_range_start = $today->setDate($today->year,$today->month,$today->format('d') > 15?16:1)->startOfDay();
         $days_to_add = 7 * ($settings->weeks - 2);
         $this->date_range_end = $today2->startOfWeek()->setDate($today->year,$today->month,$today->format('d') > 15?$today3->endOfMonth()->format('d'):15)->addDays($days_to_add);
+        if ((new Carbon)->day >= 12 & (new Carbon)->day <= 31) { $this->date_range_end->addDays($settings->weeks * 7);}
     }
 
     public function checkDateInBorders(Request $request) {

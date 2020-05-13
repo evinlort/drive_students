@@ -35,7 +35,7 @@ class HomeController extends Controller
         Carbon::setWeekEndsAt(6);
 
         // TODO: get this from config
-        $choose_start = 'now';
+        $choose_start = '2020-05-16';
         $half_day_holidays = 5;
         $holidays = [6];
         $start_time = '05:00';
@@ -75,8 +75,14 @@ class HomeController extends Controller
                 continue;
             }
             if($data['start']->dayOfWeek == $half_day_holidays) {
-                $days[] = [$data['start']->format('d'),3, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
-                $data['start']->addDay();
+                if($data['start']->format('Y-m-d') >= $today5->format('Y-m-d') && $data['start']->format('Y-m-d') <= $end_of_period) {
+                    $days[] = [$data['start']->format('d'),3, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                    $data['start']->addDay();
+                }
+                else {
+                    $days[] = [$data['start']->format('d'),1, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                    $data['start']->addDay();
+                }
                 continue;
             }
             if($data['start']->format('Y-m-d') >= $today5->format('Y-m-d') && $data['start']->format('Y-m-d') <= $end_of_period) {
