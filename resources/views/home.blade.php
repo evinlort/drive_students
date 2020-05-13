@@ -116,6 +116,11 @@
                             @endfor
                         </div>
                         @endfor
+                        <div>
+                            <hr />
+                            <div class="text-center">{{ __('Next range') }}</div>
+                            <hr />
+                        </div>
                         @if(isset($days_b))
                         @php
                         $counter = 0;
