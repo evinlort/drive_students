@@ -243,7 +243,6 @@ class AdminController extends Controller
         $settings->lessons = $request->lessons;
         $settings->save();
         return redirect('show_update');
-
     }
 
     public function showReportView()
@@ -257,12 +256,12 @@ class AdminController extends Controller
         $data = array();
         $identity = explode(' ', $request->choosen_student)[0];
         $data['user'] = User::where('identity', $identity)->first();
-        if(!$data['user']) {
+        if (!$data['user']) {
             return back()->withErrors(['error' => __('No identity given')]);
         }
         $now = new Carbon();
         $data['lessons'] = Lesson::where('user_id', $data['user']->id)
-            ->whereBetween('date', [$now->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])
+            ->where('date', '>=', $now->format('Y-m-d'))
             ->orderBy('date', 'ASC')
             ->orderBy('time', 'ASC')
             ->get();
@@ -278,7 +277,7 @@ class AdminController extends Controller
         $data['user'] = User::where('identity', $request->id)->first();
         $now = new Carbon();
         $data['lessons'] = Lesson::where('user_id', $data['user']->id)
-            ->whereBetween('date', [$now->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])
+            ->where('date', '>=', $now->format('Y-m-d'))
             ->orderBy('date', 'ASC')
             ->orderBy('time', 'ASC')
             ->get();
@@ -295,7 +294,7 @@ class AdminController extends Controller
         $data['user'] = User::where('identity', $request->id)->first();
         $now = new Carbon();
         $lessons = Lesson::where('user_id', $data['user']->id)
-            ->whereBetween('date', [$now->format('Y-m-d'), $this->date_range_end->format('Y-m-d')])
+            ->where('date', '>=', $now->format('Y-m-d'))
             ->orderBy('date', 'ASC')
             ->orderBy('time', 'ASC')
             ->get();
