@@ -81,7 +81,7 @@ class LessonsController extends Controller
                 return ['status' => false, 'error' => __('One or more of choosen lessons are already taken')];
             }
         }
-        $this->get_dates_range();
+        $this->get_dates_range($request);
         $taken_by_student_for_date_range = Lesson::where('user_id', $user->id)
             ->whereBetween('date', array($this->date_range_start->format('Y-m-d'), $this->date_range_end->format('Y-m-d')))
             ->count();
@@ -158,19 +158,21 @@ class LessonsController extends Controller
         );
     }
 
-    public function get_dates_range(Request $request = NULL) {
-        if($request){
-            $user_id = $request->user_id;
+    public function get_dates_range(Request $request) {
+        $user_id = $request->user_id;
+        if(isset($request->date)) {
+            $this->choose_start = $request->date;
         }
-        else {
-            $user_id = Auth::user()->id;
+        elseif(isset($request->checked_lessons)) {
+            $this->choose_start = $request->checked_lessons[0];
         }
+
         $settings = User::where('id', $user_id)->first()->settings;
         Carbon::setWeekStartsAt(0);
         Carbon::setWeekEndsAt(6);
 
         //TODO get those from config
-        $this->choose_start = 'now';
+        // $this->choose_start = 'now';
         $this->holidays = [6];
 
         $today = new Carbon($this->choose_start);
@@ -179,9 +181,9 @@ class LessonsController extends Controller
         $this->date_range_start = $today->setDate($today->year,$today->month,$today->format('d') > 15?16:1)->startOfDay();
         $days_to_add = 7 * ($settings->weeks - 2);
         $this->date_range_end = $today2->startOfWeek()->setDate($today->year,$today->month,$today->format('d') > 15?$today3->endOfMonth()->format('d'):15)->addDays($days_to_add);
-        if ((new Carbon)->day >= 12 & (new Carbon)->day <= 31) { 
-            $this->date_range_end->addDays($settings->weeks * 7)->endOfMonth();
-        }
+        // if ((new Carbon)->day >= 12 & (new Carbon)->day <= 31) { 
+        //     $this->date_range_end->addDays($settings->weeks * 7)->endOfMonth();
+        // }
     }
 
     public function checkDateInBorders(Request $request) {
