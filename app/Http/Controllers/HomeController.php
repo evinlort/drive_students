@@ -121,7 +121,7 @@ class HomeController extends Controller
                 }
                 if ($data['start']->dayOfWeek == $this->half_day_holidays) {
                     if (
-                        $data['start']->format('Y-m-d') >= (new Carbon($this->choose_start))->format('Y-m-d') && 
+                        $data['start']->format('Y-m-d') >= (new Carbon($this->choose_start))->format('Y-m-d') &&
                         $data['start']->format('Y-m-d') <= $data['end_of_period'] &&
                         $data['start']->format('Y-m-d') == $start_of_period->format('Y-m-d') &&
                         $data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')

@@ -78,6 +78,11 @@
                         {{ session('status') }}
                     </div>
                     @endif
+                    <div>
+                        <hr />
+                        <div class="text-center">{{ __('This range') }}</div>
+                        <hr />
+                    </div>
                     <div id="calendar">
                         @foreach ($days as $day)
                         <div class="cal-day-name">{{ $day }}</div>
@@ -87,10 +92,8 @@
                         //$add_days = $end_of_this_month;
                         //dd(count($days_a)/7);
                         @endphp
-                        @for($x = 0; $x < count($days_a)/7; $x++) 
-                        <div class="cal-row">
-                            @for ($i = 0; $i < 7; $i++) 
-                            <div data-day-no="{{ $days_a[$counter]['full'] }}" class="cal-box {{ 
+                        @for($x = 0; $x < count($days_a)/7; $x++) <div class="cal-row">
+                            @for ($i = 0; $i < 7; $i++) <div data-day-no="{{ $days_a[$counter]['full'] }}" class="cal-box {{ 
                                         $days_a[$counter][1]==1?
                                             'cal-box-gray':
                                             (
@@ -112,25 +115,23 @@
                                     <div class="cal-box-point red-point"></div>
                                     --}}
                                 {{ $days_a[$counter++][0] }}
-                            </div>
-                            @endfor
-                        </div>
-                        @endfor
-                        <div>
-                            <hr />
-                            <div class="text-center">{{ __('Next range') }}</div>
-                            <hr />
-                        </div>
-                        @if(isset($days_b))
-                        @php
-                        $counter = 0;
-                        //$add_days = $end_of_this_month;
-                        //dd(count($days_b)/7);
-                        @endphp
-                        @for($x = 0; $x < count($days_b)/7; $x++) 
-                        <div class="cal-row">
-                            @for ($i = 0; $i < 7; $i++) 
-                            <div data-day-no="{{ $days_b[$counter]['full'] }}" class="cal-box {{ 
+                    </div>
+                    @endfor
+                </div>
+                @endfor
+                <div>
+                    <hr />
+                    <div class="text-center">{{ __('Next range') }}</div>
+                    <hr />
+                </div>
+                @if(isset($days_b))
+                @php
+                $counter = 0;
+                //$add_days = $end_of_this_month;
+                //dd(count($days_b)/7);
+                @endphp
+                @for($x = 0; $x < count($days_b)/7; $x++) <div class="cal-row">
+                    @for ($i = 0; $i < 7; $i++) <div data-day-no="{{ $days_b[$counter]['full'] }}" class="cal-box {{ 
                                         $days_b[$counter][1]==1?
                                             'cal-box-gray':
                                             (
@@ -140,27 +141,27 @@
                                             ) 
                                         }} {{ $days_b[$counter][1]==3?
                                             'cal-box-half_day':'' }}" {{ !$days_b[$counter][1]?'data-toggle="modal" data-target="#favoritesModal">':'' }}>
-                                {{--
+                        {{--
                                         Display one of those
                                         Show in case student has 1 or more lessons on this day`
                                     --}}
-                                @if($days_b[$counter][2])
-                                <div class="cal-box-point green-point" title="{{ __('This day contains :lessons of your lessons', ['lessons' => $days_b[$counter][2]]) }}"></div>
-                                @endif
-                                {{--
+                        @if($days_b[$counter][2])
+                        <div class="cal-box-point green-point" title="{{ __('This day contains :lessons of your lessons', ['lessons' => $days_b[$counter][2]]) }}"></div>
+                        @endif
+                        {{--
                                         Show this in case no more free lessons on this day(or make it gray)
                                     <div class="cal-box-point red-point"></div>
                                     --}}
-                                {{ $days_b[$counter++][0] }}
-                            </div>
-                            @endfor
-                        </div>
-                        @endfor
-                        @endif
-                    </div>
-                </div>
+                        {{ $days_b[$counter++][0] }}
             </div>
+            @endfor
         </div>
+        @endfor
+        @endif
     </div>
+</div>
+</div>
+</div>
+</div>
 </div>
 @endsection
