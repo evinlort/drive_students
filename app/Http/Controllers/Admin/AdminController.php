@@ -201,6 +201,25 @@ class AdminController extends Controller
             $lessons_count[] = Lesson::where('date', $this->date_range_start->format('Y-m-d'))->groupBy('date')->selectRaw('count(`date`) as lessons')->first();
             $this->date_range_start->addDay();
         }
+        if ((new Carbon)->day >= 13 && (new Carbon)->day <= 15) {
+            $start = (new Carbon((new Carbon)->year.'-'.(new Carbon)->month.'-16'));
+            while ($start->format('Y-m-d') <= (new Carbon((new Carbon)->year.'-'.(new Carbon)->month.'-16'))->endOfMonth()->format('Y-m-d')) {
+                $next_lessons[] = $start->format('Y-m-d');
+                $next_lessons_count[] = Lesson::where('date', $start->format('Y-m-d'))->groupBy('date')->selectRaw('count(`date`) as lessons')->first();
+                $start->addDay();
+            }
+            $data['next_dates'] = $next_lessons;
+            $data['next_lessons_count'] = $next_lessons_count;
+        } elseif ((new Carbon)->day >= 28 && (new Carbon)->day <= 31) {
+            $start = (new Carbon((new Carbon)->year.'-'.(new Carbon)->addMonth()->month.'-1'));
+            while ($start->format('Y-m-d') <= (new Carbon((new Carbon)->year.'-'.(new Carbon)->addMonth()->month.'-1'))->addWeeks(2)->format('Y-m-d')) {
+                $next_lessons[] = $start->format('Y-m-d');
+                $next_lessons_count[] = Lesson::where('date', $start->format('Y-m-d'))->groupBy('date')->selectRaw('count(`date`) as lessons')->first();
+                $start->addDay();
+            }
+            $data['next_dates'] = $next_lessons;
+            $data['next_lessons_count'] = $next_lessons_count;
+        }
         $data['dates'] = $lessons;
         $data['lessons_count'] = $lessons_count;
         return view('admin/week_report', $data);
