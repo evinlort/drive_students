@@ -179,7 +179,9 @@ class LessonsController extends Controller
         $this->date_range_start = $today->setDate($today->year,$today->month,$today->format('d') > 15?16:1)->startOfDay();
         $days_to_add = 7 * ($settings->weeks - 2);
         $this->date_range_end = $today2->startOfWeek()->setDate($today->year,$today->month,$today->format('d') > 15?$today3->endOfMonth()->format('d'):15)->addDays($days_to_add);
-        if ((new Carbon)->day >= 12 & (new Carbon)->day <= 31) { $this->date_range_end->addDays($settings->weeks * 7);}
+        if ((new Carbon)->day >= 12 & (new Carbon)->day <= 31) { 
+            $this->date_range_end->addDays($settings->weeks * 7)->endOfMonth();
+        }
     }
 
     public function checkDateInBorders(Request $request) {

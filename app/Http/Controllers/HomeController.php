@@ -54,28 +54,30 @@ class HomeController extends Controller
         $days = array();
         $days_to_add = 7 * ($settings->weeks - 2);
         $end = $today2->startOfWeek()->setDate(
-                $today->year,
-                $today->month,
-                $today->format('d') > 15 ?
-                    $today3->endOfMonth()->format('d') :
-                    15
-            )->addDays($days_to_add);
+            $today->year,
+            $today->month,
+            $today->format('d') > 15 ?
+                $today3->endOfMonth()->format('d') :
+                15
+        )->addDays($days_to_add);
 
-        $data['end_of_period'] = $end->format('Y-m-d');
-        $data['end'] = $end->endOfWeek();
+        $data['end_of_period'] = $end->copy()->endOfWeek()->format('Y-m-d');
+        $data['end'] = $end;
 
         $added_range = false;
         $next_range = array();
         if ((new Carbon)->day >= 13 && (new Carbon)->day <= 15) {
             $added_range = true;
             $next_range['start'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->month, 16)->startOfWeek();
+            $next_range['start_of_period'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->month, 16);
             $next_range['end'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->month, $today3->endOfMonth()->format('d'));
-            $next_range['end_of_period'] = $next_range['end']->endOfWeek();
+            $next_range['end_of_period'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->month, $today3->endOfMonth()->format('d'))->endOfWeek()->format('Y-m-d');
         } elseif ((new Carbon)->day >= 28 && (new Carbon)->day <= 31) {
             $added_range = true;
-            $next_range['start'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 1);
+            $next_range['start'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 1)->startOfWeek();
+            $next_range['start_of_period'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 1);
             $next_range['end'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 15);
-            $next_range['end_of_period'] = $next_range['end']->endOfWeek();
+            $next_range['end_of_period'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 15)->endOfWeek()->format('Y-m-d');
         }
 
         $data['days_a'] = $this->get_days($data);
@@ -101,35 +103,57 @@ class HomeController extends Controller
     public function get_days($data)
     {
         try {
-            while ($data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')) {
+            if (isset($data['start_of_period'])) {
+                $start_of_period = $data['start_of_period'];
+            } else {
+                $start_of_period = new Carbon($this->choose_start);
+            }
+            while ($data['start']->format('Y-m-d') <= $data['end_of_period']) {
                 $has_user_lessons = Lesson::where('user_id', Auth::user()->id)->where('date', $data['start']->format('Y-m-d'))->count('user_id');
 
                 if (in_array($data['start']->dayOfWeek, $this->holidays)) {
                     $days[] = [$data['start']->format('d'), 2, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                    if ($data['start']->format('Y-m-d') == $start_of_period->format('Y-m-d')) {
+                        $start_of_period->addDay();
+                    }
                     $data['start']->addDay();
                     continue;
                 }
                 if ($data['start']->dayOfWeek == $this->half_day_holidays) {
-                    if ($data['start']->format('Y-m-d') >= (new Carbon($this->choose_start))->format('Y-m-d') && $data['start']->format('Y-m-d') <= $data['end_of_period']) {
+                    if (
+                        $data['start']->format('Y-m-d') >= (new Carbon($this->choose_start))->format('Y-m-d') && 
+                        $data['start']->format('Y-m-d') <= $data['end_of_period'] &&
+                        $data['start']->format('Y-m-d') == $start_of_period->format('Y-m-d') &&
+                        $data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')
+                    ) {
                         $days[] = [$data['start']->format('d'), 3, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                        $start_of_period->addDay();
                         $data['start']->addDay();
                     } else {
                         $days[] = [$data['start']->format('d'), 1, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                        if ($data['start']->format('Y-m-d') == $start_of_period->format('Y-m-d')) {
+                            $start_of_period->addDay();
+                        }
                         $data['start']->addDay();
                     }
                     continue;
                 }
-                if ($data['start']->format('Y-m-d') >= (new Carbon($this->choose_start))->format('Y-m-d') && $data['start']->format('Y-m-d') <= $data['end_of_period']) {
+                if (
+                    $data['start']->format('Y-m-d') >= (new Carbon($this->choose_start))->format('Y-m-d') &&
+                    $data['start']->format('Y-m-d') <= $data['end_of_period'] &&
+                    $data['start']->format('Y-m-d') == $start_of_period->format('Y-m-d') &&
+                    $data['start']->format('Y-m-d') <= $data['end']->format('Y-m-d')
+                ) {
                     $days[] = [$data['start']->format('d'), 0, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
+                    $start_of_period->addDay();
                 } else {
                     $days[] = [$data['start']->format('d'), 1, "full" => $data['start']->format('Y-m-d'), $has_user_lessons];
                 }
-
                 $data['start']->addDay();
             }
             return $days;
         } catch (Exception $e) {
-            return 123;
+            return null;
         }
     }
 }
