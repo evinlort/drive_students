@@ -163,7 +163,8 @@ class AdminController extends Controller
 
     public function addStudent(Request $request)
     {
-        $user = User::where('identity', $request->identity)->first();
+        $identity = explode(' ', $request->identity)[0];
+        $user = User::where('identity', $identity)->first();
         // Get how much lessons left and show if 0 or less
         // Check if lesson is not captured by somebody else - and send message
         if (!Lesson::where('date', $request->date)->where('time', $request->time)->exists()) {
