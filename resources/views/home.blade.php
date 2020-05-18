@@ -14,7 +14,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="favoritesModalLabel">
-                    {{ __('Choose lesson') }}
+                    {{ __('Choose lesson') }} - <span id="modal_date"></span>
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

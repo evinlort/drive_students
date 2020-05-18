@@ -27,6 +27,11 @@ $(document).ready(function () {
             !$(this).attr("class").includes("cal-box-holiday")
         ) {
             get_lessons(date);
+            const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
+            var dateX = new Date(date);
+            var locale = document.getElementsByTagName("html")[0].getAttribute("lang");
+            date_modal = dateX.toLocaleDateString(locale, options);
+            $("#modal_date").text(date_modal);
             $('#favoritesModal').modal('toggle');
         }
     });
