@@ -43,7 +43,7 @@ function get_lessons(date) {
                             if ($(this).data("time") < "07:00" && element[1] == 2) {
                                 $(this).hide();
                             }
-                            if ($(this).data("time") > "19:00" && element[1] == 2) {
+                            if ($(this).data("time") > "20:20" && element[1] == 2) {
                                 $(this).hide();
                             }
                             $(this).find("input[type=checkbox]").prop("checked", "checked").prop("disabled", "disabled").val(-1);
@@ -63,7 +63,7 @@ function get_lessons(date) {
                             if ($(this).data("time") < "07:00" && element[1] == 0) {
                                 $(this).hide();
                             }
-                            if ($(this).data("time") > "19:00" && element[1] == 0) {
+                            if ($(this).data("time") > "20:20" && element[1] == 0) {
                                 $(this).hide();
                             }
 
