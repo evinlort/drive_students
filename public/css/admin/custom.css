@@ -36,3 +36,8 @@ label.strong_name {
     font-weight: 900;
     margin-left: auto;
 }
+
+.b-blue {
+    color: #1e90ff;
+    font-size: larger;
+}

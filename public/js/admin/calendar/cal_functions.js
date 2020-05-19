@@ -50,7 +50,13 @@ function get_lessons(date) {
                                 $(this).find(".delete_lesson").hide();
                             }
                             $(this).find("input[type=checkbox]").prop("checked", "checked").prop("disabled", "disabled").val(-1);
-                            $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").text(element[2]);
+                            if(element[1] == 1) {
+                                let b = $("<b></b>").text(element[2]).addClass("b-blue");
+                                $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").html(b);
+                            }
+                            else {
+                                $(this).find("input[type=checkbox]").parent(".switch").siblings(".time_info").text(element[2]);
+                            }
                         }
                     });
                 }
