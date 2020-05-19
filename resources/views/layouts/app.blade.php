@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +18,7 @@
     <!-- <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css"> -->
 
     <!-- Styles -->
-   <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('css')
     <script>
@@ -33,6 +34,7 @@
       ]) !!};
     </script>
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
@@ -48,20 +50,13 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown2" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ session('my_locale')=='he'?__('Hebrew'):__('Russian') }} <span class="caret"></span>
-                                </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('change_lang', ['he']) }}"
-                                   onclick="event.preventDefault();
+                            <a class="" href="{{ route('change_lang', ['ru']) }}" onclick="event.preventDefault();
                                                  document.getElementById('logout-form2').submit();">
-                                    {{ session('my_locale')=='he'?__('Russian'):__('Hebrew') }}
-                                </a>
-
-                                <form id="logout-form2" action="{{ route('change_lang', [session('my_locale')=='he'?'ru':'he']) }}" method="GET" style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
+                                {{ session('my_locale')=='he'?__('Russian'):__('Hebrew') }}
+                            </a>
+                            <form id="logout-form2" action="{{ route('change_lang', [session('my_locale')=='he'?'ru':'he']) }}" method="GET" style="display: none;">
+                                @csrf
+                            </form>
                         </li>
                     </ul>
 
@@ -69,32 +64,32 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                @if (false && Route::has('register')) {{-- Michael asks to remove register --}}
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                @endif
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            @if (false && Route::has('register')) {{-- Michael asks to remove register --}}
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            @endif
+                        </li>
                         @else
-                            <li class="nav-item">
-                                <a class="navbar-brand">
-                                    {{ Auth::user()->name }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <div class="navbar-brand">
-                                    <a class="" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        <li class="nav-item">
+                            <a class="navbar-brand">
+                                {{ Auth::user()->name }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="navbar-brand">
+                                <a class="" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                    {{ __('Logout') }}
+                                </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                         @endguest
                     </ul>
                 </div>
@@ -107,4 +102,5 @@
     </div>
     @yield('js')
 </body>
+
 </html>
