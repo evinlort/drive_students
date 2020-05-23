@@ -1,5 +1,5 @@
 // Load helper functions file
-$.getScript("js/calendar/cal_functions.js");
+$.getScript("js/calendar/cal_functions.js?r="+Math.random());
 
 $(document).ready(function () {
     $(".close-errors").on("click", function (e) {
