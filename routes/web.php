@@ -11,12 +11,7 @@
 |
 */
 
-use App\Http\Controllers\Admin\AdminController;
-
-Route::get('/language/{locale}', function ($locale) {
-    session(['my_locale' => $locale]);
-    return redirect('/');
-})->name('change_lang');
+Route::get('/language/{locale}', 'LanguageController@index')->name('change_lang');
 
 Route::get('/', 'HomeController@index');
 
