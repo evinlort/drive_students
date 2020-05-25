@@ -24,7 +24,7 @@
                             <label for="identity" class="col-sm-4 col-form-label text-md-right">{{ __('Identity') }}</label>
 
                             <div class="col-md-6">
-                                <input id="identity" min="100000000" max="999999999" type="number" class="form-control{{ $errors->has('identity') ? ' is-invalid' : '' }}" name="identity" value="{{ old('identity') }}" required autofocus autocomplete="off">
+                                <input id="identity" min="10000000" max="999999999" type="number" class="form-control{{ $errors->has('identity') ? ' is-invalid' : '' }}" name="identity" value="{{ old('identity') }}" required autofocus autocomplete="off">
 
                                 @if ($errors->has('identity'))
                                     <span class="invalid-feedback" role="alert">
