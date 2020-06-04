@@ -18,12 +18,25 @@
                     <form action="{{ route('updateStudentSettings') }}" method="post">
                         @csrf
                         <input type="hidden" name="id" value="{{ $user->id }}">
-                        <div class="row">
+                        <div class="row mb-5">
                             <div class="col-6 text-center">
                                 <input type="number" min=0 name="weeks" id="weeks" class="form-control" placeholder="{{ __('Enter weeks') }}" value="{{ $settings->weeks }}">
                             </div>
                             <div class="col-6 text-center">
                                 <input type="number" min=0 name="lessons" id="lessons" class="form-control" placeholder="{{ __('Enter lessons') }}" value="{{ $settings->lessons }}">
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-6 text-center">{{ __('Phone Number') }}</div>
+                            <div class="col-6 text-center">{{ __('Address') }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <input type="text" name="phone" id="phone" class="form-control" placeholder="{{ __('Phone Number') }}" value="{{ $user->phone }}">
+                            </div>
+                            <div class="col-6 text-center">
+                                <input type="text" name="address" id="address" class="form-control" placeholder="{{ __('Address') }}" value="{{ $user->address }}">
                             </div>
                         </div>
                         <div class="row mt-3">
