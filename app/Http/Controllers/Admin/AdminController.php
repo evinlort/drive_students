@@ -38,7 +38,7 @@ class AdminController extends Controller
     public function studentHome(Request $request)
     {
         if (empty($request->choosen_student)) {
-            return Redirect::back()->withErrors(['status' => __('No identity')]);
+            return Redirect::back()->withErrors(['status' => __('No identity given')]);
         }
         $identity = explode(' ', $request->choosen_student)[0];
         $user = User::where('identity', $identity)->first();
@@ -209,6 +209,9 @@ class AdminController extends Controller
 
     public function deleteStudent(Request $request)
     {
+        if(!$request->choosen_student) {
+            return Redirect::back()->withErrors(['status' => __('No identity given')]);
+        }
         $identity = explode(' ', $request->choosen_student)[0];
         User::where('identity', $identity)->delete();
         return view('admin.home');
@@ -303,6 +306,9 @@ class AdminController extends Controller
 
     public function studentUpdate(Request $request)
     {
+        if(!$request->choosen_student) {
+            return Redirect::back()->withErrors(['status' => __('No identity given')]);
+        }
         $data = array();
         $identity = explode(' ', $request->choosen_student)[0];
         $data['user'] = User::where('identity', $identity)->first();
