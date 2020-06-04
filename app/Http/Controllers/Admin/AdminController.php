@@ -192,6 +192,9 @@ class AdminController extends Controller
     public function registerStudent(AdminStudentRequest $request)
     {
         $user = User::create(['identity' => $request->identity, 'name' => $request->full_name]);
+        $user->phone = $request->phone != ''?$request->phone:null;
+        $user->address = $request->address != ''?$request->address:null;
+        $user->save();
         $settings = UsersSettings::create(['user_id' => $user->id]);
         $settings->weeks = $request->weeks;
         $settings->lessons = $request->lessons;
@@ -313,6 +316,14 @@ class AdminController extends Controller
         $settings->weeks = $request->weeks;
         $settings->lessons = $request->lessons;
         $settings->save();
+        $user = $settings->user;
+        if($request->phone) {
+            $user->phone = $request->phone;
+        }
+        if($request->address) {
+            $user->address = $request->address;
+        }
+        $user->save();
         return redirect('show_update');
     }
 

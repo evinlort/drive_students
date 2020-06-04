@@ -32,6 +32,14 @@
                             <label for="full_name">{{ __('Full Name') }}</label>
                             <input required type="text" class="form-control" id="full_name" name="full_name" placeholder="{{ __('Full Name') }}">
                         </div>
+                        <div class="form-group">
+                            <label for="phone">{{ __('Phone Number') }}</label>
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="{{ __('Phone Number') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">{{ __('Address') }}</label>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="{{ __('Address') }}">
+                        </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="identity">{{ __('Weeks') }}</label>
