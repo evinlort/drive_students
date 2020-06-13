@@ -22,6 +22,9 @@ class AdminCheck
             else
                 return redirect('/home');
         }
+        if($request->ajax()) {
+            return response('Unauthorized.', 401);
+        }
         return redirect('login');
         
     }
