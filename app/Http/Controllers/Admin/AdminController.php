@@ -48,8 +48,8 @@ class AdminController extends Controller
         Carbon::setWeekEndsAt(6);
 
         // TODO: get this from config
-        $start_time = '05:00';
-        $end_time = '21:00';
+        $start_time = '05:30';
+        $end_time = '20:30';
 
         $today = new Carbon($this->choose_start);
         $today2 = new Carbon($this->choose_start);
@@ -97,7 +97,7 @@ class AdminController extends Controller
         $time = new Carbon($start_time);
         while ($time->format('H:i') <= $end_time) {
             $time_line[] = $time->format('H:i');
-            $time->addMinutes(40);
+            $time->addMinutes(60);
         }
         $data['time_line'] = $time_line;
 
@@ -232,14 +232,14 @@ class AdminController extends Controller
         // TODO: get times from config
         // $admin_day_start = config('admin.lessons_starts_from');
         // $admin_day_end = config('admin.lessons_ends_at');
-        $admin_day_start = '05:00';
-        $admin_day_end = '21:00';
+        $admin_day_start = '05:30';
+        $admin_day_end = '20:30';
         $lessons = array();
         $time = new Carbon($admin_day_start);
         while ($time->format('H:i') <= $admin_day_end) {
             $time_line[] = $time->format('H:i');
             $lessons[] = Lesson::where('date', $date)->where('time', $time->format('H:i'))->first();
-            $time->addMinutes(40);
+            $time->addMinutes(60);
         }
         $data['time_line'] = $time_line;
         // $lessons = Lesson::where('date', $date)->orderby('time')->get();

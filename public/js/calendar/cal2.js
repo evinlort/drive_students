@@ -20,7 +20,7 @@ $(document).ready(function () {
 
     $(".cal-box").on("click", function () {
         var date = $(this).data("dayNo");
-        console.log(date);
+
         if (
             check_date_in_borders(date) &&
             !$(this).attr("class").includes("cal-box-gray") &&

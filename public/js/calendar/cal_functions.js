@@ -40,7 +40,7 @@ function get_lessons(date) {
                 if (element[1]) {
                     $("#lessons div.time-string").each(function () {
                         if ($(this).data("time") == element[0]) {
-                            if ($(this).data("time") < "07:00" && element[1] == 2) {
+                            if ($(this).data("time") < "06:00" && element[1] == 2) {
                                 $(this).hide();
                             }
                             if ($(this).data("time") > "20:20" && element[1] == 2) {
@@ -60,7 +60,7 @@ function get_lessons(date) {
                 else {
                     $("#lessons div.time-string").each(function () {
                         if ($(this).data("time") == element[0]) {
-                            if ($(this).data("time") < "07:00" && element[1] == 0) {
+                            if ($(this).data("time") < "06:00" && element[1] == 0) {
                                 $(this).hide();
                             }
                             if ($(this).data("time") > "20:20" && element[1] == 0) {

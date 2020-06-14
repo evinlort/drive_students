@@ -39,8 +39,8 @@ class HomeController extends Controller
         Carbon::setWeekEndsAt(6);
 
         // TODO: get this from config
-        $start_time = '05:00';
-        $end_time = '21:00';
+        $start_time = '06:30';
+        $end_time = '19:30';
 
         $today = new Carbon($this->choose_start);
         $today2 = new Carbon($this->choose_start);
@@ -88,7 +88,7 @@ class HomeController extends Controller
         $time = new Carbon($start_time);
         while ($time->format('H:i') <= $end_time) {
             $time_line[] = $time->format('H:i');
-            $time->addMinutes(40);
+            $time->addMinutes(60);
         }
         $data['time_line'] = $time_line;
 

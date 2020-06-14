@@ -112,8 +112,8 @@ class LessonsController extends Controller
     {
         $user = User::where('id', $request->user_id)->first();
         // TODO: get from config, also check if admin
-        $start_time = '05:00';
-        $end_time = '21:00';
+        $start_time = '05:30';
+        $end_time = '20:30';
         $half_day_number = 5;
         $half_day_end_time = '17:00';
 
@@ -150,7 +150,7 @@ class LessonsController extends Controller
             if ($free_lesson) {
                 $time_line[] = [$time->format('H:i'), 0, ' ', $is_half_day];
             }
-            $time->addMinutes(40);
+            $time->addMinutes(60);
         }
         return response()->json(
             [

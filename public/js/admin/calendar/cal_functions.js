@@ -40,12 +40,13 @@ function get_lessons(date) {
                 if (element[1]) {
                     $("#lessons div.time-string").each(function () {
                         if ($(this).data("time") == element[0]) {
-                            if ($(this).data("time") < "07:00" && element[1] == 2) {
+                            if ($(this).data("time") < "05:00" && element[1] == 2) {
                                 $(this).hide();
                             }
-                            if ($(this).data("time") > "20:20" && element[1] == 2) {
+                            if ($(this).data("time") > "20:30" && element[1] == 2) {
                                 $(this).hide();
                             }
+                            console.log(element[1]);
                             if (element[1] == 2) {
                                 $(this).find(".delete_lesson").hide();
                             }
@@ -63,16 +64,17 @@ function get_lessons(date) {
                 else {
                     $("#lessons div.time-string").each(function () {
                         if ($(this).data("time") == element[0]) {
-                            if ($(this).data("time") < "07:00" && element[1] == 0) {
+                            if ($(this).data("time") < "05:00" && element[1] == 0) {
                                 $(this).hide();
                             }
-                            if ($(this).data("time") > "20:20" && element[1] == 0) {
+                            if ($(this).data("time") > "20:30" && element[1] == 0) {
                                 $(this).hide();
                             }
 
                             if ($(this).data("time") > response.half_day_end_time && element[3] == true) {
                                 $(this).hide();
                             }
+                            console.log(element);
                             $(this).find(".delete_lesson").hide();
                         }
                     });
