@@ -74,10 +74,11 @@ class HomeController extends Controller
             $next_range['end_of_period'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->month, $today3->endOfMonth()->format('d'))->endOfWeek()->format('Y-m-d');
         } elseif ((new Carbon)->day >= 28 && (new Carbon)->day <= 31) {
             $added_range = true;
-            $next_range['start'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 1)->startOfWeek();
-            $next_range['start_of_period'] = (new Carbon)->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 1);
-            $next_range['end'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 15);
-            $next_range['end_of_period'] = (new Carbon)->startOfWeek()->setDate((new Carbon)->year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 15)->endOfWeek()->format('Y-m-d');
+            $year = (new Carbon)->year + ((new Carbon)->month == 12?1:0); // Set year as next year if this month is December (12)
+            $next_range['start'] = (new Carbon)->setDate($year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 1)->startOfWeek();
+            $next_range['start_of_period'] = (new Carbon)->setDate($year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 1);
+            $next_range['end'] = (new Carbon)->startOfWeek()->setDate($year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 15);
+            $next_range['end_of_period'] = (new Carbon)->startOfWeek()->setDate($year, (new Carbon)->addMonthNoOverflow(1)->format("m"), 15)->endOfWeek()->format('Y-m-d');
         }
 
         $data['days_a'] = $this->get_days($data);
