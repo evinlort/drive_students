@@ -269,8 +269,9 @@ class AdminController extends Controller
             $data['next_dates'] = $next_lessons;
             $data['next_lessons_count'] = $next_lessons_count;
         } elseif ((new Carbon)->day >= 28 && (new Carbon)->day <= 31) {
-            $start = (new Carbon((new Carbon)->year.'-'.(new Carbon)->startOfMonth()->addMonth()->month.'-1'));
-            while ($start->format('Y-m-d') <= (new Carbon((new Carbon)->year.'-'.(new Carbon)->startOfMonth()->addMonth()->month.'-1'))->addWeeks(2)->format('Y-m-d')) {
+            $year = (new Carbon)->year + ((new Carbon)->month == 12?1:0); // Set year as next year if this month is December (12)
+            $start = (new Carbon($year.'-'.(new Carbon)->startOfMonth()->addMonth()->month.'-1'));
+            while ($start->format('Y-m-d') <= (new Carbon($year.'-'.(new Carbon)->startOfMonth()->addMonth()->month.'-1'))->addWeeks(2)->format('Y-m-d')) {
                 $next_lessons[] = $start->format('Y-m-d');
                 $next_lessons_count[] = Lesson::where('date', $start->format('Y-m-d'))->groupBy('date')->selectRaw('count(`date`) as lessons')->first();
                 $start->addDay();
